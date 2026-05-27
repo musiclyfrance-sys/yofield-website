@@ -81,10 +81,10 @@ export default function BlogPage() {
             Ne pas manquer les prochains articles ?
           </p>
           <a
-            href="mailto:hello@yofield.fr"
+            href="mailto:hello@yofield.com"
             className="font-body text-base font-medium text-soil/70 hover:text-soil transition-colors underline underline-offset-4"
           >
-            Écrire à hello@yofield.fr
+            Écrire à hello@yofield.com
           </a>
         </div>
       </section>

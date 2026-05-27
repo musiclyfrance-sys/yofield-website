@@ -308,10 +308,10 @@ export default function HomePage() {
             <p className="font-body text-sm text-soil/60 mt-8">
               Ou écrire directement à{' '}
               <a
-                href="mailto:hello@yofield.fr"
+                href="mailto:hello@yofield.com"
                 className="underline underline-offset-4 hover:text-soil transition-colors"
               >
-                hello@yofield.fr
+                hello@yofield.com
               </a>
             </p>
           </ScrollReveal>

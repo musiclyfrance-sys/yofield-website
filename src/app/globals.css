@@ -2,25 +2,7 @@
 
 /* ─── FONT FACES ─────────────────────────────────────── */
 
-/* Naked Power — Display */
-@font-face { font-family:'Naked Power'; font-weight:100; font-style:normal;  src:url('../fonts/naked-power/ul.otf') format('opentype'); font-display:swap; }
-@font-face { font-family:'Naked Power'; font-weight:100; font-style:italic;  src:url('../fonts/naked-power/ul-it.otf') format('opentype'); font-display:swap; }
-@font-face { font-family:'Naked Power'; font-weight:200; font-style:normal;  src:url('../fonts/naked-power/el.otf') format('opentype'); font-display:swap; }
-@font-face { font-family:'Naked Power'; font-weight:200; font-style:italic;  src:url('../fonts/naked-power/el-it.otf') format('opentype'); font-display:swap; }
-@font-face { font-family:'Naked Power'; font-weight:300; font-style:normal;  src:url('../fonts/naked-power/lt.otf') format('opentype'); font-display:swap; }
-@font-face { font-family:'Naked Power'; font-weight:300; font-style:italic;  src:url('../fonts/naked-power/lt-it.otf') format('opentype'); font-display:swap; }
-@font-face { font-family:'Naked Power'; font-weight:400; font-style:normal;  src:url('../fonts/naked-power/rg.otf') format('opentype'); font-display:swap; }
-@font-face { font-family:'Naked Power'; font-weight:400; font-style:italic;  src:url('../fonts/naked-power/rg-it.otf') format('opentype'); font-display:swap; }
-@font-face { font-family:'Naked Power'; font-weight:500; font-style:normal;  src:url('../fonts/naked-power/bk.otf') format('opentype'); font-display:swap; }
-@font-face { font-family:'Naked Power'; font-weight:500; font-style:italic;  src:url('../fonts/naked-power/bk-it.otf') format('opentype'); font-display:swap; }
-@font-face { font-family:'Naked Power'; font-weight:700; font-style:normal;  src:url('../fonts/naked-power/bd.otf') format('opentype'); font-display:swap; }
-@font-face { font-family:'Naked Power'; font-weight:700; font-style:italic;  src:url('../fonts/naked-power/bd-it.otf') format('opentype'); font-display:swap; }
-@font-face { font-family:'Naked Power'; font-weight:800; font-style:normal;  src:url('../fonts/naked-power/hv.otf') format('opentype'); font-display:swap; }
-@font-face { font-family:'Naked Power'; font-weight:800; font-style:italic;  src:url('../fonts/naked-power/hv-it.otf') format('opentype'); font-display:swap; }
-@font-face { font-family:'Naked Power'; font-weight:900; font-style:normal;  src:url('../fonts/naked-power/bl.otf') format('opentype'); font-display:swap; }
-@font-face { font-family:'Naked Power'; font-weight:900; font-style:italic;  src:url('../fonts/naked-power/bl-it.otf') format('opentype'); font-display:swap; }
-
-/* Inter — Body */
+/* Inter — Headings + Body */
 @font-face { font-family:'Inter'; font-weight:300; font-style:normal;  src:url('../fonts/inter/Light.ttf') format('truetype'); font-display:swap; }
 @font-face { font-family:'Inter'; font-weight:300; font-style:italic;  src:url('../fonts/inter/LightItalic.ttf') format('truetype'); font-display:swap; }
 @font-face { font-family:'Inter'; font-weight:400; font-style:normal;  src:url('../fonts/inter/Regular.ttf') format('truetype'); font-display:swap; }
@@ -48,7 +30,7 @@
   --color-mist:   #EAF3E0;
 
   /* Typography families */
-  --font-display: 'Naked Power', sans-serif;
+  --font-display: 'Inter', sans-serif;
   --font-body:    'Inter', sans-serif;
   --font-mono:    'Geist Mono', monospace;
 
@@ -63,7 +45,6 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 html {
-  scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -97,11 +78,12 @@ body {
 
 /* ─── TYPOGRAPHY HELPERS ─────────────────────────────── */
 
-.np { font-family: var(--font-display); }
-.np-900  { font-family: var(--font-display); font-weight: 900; letter-spacing: -0.04em; line-height: 1; }
-.np-800  { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.035em; line-height: 1.05; }
-.np-700  { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em; }
-.np-300i { font-family: var(--font-display); font-weight: 300; font-style: italic; letter-spacing: -0.025em; }
+/* Inter display helpers — class names kept for backwards compat */
+.np      { font-family: var(--font-body); }
+.np-900  { font-family: var(--font-body); font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
+.np-800  { font-family: var(--font-body); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; }
+.np-700  { font-family: var(--font-body); font-weight: 600; letter-spacing: -0.02em; }
+.np-300i { font-family: var(--font-body); font-weight: 300; font-style: italic; letter-spacing: -0.02em; }
 .gm      { font-family: var(--font-mono); }
 .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.55; }
 

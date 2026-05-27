@@ -25,7 +25,7 @@ export function organizationSchema() {
       '@type': 'ContactPoint',
       contactType: 'customer service',
       availableLanguage: 'French',
-      email: 'hello@yofield.fr',
+      email: 'hello@yofield.com',
     },
     address: {
       '@type': 'PostalAddress',
@@ -198,7 +198,7 @@ export function localBusinessSchema() {
       addressCountry: 'FR',
     },
     openingHours: 'Mo-Fr 09:00-18:00',
-    email: 'hello@yofield.fr',
+    email: 'hello@yofield.com',
   }
 }
 

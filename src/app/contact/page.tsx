@@ -70,11 +70,11 @@ export default function ContactPage() {
 
               <ScrollReveal delay={0.25}>
                 <a
-                  href="mailto:hello@yofield.fr"
+                  href="mailto:hello@yofield.com"
                   className="font-body text-sm font-medium"
                   style={{ color: 'var(--color-pine)' }}
                 >
-                  hello@yofield.fr
+                  hello@yofield.com
                 </a>
               </ScrollReveal>
             </div>

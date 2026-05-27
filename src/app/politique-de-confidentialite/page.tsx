@@ -37,10 +37,10 @@ export default function PolitiqueConfidentialitePage() {
                   <br />
                   Contact :{' '}
                   <a
-                    href="mailto:hello@yofield.fr"
+                    href="mailto:hello@yofield.com"
                     className="underline underline-offset-4 hover:text-soil transition-colors"
                   >
-                    hello@yofield.fr
+                    hello@yofield.com
                   </a>
                 </p>
               </div>
@@ -96,10 +96,10 @@ export default function PolitiqueConfidentialitePage() {
                   limitation du traitement et portabilité de vos données. Pour exercer
                   ces droits, adressez votre demande à{' '}
                   <a
-                    href="mailto:hello@yofield.fr"
+                    href="mailto:hello@yofield.com"
                     className="underline underline-offset-4 hover:text-soil transition-colors"
                   >
-                    hello@yofield.fr
+                    hello@yofield.com
                   </a>
                   .
                 </p>

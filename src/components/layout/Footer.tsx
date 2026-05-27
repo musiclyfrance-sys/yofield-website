@@ -24,7 +24,7 @@ export default function Footer() {
           <div className="flex flex-col gap-6">
             <Link href="/" aria-label="Yofield, retour à l'accueil">
               <Image
-                src="/logos/logo-fond-noir.svg"
+                src="/logos/logo sur fond noir.svg"
                 alt="Yofield"
                 width={120}
                 height={32}
@@ -37,10 +37,10 @@ export default function Footer() {
             </p>
 
             <a
-              href="mailto:hello@yofield.fr"
+              href="mailto:hello@yofield.com"
               className="font-body text-sm text-snow/70 transition-colors duration-200 hover:text-citron"
             >
-              hello@yofield.fr
+              hello@yofield.com
             </a>
           </div>
 
@@ -102,7 +102,7 @@ export default function Footer() {
           style={{ borderTop: '0.5px solid rgba(250,250,247,0.15)' }}
         >
           <p className="font-body text-xs text-snow/40">
-            © 2025 Yofield. Fait avec soin en France.
+            © 2025 Yofield.
           </p>
 
           <div className="flex items-center gap-6">

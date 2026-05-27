@@ -61,7 +61,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" aria-label="Yofield, retour à l'accueil">
             <Image
-              src={isScrolled ? '/logos/logo-fond-blanc.svg' : '/logos/logo-fond-blanc.svg'}
+              src="/logos/logo sur fond blanc.svg"
               alt="Yofield"
               width={120}
               height={32}

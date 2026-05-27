@@ -37,10 +37,10 @@ export default function MentionsLegalesPage() {
                   <br />
                   Contact :{' '}
                   <a
-                    href="mailto:hello@yofield.fr"
+                    href="mailto:hello@yofield.com"
                     className="underline underline-offset-4 hover:text-soil transition-colors"
                   >
-                    hello@yofield.fr
+                    hello@yofield.com
                   </a>
                 </p>
               </div>
@@ -92,10 +92,10 @@ export default function MentionsLegalesPage() {
                   d'accès, de rectification et de suppression de vos données en
                   contactant{' '}
                   <a
-                    href="mailto:hello@yofield.fr"
+                    href="mailto:hello@yofield.com"
                     className="underline underline-offset-4 hover:text-soil transition-colors"
                   >
-                    hello@yofield.fr
+                    hello@yofield.com
                   </a>
                   .
                 </p>

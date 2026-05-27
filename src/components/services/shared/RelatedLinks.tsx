@@ -185,10 +185,10 @@ export default function RelatedLinks({
               <p className="font-body text-sm text-snow/60">
                 Ou écrire directement à{' '}
                 <a
-                  href="mailto:hello@yofield.fr"
+                  href="mailto:hello@yofield.com"
                   className="text-snow/80 underline underline-offset-2 transition-colors duration-200 hover:text-citron"
                 >
-                  hello@yofield.fr
+                  hello@yofield.com
                 </a>
               </p>
             </div>

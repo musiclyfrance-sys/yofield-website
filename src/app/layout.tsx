@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
+import LenisProvider from '@/components/providers/LenisProvider'
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yofield.fr'
 
@@ -73,9 +74,9 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="fr" className="h-full scroll-smooth">
+    <html lang="fr" className="h-full">
       <body className="min-h-full flex flex-col antialiased bg-snow text-soil">
-        {children}
+        <LenisProvider>{children}</LenisProvider>
       </body>
     </html>
   )
