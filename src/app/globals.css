@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+/* ─── FONT FACES ─────────────────────────────────────── */
+
+/* Naked Power — Display */
+@font-face { font-family:'Naked Power'; font-weight:100; font-style:normal;  src:url('../fonts/naked-power/ul.otf') format('opentype'); font-display:swap; }
+@font-face { font-family:'Naked Power'; font-weight:100; font-style:italic;  src:url('../fonts/naked-power/ul-it.otf') format('opentype'); font-display:swap; }
+@font-face { font-family:'Naked Power'; font-weight:200; font-style:normal;  src:url('../fonts/naked-power/el.otf') format('opentype'); font-display:swap; }
+@font-face { font-family:'Naked Power'; font-weight:200; font-style:italic;  src:url('../fonts/naked-power/el-it.otf') format('opentype'); font-display:swap; }
+@font-face { font-family:'Naked Power'; font-weight:300; font-style:normal;  src:url('../fonts/naked-power/lt.otf') format('opentype'); font-display:swap; }
+@font-face { font-family:'Naked Power'; font-weight:300; font-style:italic;  src:url('../fonts/naked-power/lt-it.otf') format('opentype'); font-display:swap; }
+@font-face { font-family:'Naked Power'; font-weight:400; font-style:normal;  src:url('../fonts/naked-power/rg.otf') format('opentype'); font-display:swap; }
+@font-face { font-family:'Naked Power'; font-weight:400; font-style:italic;  src:url('../fonts/naked-power/rg-it.otf') format('opentype'); font-display:swap; }
+@font-face { font-family:'Naked Power'; font-weight:500; font-style:normal;  src:url('../fonts/naked-power/bk.otf') format('opentype'); font-display:swap; }
+@font-face { font-family:'Naked Power'; font-weight:500; font-style:italic;  src:url('../fonts/naked-power/bk-it.otf') format('opentype'); font-display:swap; }
+@font-face { font-family:'Naked Power'; font-weight:700; font-style:normal;  src:url('../fonts/naked-power/bd.otf') format('opentype'); font-display:swap; }
+@font-face { font-family:'Naked Power'; font-weight:700; font-style:italic;  src:url('../fonts/naked-power/bd-it.otf') format('opentype'); font-display:swap; }
+@font-face { font-family:'Naked Power'; font-weight:800; font-style:normal;  src:url('../fonts/naked-power/hv.otf') format('opentype'); font-display:swap; }
+@font-face { font-family:'Naked Power'; font-weight:800; font-style:italic;  src:url('../fonts/naked-power/hv-it.otf') format('opentype'); font-display:swap; }
+@font-face { font-family:'Naked Power'; font-weight:900; font-style:normal;  src:url('../fonts/naked-power/bl.otf') format('opentype'); font-display:swap; }
+@font-face { font-family:'Naked Power'; font-weight:900; font-style:italic;  src:url('../fonts/naked-power/bl-it.otf') format('opentype'); font-display:swap; }
+
+/* Inter — Body */
+@font-face { font-family:'Inter'; font-weight:300; font-style:normal;  src:url('../fonts/inter/Light.ttf') format('truetype'); font-display:swap; }
+@font-face { font-family:'Inter'; font-weight:300; font-style:italic;  src:url('../fonts/inter/LightItalic.ttf') format('truetype'); font-display:swap; }
+@font-face { font-family:'Inter'; font-weight:400; font-style:normal;  src:url('../fonts/inter/Regular.ttf') format('truetype'); font-display:swap; }
+@font-face { font-family:'Inter'; font-weight:400; font-style:italic;  src:url('../fonts/inter/Italic.ttf') format('truetype'); font-display:swap; }
+@font-face { font-family:'Inter'; font-weight:500; font-style:normal;  src:url('../fonts/inter/Medium.ttf') format('truetype'); font-display:swap; }
+@font-face { font-family:'Inter'; font-weight:500; font-style:italic;  src:url('../fonts/inter/MediumItalic.ttf') format('truetype'); font-display:swap; }
+@font-face { font-family:'Inter'; font-weight:600; font-style:normal;  src:url('../fonts/inter/SemiBold.ttf') format('truetype'); font-display:swap; }
+@font-face { font-family:'Inter'; font-weight:600; font-style:italic;  src:url('../fonts/inter/SemiBoldItalic.ttf') format('truetype'); font-display:swap; }
+@font-face { font-family:'Inter'; font-weight:700; font-style:normal;  src:url('../fonts/inter/Bold.ttf') format('truetype'); font-display:swap; }
+@font-face { font-family:'Inter'; font-weight:700; font-style:italic;  src:url('../fonts/inter/BoldItalic.ttf') format('truetype'); font-display:swap; }
+
+/* Geist Mono — Technical */
+@font-face { font-family:'Geist Mono'; font-weight:400; font-style:normal; src:url('../fonts/geist-mono/Regular.ttf') format('truetype'); font-display:swap; }
+@font-face { font-family:'Geist Mono'; font-weight:500; font-style:normal; src:url('../fonts/geist-mono/Medium.ttf') format('truetype'); font-display:swap; }
+
+/* ─── TAILWIND V4 DESIGN TOKENS ──────────────────────── */
+
+@theme {
+  /* Brand palette */
+  --color-soil:   #0F0F0E;
+  --color-snow:   #FAFAF7;
+  --color-citron: #D4F551;
+  --color-pine:   #1F3D2C;
+  --color-sage:   #A8B5AD;
+  --color-mist:   #EAF3E0;
+
+  /* Typography families */
+  --font-display: 'Naked Power', sans-serif;
+  --font-body:    'Inter', sans-serif;
+  --font-mono:    'Geist Mono', monospace;
+
+  /* Easing */
+  --ease-spring:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-expo:  cubic-bezier(0.87, 0, 0.13, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ─── BASE ───────────────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: var(--color-snow);
+  color: var(--color-soil);
+  font-family: var(--font-body);
+  line-height: 1.62;
+  min-height: 100vh;
+}
+
+/* ─── SELECTION ──────────────────────────────────────── */
+
+::selection { background: var(--color-citron); color: var(--color-soil); }
+
+/* ─── FOCUS ──────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--color-citron);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ─── SCROLLBAR ──────────────────────────────────────── */
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-sage); border-radius: 9999px; }
+
+/* ─── TYPOGRAPHY HELPERS ─────────────────────────────── */
+
+.np { font-family: var(--font-display); }
+.np-900  { font-family: var(--font-display); font-weight: 900; letter-spacing: -0.04em; line-height: 1; }
+.np-800  { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.035em; line-height: 1.05; }
+.np-700  { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em; }
+.np-300i { font-family: var(--font-display); font-weight: 300; font-style: italic; letter-spacing: -0.025em; }
+.gm      { font-family: var(--font-mono); }
+.eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.55; }
+
+/* ─── BUTTONS ─────────────────────────────────────────── */
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 14px 28px; border-radius: 9999px;
+  font-family: var(--font-body); font-size: 14px; font-weight: 500;
+  letter-spacing: 0.01em; cursor: pointer; white-space: nowrap;
+  text-decoration: none; border: none; position: relative;
+  transition: all 0.28s var(--ease-spring);
+  will-change: transform;
+}
+.btn:hover { transform: translateY(-2px); }
+
+.btn-citron  { background: var(--color-citron); color: var(--color-soil); }
+.btn-citron:hover { background: var(--color-soil); color: var(--color-citron); }
+
+.btn-outline-soil { background: transparent; color: var(--color-soil); border: 0.5px solid rgba(15,15,14,0.3); }
+.btn-outline-soil:hover { border-color: var(--color-soil); background: var(--color-soil); color: var(--color-snow); }
+
+.btn-outline-snow { background: transparent; color: var(--color-snow); border: 0.5px solid rgba(250,250,247,0.35); }
+.btn-outline-snow:hover { background: var(--color-snow); color: var(--color-soil); border-color: transparent; }
+
+/* ─── SECTION UTILS ──────────────────────────────────── */
+
+.section-padding { padding-top: 120px; padding-bottom: 120px; }
+@media (max-width: 768px) { .section-padding { padding-top: 72px; padding-bottom: 72px; } }
+
+.container {
+  max-width: 1200px;
+  margin-left: auto; margin-right: auto;
+  padding-left: 48px; padding-right: 48px;
+}
+@media (max-width: 768px) { .container { padding-left: 24px; padding-right: 24px; } }
+
+/* ─── ANIMATIONS ─────────────────────────────────────── */
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-fade-up { animation: fade-up 0.7s var(--ease-spring) both; }
+.animate-fade-in { animation: fade-in 0.5s ease both; }
+
+/* ─── DIVIDERS ───────────────────────────────────────── */
+
+.divider-soil { border-top: 0.5px solid rgba(15,15,14,0.1); }
+.divider-snow { border-top: 0.5px solid rgba(250,250,247,0.15); }

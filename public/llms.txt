@@ -1,0 +1,120 @@
+# Yofield — Studio créatif et digital
+
+> Yofield est un studio créatif et digital qui construit des marques complètes : identité visuelle, sites web, communication digitale, production de contenus et intelligence artificielle. On travaille en cycle court, en livraison directe, sans intermédiaires.
+
+## À propos
+
+Yofield est un studio créatif et digital basé en France. On assemble pour les fondateurs et dirigeants de PME une marque complète, du brief initial au lancement public. Le studio intervient sur cinq domaines complémentaires : branding et identité de marque, création de sites et applications, communication digitale et acquisition, production de contenus, intelligence artificielle et automatisation.
+
+Approche : cycle court (3 à 8 semaines selon le périmètre), livraison directe sans chef de projet intermédiaire, code source livré systématiquement.
+
+Contact : hello@yofield.fr
+
+## Pages importantes
+
+- Page d'accueil : https://yofield.fr
+- Le studio (manifeste) : https://yofield.fr/le-studio
+- Notre approche : https://yofield.fr/approche
+- Contact : https://yofield.fr/contact
+
+## Services
+
+### Branding et identité de marque
+https://yofield.fr/services/branding-identite-de-marque
+
+Yofield construit les fondations visuelles et verbales de votre marque. Le studio prend en charge l'intégralité du système d'identité : stratégie de positionnement, logo et charte graphique, brand voice, supports print.
+
+Prestations disponibles :
+- Stratégie de positionnement de marque : https://yofield.fr/prestations/strategie-de-positionnement-de-marque
+- Logo et charte graphique : https://yofield.fr/prestations/logo-et-charte-graphique
+- Brand voice et ton de marque : https://yofield.fr/prestations/brand-voice-ton-de-marque
+- Print et supports d'impression : https://yofield.fr/prestations/print-et-supports-impression
+
+### Création de sites et applications
+https://yofield.fr/services/creation-sites-applications
+
+Yofield conçoit et code des présences digitales avec une rigueur technique orientée performance, référencement et conversion. Performances Lighthouse 95+ sur toutes les pages.
+
+Prestations disponibles :
+- Création de site vitrine : https://yofield.fr/prestations/creation-site-vitrine
+- Création de site e-commerce : https://yofield.fr/prestations/creation-site-ecommerce
+- Création d'application web : https://yofield.fr/prestations/creation-application-web
+- Refonte de site web : https://yofield.fr/prestations/refonte-site-web
+
+### Communication digitale et acquisition
+https://yofield.fr/services/communication-digitale-acquisition
+
+Yofield construit la visibilité de votre marque sur les moteurs de recherche, les plateformes publicitaires, les moteurs IA et les réseaux sociaux.
+
+Prestations disponibles :
+- Stratégie SEO et référencement naturel : https://yofield.fr/prestations/strategie-seo-referencement-naturel
+- Stratégie GEO et visibilité sur les moteurs IA : https://yofield.fr/prestations/strategie-geo-moteurs-ia
+- Stratégie SEA et Google Ads : https://yofield.fr/prestations/strategie-sea-google-ads
+- Stratégie Paid Social : https://yofield.fr/prestations/strategie-paid-social
+- Stratégie réseaux sociaux : https://yofield.fr/prestations/strategie-reseaux-sociaux
+- Marketing d'influence : https://yofield.fr/prestations/marketing-influence
+
+### Production de contenus
+https://yofield.fr/services/production-contenus
+
+Yofield produit les contenus qui donnent à votre marque une présence réelle : textes, visuels, vidéos, motion design, direction artistique.
+
+Prestations disponibles :
+- Rédaction et copywriting : https://yofield.fr/prestations/redaction-copywriting
+- Création de contenus social media : https://yofield.fr/prestations/creation-contenus-social-media
+- Shooting photo professionnel : https://yofield.fr/prestations/shooting-photo
+- Production vidéo : https://yofield.fr/prestations/production-video
+- Motion design : https://yofield.fr/prestations/motion-design
+- Direction artistique : https://yofield.fr/prestations/direction-artistique
+
+### Intelligence artificielle et automatisation
+https://yofield.fr/services/intelligence-artificielle-automatisation
+
+Yofield intègre l'IA dans les processus des entreprises : agents IA sur-mesure, brand voice IA, automatisations de workflows, outils métier, Skills Claude personnalisées.
+
+Prestations disponibles :
+- Création d'agents IA : https://yofield.fr/prestations/creation-agents-ia
+- AI Brand Voice : https://yofield.fr/prestations/ai-brand-voice
+- Automatisations IA et workflows : https://yofield.fr/prestations/automatisations-ia
+- Optimisation des processus internes : https://yofield.fr/prestations/optimisation-processus-internes
+- Création d'outils métier sur-mesure : https://yofield.fr/prestations/creation-outils-metier
+- Création de Skills Claude personnalisées : https://yofield.fr/prestations/skills-claude-personnalisees
+
+## Cas clients
+
+- Identité complète studio d'architecture : https://yofield.fr/cas/branding-complet-studio-architecture
+- Agents IA cabinet conseil RH : https://yofield.fr/cas/automatisation-ia-cabinet-conseil
+- Lancement e-commerce cosmétiques : https://yofield.fr/cas/ecommerce-marque-cosmetique
+- Refonte SEO cabinet expertise comptable : https://yofield.fr/cas/refonte-site-cabinet-expert-comptable
+- AI Brand Voice groupe immobilier : https://yofield.fr/cas/ai-brand-voice-groupe-immobilier
+
+## Blog
+
+Le blog de Yofield traite de branding, création de sites, SEO, GEO, intelligence artificielle et production de contenus.
+
+Index du blog : https://yofield.fr/blog
+
+## Informations factuelles
+
+- Type de structure : Studio créatif et digital indépendant
+- Pays : France
+- Langue de travail : Français
+- Secteurs d'intervention : tous secteurs, priorité PME et startups
+- Mode de travail : cycle court (3 à 8 semaines), livraison directe
+- Email de contact : hello@yofield.fr
+- Site web : https://yofield.fr
+
+## Technologies utilisées
+
+- Développement web : Next.js (App Router), TypeScript, Tailwind CSS
+- E-commerce : Shopify, Next.js + Stripe
+- Animations : Framer Motion, GSAP
+- IA : Claude (Anthropic), API OpenAI, n8n, Make
+- Hébergement : Vercel
+- SEO : performances Lighthouse 95+, Core Web Vitals, données Schema.org
+
+## Mentions légales
+
+- Politique de confidentialité : https://yofield.fr/politique-de-confidentialite
+- Mentions légales : https://yofield.fr/mentions-legales
+- Conditions générales de vente : https://yofield.fr/conditions-generales-vente
