@@ -157,6 +157,196 @@ export const casStudies: CasStudy[] = [
     featured: false,
     tags: ['AI brand voice', 'immobilier', 'cohérence marque', 'équipe commerciale', 'Claude'],
   },
+
+  /* ─── NOUVEAUX CAS — secteurs spécifiques ─────────────────────── */
+
+  {
+    slug: 'branding-fintech-credit-capital',
+    title: 'Identité de marque pour une fintech de crédit à la consommation',
+    client: 'Crédit Capital',
+    sector: 'Banque et finance',
+    year: 2025,
+    description:
+      "Refonte complète de l'identité de Crédit Capital, fintech de crédit à la consommation : positionnement, logo, charte graphique, site vitrine et brand voice adaptés à un public grand public exigeant.",
+    challenge:
+      "Crédit Capital opérait depuis trois ans avec une identité visuelle héritée d'un prestataire historique. Le logo était daté, le site peu rassurant, et la tonalité de marque oscillait entre jargon financier et familiarité excessive. Dans un secteur où la confiance est le premier critère de choix, cette incohérence coûtait des conversions.",
+    approach:
+      "On a commencé par une phase de positionnement centrée sur la réassurance et la clarté. Pas de promesse irréaliste, pas de visuel anxiogène. Le nouveau logo s'appuie sur une typographie solide et un symbole minimaliste qui évoque la stabilité sans lourdeur institutionnelle. Le site a été conçu avec une architecture claire : simulateur en tête, puis explications pédagogiques, puis processus simplifié. La brand voice articule rigueur et accessibilité.",
+    result:
+      "Trois mois après le lancement, le taux de conversion du simulateur a progressé de 34%. Le test de perception mené auprès de 200 utilisateurs montre que 78% associent spontanément la nouvelle identité aux mots 'sérieux', 'clair' et 'accessible'.",
+    services: [
+      'strategie-de-positionnement-de-marque',
+      'logo-et-charte-graphique',
+      'brand-voice-ton-de-marque',
+      'creation-site-vitrine',
+    ],
+    categories: [
+      'branding-identite-de-marque',
+      'creation-sites-applications',
+    ],
+    coverImage: '/images/cas/studio-architecture.jpg',
+    coverAlt: 'Identité de marque Crédit Capital sur fond épuré',
+    featured: false,
+    tags: ['fintech', 'banque', 'branding', 'site vitrine', 'brand voice', 'finance'],
+  },
+
+  {
+    slug: 'lancement-marque-athletic-club',
+    title: 'Lancement de marque pour un club d\'athlétisme amateur de haut niveau',
+    client: 'Athletic Performance Club',
+    sector: 'Sport et performance',
+    year: 2025,
+    description:
+      "Création ex nihilo de l'identité et de la présence digitale d'un club d'athlétisme fondé par d'anciens sportifs de haut niveau. Du nom à la tenue, du site au contenu de recrutement.",
+    challenge:
+      "Athletic Performance Club n'existait que sous la forme d'une association en cours d'immatriculation quand ils nous ont contactés. Pas de nom définitif, pas de logo, pas de site, pas de contenu. Ils avaient six semaines avant les premières inscriptions de la saison et visaient 150 membres dès la première année.",
+    approach:
+      "On a travaillé en cycle court intensif : deux jours de brief avec les fondateurs, une semaine de conception identitaire, une semaine de production, une semaine d'intégration et tests. Le logo combine une typographie compressée et un pictogramme abstrait évoquant la vitesse sans tomber dans le cliché. Le site est construit pour convertir : programme, entraîneurs, témoignages de membres pilotes, formulaire d'inscription simplifié. Le contenu de lancement inclut une série de portraits des fondateurs pour établir la crédibilité.",
+    result:
+      "213 membres inscrits dès la première saison, soit 42% au-dessus de l'objectif. Le club a reçu une couverture dans deux médias sportifs régionaux lors du lancement. La marque est suffisamment solide pour que le club ait déjà commencé à décliner ses produits dérivés de manière cohérente.",
+    services: [
+      'strategie-de-positionnement-de-marque',
+      'logo-et-charte-graphique',
+      'creation-site-vitrine',
+      'redaction-copywriting',
+    ],
+    categories: [
+      'branding-identite-de-marque',
+      'creation-sites-applications',
+      'production-contenus',
+    ],
+    coverImage: '/images/cas/studio-architecture.jpg',
+    coverAlt: 'Identité visuelle Athletic Performance Club sur fond dynamique',
+    featured: false,
+    tags: ['sport', 'athlétisme', 'branding', 'lancement', 'club sportif', 'performance'],
+  },
+
+  {
+    slug: 'identite-dataflow-saas-b2b',
+    title: 'Identité et site pour une plateforme SaaS d\'analyse de données B2B',
+    client: 'DataFlow',
+    sector: 'Tech et SaaS',
+    year: 2025,
+    description:
+      "Positionnement, identité de marque et site de conversion pour DataFlow, une plateforme SaaS d'analyse de flux de données destinée aux équipes data des entreprises de taille intermédiaire.",
+    challenge:
+      "DataFlow avait un produit solide mais une identité générique qui les rendait invisibles face aux acteurs établis du marché. Leur site actuel était un template standard sans personnalité, leur taux de conversion des essais gratuits stagnait à 4%, et leur positionnement n'était pas clair : ni assez technique pour les DSI, ni assez accessible pour les directeurs métier.",
+    approach:
+      "La première décision stratégique a été de choisir le positionnement : on a opté pour 'la plateforme data qui parle aux équipes métier autant qu'aux équipes tech'. Le nom et le logo ont été pensés pour évoquer la fluidité et la clarté plutôt que la complexité technique. Le site a été conçu en deux parcours parallèles : un pour les profils techniques (documentation, API, intégrations), un pour les décideurs métier (ROI concret, cas d'usage, démo simplifiée). La brand voice est directe, précise, sans jargon inutile.",
+    result:
+      "Le taux de conversion des essais gratuits est passé de 4% à 11% en deux mois. Le temps de décision moyen (de la visite à la démo réservée) a diminué de 8 jours à 3 jours. DataFlow a levé un tour de financement deux mois après le lancement du nouveau site.",
+    services: [
+      'strategie-de-positionnement-de-marque',
+      'logo-et-charte-graphique',
+      'brand-voice-ton-de-marque',
+      'creation-site-vitrine',
+      'strategie-seo-referencement-naturel',
+    ],
+    categories: [
+      'branding-identite-de-marque',
+      'creation-sites-applications',
+      'communication-digitale-acquisition',
+    ],
+    coverImage: '/images/cas/ia-conseil-rh.jpg',
+    coverAlt: 'Interface DataFlow plateforme SaaS d\'analyse de données',
+    featured: false,
+    tags: ['SaaS', 'tech', 'B2B', 'data', 'branding', 'site vitrine', 'conversion'],
+  },
+
+  {
+    slug: 'site-seo-medcare-clinique',
+    title: 'Site web et stratégie SEO pour une clinique esthétique parisienne',
+    client: 'MedCare Esthétique',
+    sector: 'Santé et bien-être',
+    year: 2025,
+    description:
+      "Création d'un site vitrine optimisé SEO et d'une stratégie de contenu pour MedCare, clinique esthétique médicale implantée sur trois sites en Île-de-France.",
+    challenge:
+      "MedCare opérait avec un site réalisé en 2019, non optimisé pour le mobile, introuvable sur Google pour ses requêtes cibles. Dans un secteur où les patients cherchent d'abord en ligne avant de consulter, l'invisibilité numérique coûtait un flux de patients entrants significatif. Ils dépendaient de 90% de leur activité aux recommandations et aux réseaux de médecins partenaires.",
+    approach:
+      "L'audit SEO a révélé une opportunité majeure sur les requêtes locales (clinique esthétique Paris 16e, médecin esthétique Versailles, etc.) et sur les requêtes informatives à fort intent (combien coûte une injection de botox, qu'est-ce que l'acide hyaluronique). On a construit une architecture en trois niveaux : pages établissements (référencement local), pages soins (référencement transactionnel), et articles de blog médical (référencement informationnel). Le design reflète le niveau de confiance attendu dans le secteur médical : propre, rassurant, professionnel sans être austère.",
+    result:
+      "Huit mois après la mise en ligne, le site génère 35 à 45 nouveaux contacts qualifiés par mois via Google. La clinique a ouvert un quatrième site et attribue partiellement cette croissance à l'amélioration de la visibilité digitale.",
+    services: [
+      'creation-site-vitrine',
+      'strategie-seo-referencement-naturel',
+      'redaction-copywriting',
+      'strategie-geo-moteurs-ia',
+    ],
+    categories: [
+      'creation-sites-applications',
+      'communication-digitale-acquisition',
+      'production-contenus',
+    ],
+    coverImage: '/images/cas/ecommerce-cosmetique.jpg',
+    coverAlt: 'Site MedCare Esthétique avec design médical épuré',
+    featured: false,
+    tags: ['santé', 'médecine esthétique', 'SEO local', 'site vitrine', 'clinique', 'Paris'],
+  },
+
+  {
+    slug: 'branding-maison-tradition-gastronomie',
+    title: 'Branding et digital pour un restaurant gastronomique de province',
+    client: 'Maison Tradition',
+    sector: 'Restauration et hôtellerie',
+    year: 2025,
+    description:
+      "Construction de l'identité complète de Maison Tradition, restaurant gastronomique 1 étoile en région lyonnaise : logo, charte, site vitrine, contenu et présence réseaux sociaux.",
+    challenge:
+      "Maison Tradition venait d'obtenir sa première étoile et le chef voulait professionnaliser l'image du restaurant à la hauteur de cette distinction. L'identité visuelle existante était artisanale, le site vieillissant et difficile à trouver. L'objectif : attirer une clientèle nationale et internationale, faciliter les réservations en ligne et construire une communauté autour de la philosophie culinaire du chef.",
+    approach:
+      "L'identité part du geste du chef : précision, matière, territoire. Le logo est une typographie exclusive travaillée à la main, déclinée sur un système graphique sobre qui laisse toujours la place à la photographie culinaire. Le site intègre une réservation en ligne directe (sans commission de plateforme tierce), une vitrine des plats avec des textes qui racontent les producteurs et les saisons, et une section presse pour valoriser les distinctions. La stratégie réseaux sociaux repose sur des coulisses authentiques plutôt que des visuels surproduits.",
+    result:
+      "Le restaurant est complet trois semaines à l'avance depuis le lancement. Les réservations directes représentent désormais 70% des couverts (contre 30% auparavant). La page Instagram a atteint 12 000 abonnés en six mois grâce à la ligne éditoriale définie ensemble.",
+    services: [
+      'logo-et-charte-graphique',
+      'brand-voice-ton-de-marque',
+      'creation-site-vitrine',
+      'redaction-copywriting',
+    ],
+    categories: [
+      'branding-identite-de-marque',
+      'creation-sites-applications',
+      'production-contenus',
+    ],
+    coverImage: '/images/cas/studio-architecture.jpg',
+    coverAlt: 'Identité Maison Tradition restaurant gastronomique',
+    featured: false,
+    tags: ['restauration', 'gastronomie', 'étoile Michelin', 'branding', 'réservation', 'Lyon'],
+  },
+
+  {
+    slug: 'plateforme-learnsphere-formation',
+    title: 'Plateforme de formation et identité pour un organisme EdTech',
+    client: 'LearnSphere',
+    sector: 'Éducation et formation professionnelle',
+    year: 2025,
+    description:
+      "Création de l'identité de marque, du site et du système d'agents IA pour LearnSphere, organisme de formation professionnelle qui certifie des parcours en data, IA et marketing digital.",
+    challenge:
+      "LearnSphere était certifié Qualiopi depuis deux ans mais manquait d'une identité forte pour se différencier dans un marché de la formation saturé. Leur site était un template générique. Leur taux de transformation des leads entrants (formulaire vers inscription) stagnait à 12%, bien en dessous du marché. Ils voulaient aussi automatiser la qualification des candidats pour libérer du temps à leurs conseillers.",
+    approach:
+      "La première décision a été positionnelle : LearnSphere ne se positionne pas comme 'un organisme de formation' mais comme 'le terrain d'entraînement des métiers tech de demain'. Cette promesse a guidé l'identité visuelle (dynamisme, clarté, aspiration) et le contenu (témoignages de profils reconvertis, données de placement, partenaires employeurs). Le site a été conçu pour convertir : simulateur de financement en tête (CPF, OPCO), puis parcours de formations détaillés, puis formulaire de candidature simplifié. Les agents IA qualifient les leads entrants, génèrent des fiches candidat et rédigent les premières réponses personnalisées.",
+    result:
+      "Le taux de transformation des leads est passé de 12% à 29% en trois mois. Les conseillers consacrent leur temps aux entretiens de sélection plutôt qu'à la pré-qualification administrative. LearnSphere a lancé deux nouvelles certifications dans les six mois suivant le lancement.",
+    services: [
+      'strategie-de-positionnement-de-marque',
+      'logo-et-charte-graphique',
+      'creation-site-vitrine',
+      'creation-agents-ia',
+      'redaction-copywriting',
+    ],
+    categories: [
+      'branding-identite-de-marque',
+      'creation-sites-applications',
+      'intelligence-artificielle-automatisation',
+      'production-contenus',
+    ],
+    coverImage: '/images/cas/ia-conseil-rh.jpg',
+    coverAlt: 'Plateforme LearnSphere avec interface de formation et agents IA',
+    featured: false,
+    tags: ['éducation', 'formation', 'EdTech', 'IA', 'Qualiopi', 'CPF', 'branding'],
+  },
 ]
 
 /* ─── Helpers ─────────────────────────────────────────── */
@@ -175,4 +365,8 @@ export function getCasByCategory(categorySlug: string): CasStudy[] {
 
 export function getCasByService(serviceSlug: string): CasStudy[] {
   return casStudies.filter((c) => c.services.includes(serviceSlug))
+}
+
+export function getCasBySlugs(slugs: string[]): CasStudy[] {
+  return slugs.map((s) => casStudies.find((c) => c.slug === s)).filter(Boolean) as CasStudy[]
 }

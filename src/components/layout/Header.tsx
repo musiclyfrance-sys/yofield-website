@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { serviceCategories } from '@/data/services'
+import { secteurs } from '@/data/secteurs'
 
 interface NavLink {
   label: string
@@ -19,11 +20,20 @@ const mainLinks: NavLink[] = [
   { label: 'Blog', href: '/blog' },
 ]
 
+const dropdownVariants = {
+  hidden: { opacity: 0, y: 8 },
+  visible: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: 8 },
+}
+
+const dropdownTransition = { duration: 0.18, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }
+
 export default function Header() {
   const pathname = usePathname()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileOpen, setIsMobileOpen] = useState(false)
   const [isServicesOpen, setIsServicesOpen] = useState(false)
+  const [isSecteursOpen, setIsSecteursOpen] = useState(false)
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 20)
@@ -37,15 +47,14 @@ export default function Header() {
     } else {
       document.body.style.overflow = ''
     }
-    return () => {
-      document.body.style.overflow = ''
-    }
+    return () => { document.body.style.overflow = '' }
   }, [isMobileOpen])
 
   const isActive = (href: string) =>
     href === '/' ? pathname === '/' : pathname.startsWith(href)
 
   const isServicesActive = pathname.startsWith('/services')
+  const isSecteursActive = pathname.startsWith('/secteurs')
 
   return (
     <header
@@ -89,7 +98,76 @@ export default function Header() {
                 </li>
               ))}
 
-              {/* Services with dropdown */}
+              {/* Secteurs dropdown */}
+              <li
+                className="relative"
+                onMouseEnter={() => setIsSecteursOpen(true)}
+                onMouseLeave={() => setIsSecteursOpen(false)}
+              >
+                <button
+                  className={[
+                    'flex items-center gap-1 font-body text-sm transition-colors duration-200',
+                    isSecteursActive ? 'text-soil font-medium' : 'text-soil/70 hover:text-soil',
+                  ].join(' ')}
+                  aria-expanded={isSecteursOpen}
+                  aria-haspopup="true"
+                >
+                  Secteurs
+                  <svg
+                    width="12" height="12" viewBox="0 0 12 12" fill="none"
+                    aria-hidden="true"
+                    className={`transition-transform duration-200 ${isSecteursOpen ? 'rotate-180' : ''}`}
+                  >
+                    <path d="M2 4.5L6 8L10 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+
+                <AnimatePresence>
+                  {isSecteursOpen && (
+                    <motion.div
+                      variants={dropdownVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      transition={dropdownTransition}
+                      className="absolute left-1/2 top-full mt-3 w-[480px] -translate-x-1/2 rounded-xl bg-snow shadow-lg ring-1 ring-soil/[0.06]"
+                    >
+                      <div className="grid grid-cols-2 gap-1 p-2">
+                        {secteurs.map((s) => (
+                          <Link
+                            key={s.slug}
+                            href={`/secteurs/${s.slug}`}
+                            className="flex items-start gap-3 rounded-lg px-3 py-2.5 transition-colors duration-150 hover:bg-mist"
+                            onClick={() => setIsSecteursOpen(false)}
+                          >
+                            <span className="mt-px font-mono text-xs text-soil/40" aria-hidden="true">
+                              {s.num}
+                            </span>
+                            <div className="min-w-0">
+                              <p className="font-body text-sm text-soil">{s.name}</p>
+                              <p className="font-body text-xs text-soil/45 leading-snug mt-0.5 truncate">{s.tagline}</p>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                      <div className="border-t border-soil/[0.06] p-2">
+                        <Link
+                          href="/secteurs"
+                          className="flex items-center gap-2 rounded-lg px-3 py-2.5 transition-colors duration-150 hover:bg-mist"
+                          onClick={() => setIsSecteursOpen(false)}
+                        >
+                          <span className="font-body text-sm font-medium text-soil">Tous les secteurs</span>
+                          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" className="text-soil/40">
+                            <path d="M2.5 6H9.5M6.5 3L9.5 6L6.5 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </Link>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </li>
+
+              {/* Services dropdown */}
               <li
                 className="relative"
                 onMouseEnter={() => setIsServicesOpen(true)}
@@ -98,39 +176,29 @@ export default function Header() {
                 <button
                   className={[
                     'flex items-center gap-1 font-body text-sm transition-colors duration-200',
-                    isServicesActive
-                      ? 'text-soil font-medium'
-                      : 'text-soil/70 hover:text-soil',
+                    isServicesActive ? 'text-soil font-medium' : 'text-soil/70 hover:text-soil',
                   ].join(' ')}
                   aria-expanded={isServicesOpen}
                   aria-haspopup="true"
                 >
                   Services
                   <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 12 12"
-                    fill="none"
+                    width="12" height="12" viewBox="0 0 12 12" fill="none"
                     aria-hidden="true"
                     className={`transition-transform duration-200 ${isServicesOpen ? 'rotate-180' : ''}`}
                   >
-                    <path
-                      d="M2 4.5L6 8L10 4.5"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
+                    <path d="M2 4.5L6 8L10 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </button>
 
                 <AnimatePresence>
                   {isServicesOpen && (
                     <motion.div
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 8 }}
-                      transition={{ duration: 0.18, ease: 'easeOut' }}
+                      variants={dropdownVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      transition={dropdownTransition}
                       className="absolute left-1/2 top-full mt-3 w-72 -translate-x-1/2 rounded-xl bg-snow shadow-lg ring-1 ring-soil/[0.06]"
                     >
                       <ul className="p-2">
@@ -141,12 +209,7 @@ export default function Header() {
                               className="flex items-start gap-3 rounded-lg px-3 py-2.5 transition-colors duration-150 hover:bg-mist"
                               onClick={() => setIsServicesOpen(false)}
                             >
-                              <span
-                                className="mt-px font-mono text-xs text-soil/40"
-                                aria-hidden="true"
-                              >
-                                {cat.num}
-                              </span>
+                              <span className="mt-px font-mono text-xs text-soil/40" aria-hidden="true">{cat.num}</span>
                               <span className="font-body text-sm text-soil">{cat.name}</span>
                             </Link>
                           </li>
@@ -157,24 +220,9 @@ export default function Header() {
                             className="flex items-center gap-2 rounded-lg px-3 py-2.5 transition-colors duration-150 hover:bg-mist"
                             onClick={() => setIsServicesOpen(false)}
                           >
-                            <span className="font-body text-sm font-medium text-soil">
-                              Tous les services
-                            </span>
-                            <svg
-                              width="12"
-                              height="12"
-                              viewBox="0 0 12 12"
-                              fill="none"
-                              aria-hidden="true"
-                              className="text-soil/40"
-                            >
-                              <path
-                                d="M2.5 6H9.5M6.5 3L9.5 6L6.5 9"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
+                            <span className="font-body text-sm font-medium text-soil">Tous les services</span>
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" className="text-soil/40">
+                              <path d="M2.5 6H9.5M6.5 3L9.5 6L6.5 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
                           </Link>
                         </li>
@@ -186,10 +234,7 @@ export default function Header() {
             </ul>
 
             {/* CTA */}
-            <Link
-              href="/contact"
-              className="btn btn-citron py-2.5 px-5 text-sm"
-            >
+            <Link href="/contact" className="btn btn-citron py-2.5 px-5 text-sm">
               Démarrer un projet
             </Link>
           </nav>
@@ -220,7 +265,7 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile full-screen overlay */}
+      {/* Mobile overlay */}
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div
@@ -230,44 +275,44 @@ export default function Header() {
             transition={{ duration: 0.32, ease: [0.32, 0.72, 0, 1] }}
             className="fixed inset-0 top-[72px] z-40 flex flex-col bg-snow"
           >
-            <nav
-              className="flex flex-1 flex-col overflow-y-auto px-6 py-8"
-              aria-label="Navigation mobile"
-            >
+            <nav className="flex flex-1 flex-col overflow-y-auto px-6 py-8" aria-label="Navigation mobile">
               <ul className="flex flex-col gap-1">
                 <li>
-                  <Link
-                    href="/"
-                    onClick={() => setIsMobileOpen(false)}
-                    className={[
-                      'block rounded-lg px-4 py-3 font-display text-2xl transition-colors duration-150',
-                      isActive('/')
-                        ? 'np-700 text-soil'
-                        : 'np-300i text-soil/60 hover:text-soil',
-                    ].join(' ')}
-                  >
-                    Accueil
-                  </Link>
+                  <Link href="/" onClick={() => setIsMobileOpen(false)}
+                    className={['block rounded-lg px-4 py-3 font-display text-2xl transition-colors duration-150',
+                      isActive('/') ? 'np-700 text-soil' : 'np-300i text-soil/60 hover:text-soil'].join(' ')}
+                  >Accueil</Link>
                 </li>
                 {mainLinks.map((link) => (
                   <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      onClick={() => setIsMobileOpen(false)}
-                      className={[
-                        'block rounded-lg px-4 py-3 font-display text-2xl transition-colors duration-150',
-                        isActive(link.href)
-                          ? 'np-700 text-soil'
-                          : 'np-300i text-soil/60 hover:text-soil',
-                      ].join(' ')}
-                    >
-                      {link.label}
-                    </Link>
+                    <Link href={link.href} onClick={() => setIsMobileOpen(false)}
+                      className={['block rounded-lg px-4 py-3 font-display text-2xl transition-colors duration-150',
+                        isActive(link.href) ? 'np-700 text-soil' : 'np-300i text-soil/60 hover:text-soil'].join(' ')}
+                    >{link.label}</Link>
                   </li>
                 ))}
               </ul>
 
-              {/* Mobile services section */}
+              {/* Mobile secteurs */}
+              <div className="mt-6 border-t border-soil/[0.08] pt-6">
+                <p className="eyebrow mb-4 px-4">Secteurs</p>
+                <ul className="flex flex-col gap-1">
+                  {secteurs.map((s) => (
+                    <li key={s.slug}>
+                      <Link
+                        href={`/secteurs/${s.slug}`}
+                        onClick={() => setIsMobileOpen(false)}
+                        className="flex items-center gap-3 rounded-lg px-4 py-2.5 transition-colors duration-150 hover:bg-mist"
+                      >
+                        <span className="gm text-xs text-soil/40">{s.num}</span>
+                        <span className="font-body text-base text-soil">{s.name}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Mobile services */}
               <div className="mt-6 border-t border-soil/[0.08] pt-6">
                 <p className="eyebrow mb-4 px-4">Services</p>
                 <ul className="flex flex-col gap-1">
