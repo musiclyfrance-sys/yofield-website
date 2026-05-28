@@ -3,23 +3,25 @@
 /**
  * HeroVideoScroll — Apple-style scroll-driven frame scrubbing
  * ───────────────────────────────────────────────────────────
- * • Sticky canvas fills 100 vh, object-cover, no fade, no movement.
- * • 121 WebP frames preloaded into memory on mount.
+ * • Sticky canvas fills 100 vh, no fade, no movement.
+ * • 121 WebP frames (native 1928 × 1072) preloaded into memory on mount.
  * • Scroll progress [0→1] maps to frame index [0→120].
  * • Canvas redraws via useMotionValueEvent — zero React re-renders.
- * • DPR-aware for sharp retina rendering.
- * • ResizeObserver redraws on window resize.
- * • prefers-reduced-motion: shows static first frame instead.
+ * • DPR-aware, imageSmoothingQuality = 'high' for crisp retina.
+ * • Desktop (>768 px): object-cover — full-bleed landscape crop.
+ * • Mobile (≤768 px): object-contain — full scene visible, Snow letterbox.
+ * • prefers-reduced-motion: static first frame shown instead.
  */
 
 import { useRef, useEffect, useState } from 'react'
 import { useScroll, useMotionValueEvent } from 'framer-motion'
 import NextImage from 'next/image'
 
-/* ─── Config ─────────────────────────────────────────── */
-const FRAME_COUNT   = 121
+/* ─── Config ──────────────────────────────────────────── */
+const FRAME_COUNT      = 121
 const SCROLL_PER_FRAME = 8          // px of scroll room per frame
-const EXTRA_SCROLL  = FRAME_COUNT * SCROLL_PER_FRAME  // 968 px
+const EXTRA_SCROLL     = FRAME_COUNT * SCROLL_PER_FRAME  // 968 px
+const SNOW             = '#FAFAF7'
 
 const FRAME_URLS = Array.from({ length: FRAME_COUNT }, (_, i) =>
   `/videos/frames/frame_${String(i + 1).padStart(4, '0')}.webp`
@@ -40,13 +42,11 @@ function drawCover(
   let sx: number, sy: number, sw: number, sh: number
 
   if (imgAspect > canvasAspect) {
-    // Image is wider — crop sides
     sh = img.naturalHeight
     sw = sh * canvasAspect
     sx = (img.naturalWidth - sw) / 2
     sy = 0
   } else {
-    // Image is taller — crop top/bottom
     sw = img.naturalWidth
     sh = sw / canvasAspect
     sx = 0
@@ -55,6 +55,55 @@ function drawCover(
 
   ctx.clearRect(0, 0, canvasW, canvasH)
   ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvasW, canvasH)
+}
+
+/* ─── object-contain canvas draw (mobile) ────────────── */
+function drawContain(
+  ctx: CanvasRenderingContext2D,
+  img: HTMLImageElement,
+  canvasW: number,
+  canvasH: number
+) {
+  if (!img.naturalWidth || !img.naturalHeight) return
+
+  const imgAspect    = img.naturalWidth / img.naturalHeight
+  const canvasAspect = canvasW / canvasH
+
+  let dw: number, dh: number, dx: number, dy: number
+
+  if (imgAspect > canvasAspect) {
+    // Image wider than canvas → fit width, Snow bars top/bottom
+    dw = canvasW
+    dh = canvasW / imgAspect
+    dx = 0
+    dy = (canvasH - dh) / 2
+  } else {
+    // Image taller → fit height, Snow bars left/right
+    dh = canvasH
+    dw = canvasH * imgAspect
+    dx = (canvasW - dw) / 2
+    dy = 0
+  }
+
+  ctx.fillStyle = SNOW
+  ctx.fillRect(0, 0, canvasW, canvasH)
+  ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, dx, dy, dw, dh)
+}
+
+/* ─── Dispatcher: cover on desktop, contain on mobile ── */
+function drawFrame(
+  ctx: CanvasRenderingContext2D,
+  img: HTMLImageElement,
+  canvasW: number,
+  canvasH: number
+) {
+  ctx.imageSmoothingEnabled = true
+  ctx.imageSmoothingQuality = 'high'
+  if (canvasW <= 768) {
+    drawContain(ctx, img, canvasW, canvasH)
+  } else {
+    drawCover(ctx, img, canvasW, canvasH)
+  }
 }
 
 /* ─── Component ──────────────────────────────────────── */
@@ -84,7 +133,7 @@ export default function HeroVideoScroll() {
 
   /* ── Preload frames on mount ─────────────────────── */
   useEffect(() => {
-    if (reducedMotion) return   // skip heavy preload when reduced-motion
+    if (reducedMotion) return
 
     let cancelled = false
     const images: HTMLImageElement[] = []
@@ -93,13 +142,13 @@ export default function HeroVideoScroll() {
       if (cancelled) return
       loadedRef.current++
 
-      // Draw frame 0 as soon as it's ready (instant first paint)
+      // Draw frame 0 the moment it arrives (instant first paint)
       if (loadedRef.current === 1 && images[0]?.complete) {
         const canvas = canvasRef.current
         if (canvas) {
           const ctx = canvas.getContext('2d')
           const dpr = window.devicePixelRatio || 1
-          if (ctx) drawCover(ctx, images[0], canvas.width / dpr, canvas.height / dpr)
+          if (ctx) drawFrame(ctx, images[0], canvas.width / dpr, canvas.height / dpr)
         }
       }
 
@@ -111,7 +160,7 @@ export default function HeroVideoScroll() {
 
     FRAME_URLS.forEach((src, i) => {
       const img = new Image()
-      img.onload = onLoad
+      img.onload  = onLoad
       img.onerror = onLoad  // count errors too so we don't stall
       img.src = src
       images[i] = img
@@ -122,7 +171,7 @@ export default function HeroVideoScroll() {
 
   /* ── DPR-aware canvas sizing + ResizeObserver ────── */
   useEffect(() => {
-    if (reducedMotion) return   // skip canvas logic when reduced-motion
+    if (reducedMotion) return
 
     const canvas = canvasRef.current
     if (!canvas) return
@@ -142,7 +191,7 @@ export default function HeroVideoScroll() {
       const prog = scrollYProgress.get()
       const idx  = Math.round(prog * (FRAME_COUNT - 1))
       const img  = framesRef.current[idx]
-      if (img?.complete) drawCover(ctx, img, w, h)
+      if (img?.complete) drawFrame(ctx, img, w, h)
     }
 
     const ro = new ResizeObserver(resize)
@@ -154,7 +203,7 @@ export default function HeroVideoScroll() {
 
   /* ── Scroll → frame draw (no re-renders) ─────────── */
   useMotionValueEvent(scrollYProgress, 'change', (progress) => {
-    if (reducedMotion) return   // no animation when reduced-motion
+    if (reducedMotion) return
 
     const canvas = canvasRef.current
     const images = framesRef.current
@@ -171,7 +220,7 @@ export default function HeroVideoScroll() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    drawCover(ctx, img, canvas.width / dpr, canvas.height / dpr)
+    drawFrame(ctx, img, canvas.width / dpr, canvas.height / dpr)
   })
 
   /* ── Reduced-motion fallback — static first frame ── */
@@ -201,7 +250,7 @@ export default function HeroVideoScroll() {
       style={{ minHeight: `calc(100vh + ${EXTRA_SCROLL}px)` }}
       aria-label="Vidéo de présentation Yofield"
     >
-      {/* Canvas — sticky, fills viewport, rock-solid, no fade */}
+      {/* Canvas — sticky, fills viewport, rock-solid */}
       <canvas
         ref={canvasRef}
         className="sticky top-0 w-full"
