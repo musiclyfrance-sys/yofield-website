@@ -1,29 +1,22 @@
 'use client'
 
 /**
- * HeroFull — text overlay + scroll-scrub video in one compact composition
- * ────────────────────────────────────────────────────────────────────────
- * Architecture (layers, bottom → top):
- *   1. <canvas>  — video frames fill 100% of the sticky viewport
- *   2. SparkField  — WebGL star particles (z-10)
- *   3. Text block  — eyebrow, H1, description, CTAs (z-20)
+ * HeroFull — compact hero: text block above, scene below, one composition
+ * ─────────────────────────────────────────────────────────────────────────
+ * Layout (flex-column inside a sticky viewport):
+ *   • Text area  — flex-shrink-0, exact content height, Snow background.
+ *   • Canvas     — flex-1, fills every remaining pixel below the CTAs.
  *
- * Why it feels like one composition:
- *   • The sky of the video was color-corrected to exactly match Snow #FAFAF7,
- *     so there is zero visible seam between page background and video.
- *   • Text sits in the upper portion over the sky area (same color = invisible bg).
- *   • Rocket + landscape scene fills the lower portion of the viewport.
+ * Seam is invisible because the sky of the video = Snow #FAFAF7.
+ * drawCoverTopAligned() aligns the sky to the TOP of the canvas so it
+ * meets the Snow background with zero colour difference.
  *
- * Scroll mechanic (unchanged):
- *   • Section height: 100vh + 968 px of scroll room.
- *   • 121 frames scrub across those 968 px.
- *   • Sticky div pins the canvas, then releases naturally.
+ * SparkField renders at z-0 (behind canvas at z-10), so sparkles only
+ * appear in the Snow/text area — not over the landscape.
  *
- * Mobile:
- *   • object-cover everywhere — full-bleed, slight zoom, no letterbox bars.
- *
- * prefers-reduced-motion:
- *   • Static first frame shown, no scroll scrub.
+ * Scroll scrub: 121 frames over 968 px, then section releases.
+ * Mobile: object-cover, full-bleed.
+ * prefers-reduced-motion: static first frame.
  */
 
 import { useRef, useEffect, useState } from 'react'
@@ -44,8 +37,14 @@ const FRAME_URLS = Array.from({ length: FRAME_COUNT }, (_, i) =>
   `/videos/frames/frame_${String(i + 1).padStart(4, '0')}.webp`
 )
 
-/* ─── object-cover canvas draw ───────────────────────── */
-function drawCover(
+/* ─── Top-aligned object-cover ───────────────────────── */
+/*
+ * Standard object-cover centres the image — on a wide/short canvas the
+ * centre of the video ends up visible, not the sky.
+ * Top-aligned shows the SKY at the very top edge of the canvas, which
+ * blends seamlessly with the Snow background of the text area above.
+ */
+function drawCoverTopAligned(
   ctx: CanvasRenderingContext2D,
   img: HTMLImageElement,
   canvasW: number,
@@ -58,16 +57,18 @@ function drawCover(
 
   let sx: number, sy: number, sw: number, sh: number
 
-  if (imgAspect > canvasAspect) {
+  if (imgAspect >= canvasAspect) {
+    // Image wider (or equal) → fill height, crop sides, sky at top
     sh = img.naturalHeight
     sw = sh * canvasAspect
-    sx = (img.naturalWidth - sw) / 2
-    sy = 0
+    sx = (img.naturalWidth - sw) / 2   // centred horizontally
+    sy = 0                              // TOP aligned
   } else {
+    // Image taller → fill width, crop BOTTOM (keep top = sky)
     sw = img.naturalWidth
     sh = sw / canvasAspect
     sx = 0
-    sy = (img.naturalHeight - sh) / 2
+    sy = 0                              // TOP aligned
   }
 
   ctx.clearRect(0, 0, canvasW, canvasH)
@@ -82,10 +83,10 @@ function drawFrame(
 ) {
   ctx.imageSmoothingEnabled = true
   ctx.imageSmoothingQuality = 'high'
-  drawCover(ctx, img, canvasW, canvasH)
+  drawCoverTopAligned(ctx, img, canvasW, canvasH)
 }
 
-/* ─── Entrance animation variants ────────────────────── */
+/* ─── Entrance animation ──────────────────────────────── */
 const ease = [0.16, 1, 0.3, 1] as [number, number, number, number]
 
 const fadeUp = {
@@ -97,12 +98,12 @@ const stagger = {
   visible: { transition: { staggerChildren: 0.1, delayChildren: 0.1 } },
 }
 
-/* ─── Text overlay — memoised to avoid re-render on frame draw ─ */
+/* ─── Text block (above the canvas) ─────────────────── */
 function HeroText() {
   return (
     <motion.div
-      className="absolute inset-0 z-20 flex flex-col items-center text-center px-6"
-      style={{ paddingTop: '88px' }}   /* 72 px header + 16 px breathing */
+      className="relative z-20 flex flex-col items-center text-center px-6 flex-shrink-0"
+      style={{ paddingTop: '88px', paddingBottom: '32px' }}
       variants={stagger}
       initial="hidden"
       animate="visible"
@@ -116,7 +117,7 @@ function HeroText() {
         Studio créatif et digital
       </motion.p>
 
-      {/* H1 — typing reveal at mount, then perfectly stable */}
+      {/* H1 */}
       <motion.div variants={fadeUp} className="mb-7 max-w-4xl">
         <RevealText
           text="Là où votre marque trouve sa forme, sa voix et son terrain."
@@ -168,7 +169,6 @@ export default function HeroFull() {
   const [ready, setReady]               = useState(false)
   const [reducedMotion, setReducedMotion] = useState(false)
 
-  /* Detect prefers-reduced-motion */
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
     setReducedMotion(mq.matches)
@@ -177,13 +177,12 @@ export default function HeroFull() {
     return () => mq.removeEventListener('change', handler)
   }, [])
 
-  /* Scroll progress through the full section */
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end end'],
   })
 
-  /* Preload all frames */
+  /* Preload frames */
   useEffect(() => {
     if (reducedMotion) return
     let cancelled = false
@@ -192,8 +191,6 @@ export default function HeroFull() {
     const onLoad = () => {
       if (cancelled) return
       loadedRef.current++
-
-      /* Draw frame 0 the moment it arrives */
       if (loadedRef.current === 1 && images[0]?.complete) {
         const canvas = canvasRef.current
         if (canvas) {
@@ -202,7 +199,6 @@ export default function HeroFull() {
           if (ctx) drawFrame(ctx, images[0], canvas.width / dpr, canvas.height / dpr)
         }
       }
-
       if (loadedRef.current === FRAME_COUNT) {
         framesRef.current = images
         if (!cancelled) setReady(true)
@@ -216,11 +212,10 @@ export default function HeroFull() {
       img.src = src
       images[i] = img
     })
-
     return () => { cancelled = true }
   }, [reducedMotion])
 
-  /* DPR-aware canvas sizing + ResizeObserver */
+  /* DPR-aware canvas sizing — tracks flex-1 container dimensions */
   useEffect(() => {
     if (reducedMotion) return
     const canvas = canvasRef.current
@@ -247,7 +242,7 @@ export default function HeroFull() {
     return () => ro.disconnect()
   }, [scrollYProgress, reducedMotion])
 
-  /* Scroll → frame draw */
+  /* Scroll → frame */
   useMotionValueEvent(scrollYProgress, 'change', (progress) => {
     if (reducedMotion) return
     const canvas = canvasRef.current
@@ -267,30 +262,24 @@ export default function HeroFull() {
     drawFrame(ctx, img, canvas.width / dpr, canvas.height / dpr)
   })
 
-  /* ── Reduced-motion: static first frame + text ───── */
+  /* Reduced-motion: static first frame below text */
   if (reducedMotion) {
     return (
       <section
         style={{ minHeight: `calc(100vh + ${EXTRA_SCROLL}px)` }}
         aria-label="Hero Yofield"
       >
-        <div className="sticky top-0 h-screen relative overflow-hidden bg-snow">
-          <NextImage
-            src={FRAME_URLS[0]}
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover"
-            priority
-          />
-          <SparkField className="absolute inset-0 z-10 pointer-events-none" />
+        <div className="sticky top-0 h-screen flex flex-col overflow-hidden bg-snow">
+          <SparkField className="absolute inset-0 pointer-events-none z-0" />
           <HeroText />
+          <div className="relative flex-1 overflow-hidden z-10">
+            <NextImage src={FRAME_URLS[0]} alt="" fill sizes="100vw" className="object-cover" priority />
+          </div>
         </div>
       </section>
     )
   }
 
-  /* ── Full scroll-scrub version ────────────────────── */
   return (
     <section
       ref={sectionRef}
@@ -298,26 +287,30 @@ export default function HeroFull() {
       aria-label="Hero Yofield"
     >
       {/*
-       * bg-snow: fallback visible before frame 0 loads.
-       * overflow-hidden: clips canvas to exactly the sticky viewport.
+       * sticky h-screen flex-col:
+       *   - Text (flex-shrink-0) takes its natural height
+       *   - Canvas wrapper (flex-1) fills the rest — exactly below the CTAs
+       * bg-snow: fallback colour before frame 0 loads (matches sky exactly)
        */}
-      <div className="sticky top-0 h-screen relative overflow-hidden bg-snow">
+      <div className="sticky top-0 h-screen flex flex-col overflow-hidden bg-snow">
 
-        {/* Layer 1 — video canvas (object-cover, full-bleed) */}
-        <canvas
-          ref={canvasRef}
-          className="absolute inset-0 w-full h-full"
-          style={{ display: 'block' }}
-          aria-hidden="true"
-        />
+        {/* Sparks — z-0, behind canvas and text */}
+        <SparkField className="absolute inset-0 pointer-events-none z-0" />
 
-        {/* Layer 2 — star particles (above canvas, below text) */}
-        <SparkField className="absolute inset-0 z-10 pointer-events-none" />
-
-        {/* Layer 3 — text content */}
+        {/* Text block — z-20, top portion */}
         <HeroText />
 
-        {/* Discrete loader while frames are preloading */}
+        {/* Canvas wrapper — z-10, fills remaining height */}
+        <div className="relative flex-1 overflow-hidden z-10">
+          <canvas
+            ref={canvasRef}
+            className="absolute inset-0 w-full h-full"
+            style={{ display: 'block' }}
+            aria-hidden="true"
+          />
+        </div>
+
+        {/* Loader */}
         {!ready && (
           <div
             className="fixed bottom-6 right-6 z-50 flex items-center gap-2 pointer-events-none"
