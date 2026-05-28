@@ -193,10 +193,11 @@ export default function HeroFull() {
   }, [])
 
   /* ── Read scroll progress directly from DOM each frame ─────── */
-  // Not wrapped in useCallback — refs are read live inside the RAF tick.
-  // This avoids any closure-capture timing issues with useCallback([]).
+  // Uses querySelector instead of sectionRef.current to avoid any
+  // ref-attachment timing issues (ref may lag the RAF start in hydration).
   const getProgress = () => {
     const section = sectionRef.current
+      ?? document.querySelector<HTMLElement>('[aria-label="Hero Yofield"]')
     if (!section) return 0
     const rect       = section.getBoundingClientRect()
     const scrollable = section.offsetHeight - window.innerHeight
@@ -303,6 +304,8 @@ export default function HeroFull() {
 
     const tick = () => {
       const progress = getProgress()
+      // Debug: expose to window for diagnosis (remove after fix confirmed)
+      ;(window as Window & { __heroProgress?: number }).__heroProgress = progress
       // Only repaint when progress actually changed (saves canvas work)
       if (Math.abs(progress - lastProgress) > 0.0005) {
         lastProgress = progress
