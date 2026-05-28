@@ -1,8 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import SiteLayout from '@/components/layout/Navigation'
-import HeroSection from '@/components/homepage/HeroSection'
-import HeroVideoScroll from '@/components/homepage/HeroVideoScroll'
+import HeroFull from '@/components/homepage/HeroFull'
 import ApproachTimeline from '@/components/homepage/ApproachTimeline'
 import ScrollMarquee from '@/components/animations/ScrollMarquee'
 import MagneticButton from '@/components/animations/MagneticButton'
@@ -65,11 +64,8 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }}
       />
 
-      {/* ─── 1. HERO TEXT — pinned sticky, sparks, fade on scroll ── */}
-      <HeroSection />
-
-      {/* ─── 2. HERO VIDEO — scroll-driven frame scrubbing ────────── */}
-      <HeroVideoScroll />
+      {/* ─── 1+2. HERO — compact composition: text over video canvas ── */}
+      <HeroFull />
 
       {/* ─── 3. MANIFESTO ─────────────────────────────────────────── */}
       <section className="bg-snow py-24 md:py-36">
