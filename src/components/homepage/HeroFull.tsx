@@ -309,36 +309,38 @@ export default function HeroFull() {
     return () => ro.disconnect()
   }, [scrollYProgress, reducedMotion])
 
-  /* Scroll → frame (zero React re-renders) */
+  /* Scroll → canvas position + text fade + frame scrubbing (zero re-renders) */
   useMotionValueEvent(scrollYProgress, 'change', (progress) => {
     if (reducedMotion) return
     const canvas = canvasRef.current
-    const images = framesRef.current
-    if (!canvas || !images.length) return
+    if (!canvas) return
 
-    const idx = Math.min(
-      Math.round(progress * (FRAME_COUNT - 1)),
-      FRAME_COUNT - 1
-    )
-    const img = images[idx]
-    if (!img?.complete) return
-
-    const dpr = window.devicePixelRatio || 1
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-    drawFrame(ctx, img, canvas.width / dpr, canvas.height / dpr)
-
-    // Canvas slide-up: translateY(50% → 0%) over scroll progress [0 → 0.35]
+    // ── Canvas slide-up: translateY(50% → 0%) over progress [0 → 0.35] ──
+    // Runs even before frames are loaded so the layout always tracks scroll.
     const posP = Math.min(progress / 0.35, 1)
     canvas.style.transform = `translateY(${50 * (1 - posP)}%)`
 
-    // Text fade: opacity 1 → 0 over scroll progress [0 → 0.30]
+    // ── Text fade: opacity 1 → 0 over progress [0 → 0.30] ──────────────
     const textEl = textRef.current
     if (textEl) {
       const opP = Math.min(progress / 0.30, 1)
       textEl.style.opacity = String(1 - opP)
       textEl.style.pointerEvents = opP >= 1 ? 'none' : 'auto'
     }
+
+    // ── Frame scrubbing: only when frames are loaded ─────────────────────
+    const images = framesRef.current
+    if (!images.length) return
+    const idx = Math.min(
+      Math.round(progress * (FRAME_COUNT - 1)),
+      FRAME_COUNT - 1
+    )
+    const img = images[idx]
+    if (!img?.complete) return
+    const dpr = window.devicePixelRatio || 1
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+    drawFrame(ctx, img, canvas.width / dpr, canvas.height / dpr)
   })
 
   /* Reduced-motion: static first frame, same cover draw */
