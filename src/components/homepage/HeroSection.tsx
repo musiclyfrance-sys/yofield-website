@@ -3,41 +3,24 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-
-const containerVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.1 } },
-}
+import RevealText from '@/components/animations/RevealText'
+import MagneticButton from '@/components/animations/MagneticButton'
 
 const ease = [0.16, 1, 0.3, 1] as [number, number, number, number]
 
-const revealUp = {
-  hidden: { opacity: 0, y: 32, clipPath: 'inset(0 0 100% 0)' },
-  visible: {
-    opacity: 1,
-    y: 0,
-    clipPath: 'inset(0 0 0% 0)',
-    transition: { duration: 0.7, ease },
-  },
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
 }
 
 const revealFade = {
-  hidden: { opacity: 0, y: 16 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease },
-  },
+  hidden: { opacity: 0, y: 14 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease } },
 }
 
 const imageReveal = {
-  hidden: { opacity: 0, scale: 0.97, y: 24 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    y: 0,
-    transition: { duration: 1, ease },
-  },
+  hidden: { opacity: 0, scale: 0.97, y: 28 },
+  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 1.1, ease } },
 }
 
 export default function HeroSection() {
@@ -56,18 +39,23 @@ export default function HeroSection() {
         <motion.p
           variants={revealFade}
           className="eyebrow text-soil mb-8"
-          style={{ opacity: 0.5 }}
+          style={{ opacity: 0.45 }}
         >
           Studio créatif et digital
         </motion.p>
 
-        {/* H1 — locked phrase */}
-        <motion.h1
-          variants={revealUp}
-          className="np-900 max-w-4xl text-[clamp(48px,7vw,80px)] text-soil leading-[1.05] mb-6"
-        >
-          Là où votre marque trouve sa forme, sa voix et son terrain.
-        </motion.h1>
+        {/* H1 — char stagger reveal */}
+        <motion.div variants={revealFade} className="mb-6 max-w-4xl">
+          <RevealText
+            text="Là où votre marque trouve sa forme, sa voix et son terrain."
+            as="h1"
+            className="np-900 text-[clamp(48px,7vw,80px)] text-soil leading-[1.05]"
+            stagger={0.025}
+            duration={0.55}
+            delay={0.15}
+            triggerOnMount
+          />
+        </motion.div>
 
         {/* Description */}
         <motion.p
@@ -79,17 +67,21 @@ export default function HeroSection() {
           Du brief au lancement public, sans intermédiaires.
         </motion.p>
 
-        {/* CTAs */}
+        {/* CTAs — magnetic */}
         <motion.div variants={revealFade} className="flex flex-wrap items-center justify-center gap-4 mb-16">
-          <Link href="/contact" className="btn btn-citron">
-            Démarrer un projet
-          </Link>
-          <Link href="/services" className="btn btn-outline-soil">
-            Voir nos services
-          </Link>
+          <MagneticButton>
+            <Link href="/contact" className="btn btn-citron">
+              Démarrer un projet
+            </Link>
+          </MagneticButton>
+          <MagneticButton>
+            <Link href="/services" className="btn btn-outline-soil">
+              Voir nos services
+            </Link>
+          </MagneticButton>
         </motion.div>
 
-        {/* Hero image placeholder */}
+        {/* Hero image */}
         <motion.div
           variants={imageReveal}
           className="w-full max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-2xl shadow-soil/10"

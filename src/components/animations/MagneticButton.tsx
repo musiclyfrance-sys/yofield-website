@@ -19,8 +19,8 @@ export default function MagneticButton({
   const rawX = useMotionValue(0);
   const rawY = useMotionValue(0);
 
-  const x = useSpring(rawX, { stiffness: 150, damping: 15 });
-  const y = useSpring(rawY, { stiffness: 150, damping: 15 });
+  const x = useSpring(rawX, { stiffness: 150, damping: 20 });
+  const y = useSpring(rawY, { stiffness: 150, damping: 20 });
 
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
     const el = ref.current;

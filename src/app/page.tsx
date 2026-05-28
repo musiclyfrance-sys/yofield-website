@@ -3,6 +3,9 @@ import Image from 'next/image'
 import SiteLayout from '@/components/layout/Navigation'
 import HeroSection from '@/components/homepage/HeroSection'
 import ApproachTimeline from '@/components/homepage/ApproachTimeline'
+import ScrollMarquee from '@/components/animations/ScrollMarquee'
+import MagneticButton from '@/components/animations/MagneticButton'
+import RevealText from '@/components/animations/RevealText'
 import { serviceCategories } from '@/data/services'
 import { getFeaturedCas } from '@/data/cas'
 import { buildMetadata } from '@/lib/metadata'
@@ -69,9 +72,13 @@ export default function HomePage() {
         <div className="container">
           <div className="max-w-3xl">
             <p className="eyebrow text-soil mb-8">Le studio</p>
-            <p className="np-700 text-3xl md:text-4xl text-soil leading-[1.2] mb-8">
-              On ne prend qu'un client par catégorie de marché à la fois.
-            </p>
+            <RevealText
+              text="On ne prend qu'un client par catégorie de marché à la fois."
+              as="p"
+              className="np-700 text-3xl md:text-4xl text-soil leading-[1.2] mb-8 block"
+              stagger={0.025}
+              duration={0.5}
+            />
             <p className="font-body text-base text-soil/65 leading-relaxed max-w-2xl mb-10">
               Parce qu'on ne peut pas construire la meilleure version d'une marque
               si on travaille simultanément pour son concurrent direct. Le cycle court n'est pas
@@ -168,6 +175,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ─── MARQUEE ──────────────────────────────────────────────── */}
+      <ScrollMarquee />
 
       {/* ─── 4. APPROCHE TIMELINE ─────────────────────────────────── */}
       <ApproachTimeline />
@@ -312,12 +322,16 @@ export default function HomePage() {
               Dites-nous ce que vous construisez. On vous dit comment on peut aider.
             </p>
             <div className="flex flex-col sm:flex-row items-start gap-4">
-              <Link href="/contact" className="btn btn-outline-soil">
-                Démarrer la conversation
-              </Link>
-              <Link href="/services" className="btn btn-outline-soil" style={{ opacity: 0.6 }}>
-                Voir les services
-              </Link>
+              <MagneticButton>
+                <Link href="/contact" className="btn btn-outline-soil">
+                  Démarrer la conversation
+                </Link>
+              </MagneticButton>
+              <MagneticButton>
+                <Link href="/services" className="btn btn-outline-soil" style={{ opacity: 0.6 }}>
+                  Voir les services
+                </Link>
+              </MagneticButton>
             </div>
             <p className="font-body text-sm text-soil/50 mt-10">
               Ou directement par email :{' '}
