@@ -34,7 +34,7 @@
  *   useMotionValueEvent drives canvas redraws with zero React re-renders.
  */
 
-import { useRef, useEffect, useState } from 'react'
+import { memo, useRef, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { useScroll, useMotionValueEvent } from 'framer-motion'
@@ -110,21 +110,37 @@ const ease = [0.16, 1, 0.3, 1] as [number, number, number, number]
 
 /* ─── Text overlay ────────────────────────────────────── */
 /*
+ * WHY memo() ?
+ *   HeroFull re-renders when `ready` flips true (frames loaded, ~1-2 s).
+ *   Without memo, that re-render cascades into RevealText, re-mounting the
+ *   motion.span stagger mid-animation → "escalier" bug.
+ *   memo() with no props = HeroText NEVER re-renders from its parent.
+ *
+ * WHY titleSettled ?
+ *   Even after memo(), an internal state change at 2.2 s swaps the animated
+ *   RevealText spans for plain <span> elements — no framer-motion, no
+ *   transforms, no way for the title to move again, ever.
+ *
  * Timing (mount-only, no scroll):
  *   0.05s  eyebrow fades in
- *   0.15s  H1 line 1 starts typing  (25 word-chars × 0.025s stagger → last char at 0.65s)
- *   0.65s  H1 line 2 starts typing  (33 word-chars × 0.025s stagger → last char at 1.30s, done at 1.85s)
+ *   0.15s  H1 line 1 starts typing  (21 word-chars × 0.025 → last char at 0.65s)
+ *   0.65s  H1 line 2 starts typing  (27 word-chars × 0.025 → last char at 1.30s, done ≈1.85s)
  *   1.50s  description fades in
  *   1.80s  CTAs fade in
- *
- * H1 line char counts (RevealText counts word-chars, not spaces):
- *   "Là où votre marque trouve"          → Là(2)+où(2)+votre(5)+marque(6)+trouve(6) = 21 chars
- *   last char delay = 0.15 + 20×0.025 = 0.65s  →  line 2 starts at 0.65s
+ *   2.20s  titleSettled → static plain spans replace RevealText
  */
-function HeroText() {
+const HeroText = memo(function HeroText() {
+  const [titleSettled, setTitleSettled] = useState(false)
+
+  useEffect(() => {
+    // 1.85s animation + 350 ms buffer
+    const t = setTimeout(() => setTitleSettled(true), 2200)
+    return () => clearTimeout(t)
+  }, [])
+
   return (
-    /* pt-[72px] mobile (clears 72 px header exactly)
-       md:pt-[88px] desktop (72 px header + 16 px breathing room) */
+    /* pt-[72px] mobile (clears 72 px header)
+       md:pt-[88px] desktop (header + 16 px gap) */
     <div className="absolute inset-x-0 top-0 z-20 flex flex-col items-center text-center px-6 pt-[72px] md:pt-[88px]">
 
       {/* Eyebrow */}
@@ -137,33 +153,42 @@ function HeroText() {
         Studio créatif et digital
       </motion.p>
 
-      {/* H1 — exactly 2 lines, explicit break, typing animation ONLY */}
+      {/* H1 — exactly 2 lines, explicit break */}
       <div className="mb-5 max-w-3xl">
         <h1 className="np-900 text-[clamp(28px,4vw,60px)] text-soil leading-[1.1]">
-          {/* Line 1 */}
-          <RevealText
-            text="Là où votre marque trouve"
-            as="span"
-            className="block"
-            stagger={0.025}
-            duration={0.55}
-            delay={0.15}
-            triggerOnMount
-          />
-          {/* Line 2 — starts when line 1's last char begins */}
-          <RevealText
-            text="sa forme, sa voix et son terrain."
-            as="span"
-            className="block"
-            stagger={0.025}
-            duration={0.55}
-            delay={0.65}
-            triggerOnMount
-          />
+          {titleSettled ? (
+            /* Static: plain HTML, zero transforms, zero animation ever again */
+            <>
+              <span className="block">Là où votre marque trouve</span>
+              <span className="block">sa forme, sa voix et son terrain.</span>
+            </>
+          ) : (
+            /* Animated: typing reveal, plays exactly once on mount */
+            <>
+              <RevealText
+                text="Là où votre marque trouve"
+                as="span"
+                className="block"
+                stagger={0.025}
+                duration={0.55}
+                delay={0.15}
+                triggerOnMount
+              />
+              <RevealText
+                text="sa forme, sa voix et son terrain."
+                as="span"
+                className="block"
+                stagger={0.025}
+                duration={0.55}
+                delay={0.65}
+                triggerOnMount
+              />
+            </>
+          )}
         </h1>
       </div>
 
-      {/* Description — appears after H1 finishes */}
+      {/* Description — fades in after H1 finishes */}
       <motion.p
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -195,7 +220,7 @@ function HeroText() {
       </motion.div>
     </div>
   )
-}
+})
 
 /* ─── Component ──────────────────────────────────────── */
 export default function HeroFull() {
