@@ -1,43 +1,33 @@
 'use client'
 
 /**
- * HeroFull — one block, full-screen, image as background, text on top
- * ────────────────────────────────────────────────────────────────────
+ * HeroFull — photo below CTAs, slides up on scroll, text fades out
+ * ─────────────────────────────────────────────────────────────────
  * Architecture
  * ─────────────
  *   <section>  min-height: 100vh + 968px   (scroll room for frame scrub)
- *     <div>    sticky top-0, h-screen, relative   (pins during scrub)
- *       <canvas>  absolute inset-0             (background — z-0)
- *       <div>     absolute top-0 inset-x-0     (text overlay — z-20)
+ *     <div>    sticky top-0, h-screen, relative, overflow-hidden, bg-snow
+ *       <canvas>  absolute inset-0, starts at translateY(50%)
+ *       <div>     absolute inset-0, z-20   (text + CTAs, fades out)
  *     </div>
  *   </section>
  *
+ * Scroll behaviour (native scroll listener — Lenis-compatible)
+ * ─────────────────────────────────────────────────────────────
+ *   progress = -section.getBoundingClientRect().top / (sectionH - vh)
+ *   [0 → 0.35]  canvas translateY 50% → 0%   (slides up to full-screen)
+ *   [0 → 0.30]  text opacity 1 → 0          (fades out)
+ *   [0 → 1.00]  frames 0 → 120             (scrubbing)
+ *
  * Canvas draw — drawCoverTopAligned (ALL viewports)
  * ──────────────────────────────────────────────────
- *   • object-cover: fills 100 % of the canvas, zero bars.
- *   • top-aligned (sy = 0 always): sky stays at canvas top.
- *   • Image composition: sky in upper ~⅔, rocket in lower ~⅓.
- *   • That proportion is preserved by drawCoverTopAligned, so the
- *     rocket lands in the bottom third of the viewport automatically.
- *
- * Text layout
- * ────────────
- *   • eyebrow + H1 (2 explicit lines) + description + CTAs
- *   • sit in the sky area (upper ~half of viewport)
- *   • H1: "Là où votre marque trouve" / "sa forme, sa voix et son terrain."
- *     two RevealText spans with display:block — browser NEVER decides wrap.
- *   • Animations: mount-only. NO scroll connections on the title.
- *
- * Scroll scrub
- * ─────────────
- *   121 frames × 8 px = 968 px of scrub room after 100 vh.
- *   useMotionValueEvent drives canvas redraws with zero React re-renders.
+ *   • object-cover: fills 100% of canvas, zero bars.
+ *   • sy = 0 always: sky at canvas top, rocket in lower third.
  */
 
-import { memo, useRef, useEffect, useState } from 'react'
+import { memo, useRef, useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { useScroll, useMotionValueEvent } from 'framer-motion'
 import NextImage from 'next/image'
 import RevealText from '@/components/animations/RevealText'
 import MagneticButton from '@/components/animations/MagneticButton'
@@ -52,17 +42,6 @@ const FRAME_URLS = Array.from({ length: FRAME_COUNT }, (_, i) =>
 )
 
 /* ─── Canvas draw — cover, top-aligned (all viewports) ── */
-/*
- * Fills the canvas exactly (object-cover, zero bars).
- * sy = 0 always → sky at canvas top, rocket preserved in lower third.
- *
- * imgAspect ≥ canvasAspect  (normal: wide image on wide-ish screen)
- *   → fit by height (full image height visible), crop sides symmetrically.
- *
- * imgAspect < canvasAspect  (ultra-wide canvas wider than image)
- *   → fit by width (full width visible), show top sh pixels, crop bottom.
- *   Still sy = 0 → we keep the sky and sacrifice some landscape at bottom.
- */
 function drawCoverTopAligned(
   ctx: CanvasRenderingContext2D,
   img: HTMLImageElement,
@@ -77,17 +56,15 @@ function drawCoverTopAligned(
   let sx: number, sy: number, sw: number, sh: number
 
   if (imgAspect >= canvasAspect) {
-    // Image wider (or equal) → full height, crop sides
     sh = img.naturalHeight
     sw = sh * canvasAspect
-    sx = (img.naturalWidth - sw) / 2   // centred horizontally
-    sy = 0                              // sky at top
+    sx = (img.naturalWidth - sw) / 2
+    sy = 0
   } else {
-    // Canvas wider than image → full width, crop bottom
     sw = img.naturalWidth
     sh = sw / canvasAspect
     sx = 0
-    sy = 0                              // sky at top
+    sy = 0
   }
 
   ctx.clearRect(0, 0, canvasW, canvasH)
@@ -108,39 +85,16 @@ function drawFrame(
 /* ─── Shared easing ───────────────────────────────────── */
 const ease = [0.16, 1, 0.3, 1] as [number, number, number, number]
 
-/* ─── Text overlay ────────────────────────────────────── */
-/*
- * WHY memo() ?
- *   HeroFull re-renders when `ready` flips true (frames loaded, ~1-2 s).
- *   Without memo, that re-render cascades into RevealText, re-mounting the
- *   motion.span stagger mid-animation → "escalier" bug.
- *   memo() with no props = HeroText NEVER re-renders from its parent.
- *
- * WHY titleSettled ?
- *   Even after memo(), an internal state change at 2.2 s swaps the animated
- *   RevealText spans for plain <span> elements — no framer-motion, no
- *   transforms, no way for the title to move again, ever.
- *
- * Timing (mount-only, no scroll):
- *   0.05s  eyebrow fades in
- *   0.15s  H1 line 1 starts typing  (21 word-chars × 0.025 → last char at 0.65s)
- *   0.65s  H1 line 2 starts typing  (27 word-chars × 0.025 → last char at 1.30s, done ≈1.85s)
- *   1.50s  description fades in
- *   1.80s  CTAs fade in
- *   2.20s  titleSettled → static plain spans replace RevealText
- */
+/* ─── Text overlay (memo = never re-renders from parent) ─ */
 const HeroText = memo(function HeroText() {
   const [titleSettled, setTitleSettled] = useState(false)
 
   useEffect(() => {
-    // 1.85s animation + 350 ms buffer
     const t = setTimeout(() => setTitleSettled(true), 2200)
     return () => clearTimeout(t)
   }, [])
 
   return (
-    /* pt-[72px] mobile (clears 72 px header)
-       md:pt-[88px] desktop (header + 16 px gap) */
     <div className="absolute inset-x-0 top-0 z-20 flex flex-col items-center text-center px-6 pt-[72px] md:pt-[88px]">
 
       {/* Eyebrow */}
@@ -153,17 +107,15 @@ const HeroText = memo(function HeroText() {
         Studio créatif et digital
       </motion.p>
 
-      {/* H1 — exactly 2 lines, explicit break */}
+      {/* H1 — exactly 2 lines */}
       <div className="mb-5 max-w-5xl">
         <h1 className="np-900 text-[clamp(26px,3.5vw,54px)] text-soil leading-[1.1]">
           {titleSettled ? (
-            /* Static: plain HTML, zero transforms, zero animation ever again */
             <>
               <span className="block">Là où votre marque trouve</span>
               <span className="block">sa forme, sa voix et son terrain.</span>
             </>
           ) : (
-            /* Animated: typing reveal, plays exactly once on mount */
             <>
               <RevealText
                 text="Là où votre marque trouve"
@@ -188,7 +140,7 @@ const HeroText = memo(function HeroText() {
         </h1>
       </div>
 
-      {/* Description — fades in after H1 finishes */}
+      {/* Description */}
       <motion.p
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -240,10 +192,44 @@ export default function HeroFull() {
     return () => mq.removeEventListener('change', handler)
   }, [])
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start start', 'end end'],
-  })
+  /* ── Scroll progress from section geometry (Lenis-compatible) ── */
+  const getProgress = useCallback(() => {
+    const section = sectionRef.current
+    if (!section) return 0
+    const rect       = section.getBoundingClientRect()
+    const scrollable = section.offsetHeight - window.innerHeight
+    if (scrollable <= 0) return 0
+    return Math.max(0, Math.min(1, -rect.top / scrollable))
+  }, [])
+
+  /* ── Apply all scroll-driven effects for a given progress ─── */
+  const applyProgress = useCallback((progress: number) => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    // Canvas slide-up: translateY(50% → 0%) over [0 → 0.35]
+    const posP = Math.min(progress / 0.35, 1)
+    canvas.style.transform = `translateY(${50 * (1 - posP)}%)`
+
+    // Text fade: opacity 1 → 0 over [0 → 0.30]
+    const textEl = textRef.current
+    if (textEl) {
+      const opP = Math.min(progress / 0.30, 1)
+      textEl.style.opacity  = String(1 - opP)
+      textEl.style.pointerEvents = opP >= 1 ? 'none' : 'auto'
+    }
+
+    // Frame scrubbing (only when images are ready)
+    const images = framesRef.current
+    if (!images.length) return
+    const idx = Math.min(Math.round(progress * (FRAME_COUNT - 1)), FRAME_COUNT - 1)
+    const img = images[idx]
+    if (!img?.complete) return
+    const dpr = window.devicePixelRatio || 1
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+    drawFrame(ctx, img, canvas.width / dpr, canvas.height / dpr)
+  }, [])
 
   /* Preload frames */
   useEffect(() => {
@@ -294,56 +280,26 @@ export default function HeroFull() {
       const ctx = canvas.getContext('2d')
       if (!ctx) return
       ctx.scale(dpr, dpr)
-      const prog = scrollYProgress.get()
-      const idx  = Math.round(prog * (FRAME_COUNT - 1))
-      const img  = framesRef.current[idx]
-      if (img?.complete) drawFrame(ctx, img, w, h)
-      // Restore canvas position for current scroll progress
-      const posP = Math.min(prog / 0.35, 1)
-      canvas.style.transform = `translateY(${50 * (1 - posP)}%)`
+      // Redraw and reposition at current scroll
+      applyProgress(getProgress())
     }
 
     const ro = new ResizeObserver(resize)
     ro.observe(canvas)
     resize()
     return () => ro.disconnect()
-  }, [scrollYProgress, reducedMotion])
+  }, [reducedMotion, getProgress, applyProgress])
 
-  /* Scroll → canvas position + text fade + frame scrubbing (zero re-renders) */
-  useMotionValueEvent(scrollYProgress, 'change', (progress) => {
+  /* Native scroll listener — works with Lenis (Lenis dispatches window scroll) */
+  useEffect(() => {
     if (reducedMotion) return
-    const canvas = canvasRef.current
-    if (!canvas) return
+    const onScroll = () => applyProgress(getProgress())
+    window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll() // set initial position before first scroll
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [reducedMotion, getProgress, applyProgress])
 
-    // ── Canvas slide-up: translateY(50% → 0%) over progress [0 → 0.35] ──
-    // Runs even before frames are loaded so the layout always tracks scroll.
-    const posP = Math.min(progress / 0.35, 1)
-    canvas.style.transform = `translateY(${50 * (1 - posP)}%)`
-
-    // ── Text fade: opacity 1 → 0 over progress [0 → 0.30] ──────────────
-    const textEl = textRef.current
-    if (textEl) {
-      const opP = Math.min(progress / 0.30, 1)
-      textEl.style.opacity = String(1 - opP)
-      textEl.style.pointerEvents = opP >= 1 ? 'none' : 'auto'
-    }
-
-    // ── Frame scrubbing: only when frames are loaded ─────────────────────
-    const images = framesRef.current
-    if (!images.length) return
-    const idx = Math.min(
-      Math.round(progress * (FRAME_COUNT - 1)),
-      FRAME_COUNT - 1
-    )
-    const img = images[idx]
-    if (!img?.complete) return
-    const dpr = window.devicePixelRatio || 1
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-    drawFrame(ctx, img, canvas.width / dpr, canvas.height / dpr)
-  })
-
-  /* Reduced-motion: static first frame, same cover draw */
+  /* Reduced-motion: static first frame */
   if (reducedMotion) {
     return (
       <section
@@ -373,7 +329,7 @@ export default function HeroFull() {
     >
       <div className="sticky top-0 h-screen relative overflow-hidden bg-snow">
 
-        {/* Canvas — full-viewport background */}
+        {/* Canvas — starts at translateY(50%), slides to 0 on scroll */}
         <canvas
           ref={canvasRef}
           className="absolute inset-0 w-full h-full"
@@ -381,7 +337,7 @@ export default function HeroFull() {
           aria-hidden="true"
         />
 
-        {/* Text — fades out as canvas slides up on scroll */}
+        {/* Text — fades out as canvas expands */}
         <div ref={textRef} className="absolute inset-0 z-20" style={{ willChange: 'opacity' }}>
           <HeroText />
         </div>
