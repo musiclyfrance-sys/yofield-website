@@ -154,8 +154,8 @@ const HeroText = memo(function HeroText() {
       </motion.p>
 
       {/* H1 — exactly 2 lines, explicit break */}
-      <div className="mb-5 max-w-3xl">
-        <h1 className="np-900 text-[clamp(28px,4vw,60px)] text-soil leading-[1.1]">
+      <div className="mb-5 max-w-5xl">
+        <h1 className="np-900 text-[clamp(26px,3.5vw,54px)] text-soil leading-[1.1]">
           {titleSettled ? (
             /* Static: plain HTML, zero transforms, zero animation ever again */
             <>
