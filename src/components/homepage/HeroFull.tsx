@@ -25,7 +25,7 @@
  *   • sy = 0 always: sky at canvas top, rocket in lower third.
  */
 
-import { memo, useRef, useEffect, useState, useCallback } from 'react'
+import { memo, useRef, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import NextImage from 'next/image'
@@ -192,18 +192,19 @@ export default function HeroFull() {
     return () => mq.removeEventListener('change', handler)
   }, [])
 
-  /* ── Scroll progress from section geometry (Lenis-compatible) ── */
-  const getProgress = useCallback(() => {
+  /* ── Read scroll progress directly from DOM each frame ─────── */
+  // Not wrapped in useCallback — refs are read live inside the RAF tick.
+  // This avoids any closure-capture timing issues with useCallback([]).
+  const getProgress = () => {
     const section = sectionRef.current
     if (!section) return 0
     const rect       = section.getBoundingClientRect()
     const scrollable = section.offsetHeight - window.innerHeight
     if (scrollable <= 0) return 0
     return Math.max(0, Math.min(1, -rect.top / scrollable))
-  }, [])
+  }
 
-  /* ── Apply all scroll-driven effects for a given progress ─── */
-  const applyProgress = useCallback((progress: number) => {
+  const applyProgress = (progress: number) => {
     const canvas = canvasRef.current
     if (!canvas) return
 
@@ -229,7 +230,7 @@ export default function HeroFull() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
     drawFrame(ctx, img, canvas.width / dpr, canvas.height / dpr)
-  }, [])
+  }
 
   /* Preload frames */
   useEffect(() => {
@@ -288,11 +289,13 @@ export default function HeroFull() {
     ro.observe(canvas)
     resize()
     return () => ro.disconnect()
-  }, [reducedMotion, getProgress, applyProgress])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reducedMotion])
 
   /* RAF loop — reads getBoundingClientRect() every frame.
    * Lenis does NOT dispatch window 'scroll' events; it runs its own RAF-based
-   * interpolation. Polling via rAF is the only reliable way to stay in sync. */
+   * interpolation. Polling via rAF is the only reliable way to stay in sync.
+   * getProgress/applyProgress read refs live — no stale closure risk. */
   useEffect(() => {
     if (reducedMotion) return
     let rafId: number
@@ -310,7 +313,8 @@ export default function HeroFull() {
 
     rafId = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(rafId)
-  }, [reducedMotion, getProgress, applyProgress])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reducedMotion])
 
   /* Reduced-motion: static first frame */
   if (reducedMotion) {
