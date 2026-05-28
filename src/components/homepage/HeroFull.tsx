@@ -228,6 +228,7 @@ export default function HeroFull() {
   const canvasRef  = useRef<HTMLCanvasElement>(null)
   const framesRef  = useRef<HTMLImageElement[]>([])
   const loadedRef  = useRef(0)
+  const textRef    = useRef<HTMLDivElement>(null)
   const [ready, setReady]                 = useState(false)
   const [reducedMotion, setReducedMotion] = useState(false)
 
@@ -297,6 +298,9 @@ export default function HeroFull() {
       const idx  = Math.round(prog * (FRAME_COUNT - 1))
       const img  = framesRef.current[idx]
       if (img?.complete) drawFrame(ctx, img, w, h)
+      // Restore canvas position for current scroll progress
+      const posP = Math.min(prog / 0.35, 1)
+      canvas.style.transform = `translateY(${50 * (1 - posP)}%)`
     }
 
     const ro = new ResizeObserver(resize)
@@ -323,6 +327,18 @@ export default function HeroFull() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
     drawFrame(ctx, img, canvas.width / dpr, canvas.height / dpr)
+
+    // Canvas slide-up: translateY(50% → 0%) over scroll progress [0 → 0.35]
+    const posP = Math.min(progress / 0.35, 1)
+    canvas.style.transform = `translateY(${50 * (1 - posP)}%)`
+
+    // Text fade: opacity 1 → 0 over scroll progress [0 → 0.30]
+    const textEl = textRef.current
+    if (textEl) {
+      const opP = Math.min(progress / 0.30, 1)
+      textEl.style.opacity = String(1 - opP)
+      textEl.style.pointerEvents = opP >= 1 ? 'none' : 'auto'
+    }
   })
 
   /* Reduced-motion: static first frame, same cover draw */
@@ -359,12 +375,14 @@ export default function HeroFull() {
         <canvas
           ref={canvasRef}
           className="absolute inset-0 w-full h-full"
-          style={{ display: 'block' }}
+          style={{ display: 'block', willChange: 'transform' }}
           aria-hidden="true"
         />
 
-        {/* Text — absolute overlay, z-20 */}
-        <HeroText />
+        {/* Text — fades out as canvas slides up on scroll */}
+        <div ref={textRef} className="absolute inset-0 z-20" style={{ willChange: 'opacity' }}>
+          <HeroText />
+        </div>
 
         {/* Loader */}
         {!ready && (
