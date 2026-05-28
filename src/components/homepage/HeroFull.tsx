@@ -1,22 +1,37 @@
 'use client'
 
 /**
- * HeroFull — full-viewport background canvas with text overlay
- * ─────────────────────────────────────────────────────────────
- * Canvas fills 100 vh as absolute background. Text (z-20) is
- * absolutely positioned on top.
+ * HeroFull — one block, full-screen, image as background, text on top
+ * ────────────────────────────────────────────────────────────────────
+ * Architecture
+ * ─────────────
+ *   <section>  min-height: 100vh + 968px   (scroll room for frame scrub)
+ *     <div>    sticky top-0, h-screen, relative   (pins during scrub)
+ *       <canvas>  absolute inset-0             (background — z-0)
+ *       <div>     absolute top-0 inset-x-0     (text overlay — z-20)
+ *     </div>
+ *   </section>
  *
- * Desktop (>768 px) — drawContainBottomAnchored:
- *   Full rocket scene visible, no cropping.  Snow fills the space
- *   above the image (sky colour = Snow → zero visible seam).
- *   Image anchored to the bottom of the viewport so the scene sits
- *   in the lower visual half while text floats over the sky area.
+ * Canvas draw — drawCoverTopAligned (ALL viewports)
+ * ──────────────────────────────────────────────────
+ *   • object-cover: fills 100 % of the canvas, zero bars.
+ *   • top-aligned (sy = 0 always): sky stays at canvas top.
+ *   • Image composition: sky in upper ~⅔, rocket in lower ~⅓.
+ *   • That proportion is preserved by drawCoverTopAligned, so the
+ *     rocket lands in the bottom third of the viewport automatically.
  *
- * Mobile (≤768 px) — drawCoverTopAligned:
- *   Full-bleed, sky at canvas top, rocket in lower half.
+ * Text layout
+ * ────────────
+ *   • eyebrow + H1 (2 explicit lines) + description + CTAs
+ *   • sit in the sky area (upper ~half of viewport)
+ *   • H1: "Là où votre marque trouve" / "sa forme, sa voix et son terrain."
+ *     two RevealText spans with display:block — browser NEVER decides wrap.
+ *   • Animations: mount-only. NO scroll connections on the title.
  *
- * Scroll scrub: 121 frames / 968 px, then section releases.
- * prefers-reduced-motion: static first frame (object-contain / bottom).
+ * Scroll scrub
+ * ─────────────
+ *   121 frames × 8 px = 968 px of scrub room after 100 vh.
+ *   useMotionValueEvent drives canvas redraws with zero React re-renders.
  */
 
 import { useRef, useEffect, useState } from 'react'
@@ -31,53 +46,23 @@ import MagneticButton from '@/components/animations/MagneticButton'
 const FRAME_COUNT      = 121
 const SCROLL_PER_FRAME = 8
 const EXTRA_SCROLL     = FRAME_COUNT * SCROLL_PER_FRAME   // 968 px
-const SNOW             = '#FAFAF7'
 
 const FRAME_URLS = Array.from({ length: FRAME_COUNT }, (_, i) =>
   `/videos/frames/frame_${String(i + 1).padStart(4, '0')}.webp`
 )
 
-/* ─── Desktop: contain + bottom-anchor ───────────────── */
+/* ─── Canvas draw — cover, top-aligned (all viewports) ── */
 /*
- * Full scene visible (no crop). Snow bar fills the canvas above
- * the image — since sky = Snow the bar is invisible. Image sits
- * at the bottom, keeping the rocket/landscape in the lower half.
+ * Fills the canvas exactly (object-cover, zero bars).
+ * sy = 0 always → sky at canvas top, rocket preserved in lower third.
+ *
+ * imgAspect ≥ canvasAspect  (normal: wide image on wide-ish screen)
+ *   → fit by height (full image height visible), crop sides symmetrically.
+ *
+ * imgAspect < canvasAspect  (ultra-wide canvas wider than image)
+ *   → fit by width (full width visible), show top sh pixels, crop bottom.
+ *   Still sy = 0 → we keep the sky and sacrifice some landscape at bottom.
  */
-function drawContainBottomAnchored(
-  ctx: CanvasRenderingContext2D,
-  img: HTMLImageElement,
-  canvasW: number,
-  canvasH: number
-) {
-  if (!img.naturalWidth || !img.naturalHeight) return
-
-  const imgAspect    = img.naturalWidth / img.naturalHeight   // ≈1.799
-  const canvasAspect = canvasW / canvasH
-
-  // Fill entire canvas with Snow first (bar colour = sky colour → seamless)
-  ctx.fillStyle = SNOW
-  ctx.fillRect(0, 0, canvasW, canvasH)
-
-  let dw: number, dh: number, dx: number, dy: number
-
-  if (imgAspect >= canvasAspect) {
-    // Image wider → fit width → Snow bar at top → anchor image to bottom
-    dw = canvasW
-    dh = canvasW / imgAspect
-    dx = 0
-    dy = canvasH - dh           // bottom anchor
-  } else {
-    // Image taller → fit height → side bars centred
-    dh = canvasH
-    dw = canvasH * imgAspect
-    dx = (canvasW - dw) / 2
-    dy = 0
-  }
-
-  ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, dx, dy, dw, dh)
-}
-
-/* ─── Mobile: cover top-aligned ──────────────────────── */
 function drawCoverTopAligned(
   ctx: CanvasRenderingContext2D,
   img: HTMLImageElement,
@@ -92,24 +77,23 @@ function drawCoverTopAligned(
   let sx: number, sy: number, sw: number, sh: number
 
   if (imgAspect >= canvasAspect) {
-    // Image wider → fill height, crop sides, sky at top
+    // Image wider (or equal) → full height, crop sides
     sh = img.naturalHeight
     sw = sh * canvasAspect
-    sx = (img.naturalWidth - sw) / 2
-    sy = 0
+    sx = (img.naturalWidth - sw) / 2   // centred horizontally
+    sy = 0                              // sky at top
   } else {
-    // Image taller → fill width, crop bottom (keep top = sky)
+    // Canvas wider than image → full width, crop bottom
     sw = img.naturalWidth
     sh = sw / canvasAspect
     sx = 0
-    sy = 0
+    sy = 0                              // sky at top
   }
 
   ctx.clearRect(0, 0, canvasW, canvasH)
   ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvasW, canvasH)
 }
 
-/* ─── Frame dispatcher ────────────────────────────────── */
 function drawFrame(
   ctx: CanvasRenderingContext2D,
   img: HTMLImageElement,
@@ -118,60 +102,72 @@ function drawFrame(
 ) {
   ctx.imageSmoothingEnabled = true
   ctx.imageSmoothingQuality = 'high'
-  if (canvasW <= 768) {
-    drawCoverTopAligned(ctx, img, canvasW, canvasH)
-  } else {
-    drawContainBottomAnchored(ctx, img, canvasW, canvasH)
-  }
+  drawCoverTopAligned(ctx, img, canvasW, canvasH)
 }
 
-/* ─── Entrance animation ──────────────────────────────── */
+/* ─── Shared easing ───────────────────────────────────── */
 const ease = [0.16, 1, 0.3, 1] as [number, number, number, number]
 
-const fadeUp = {
-  hidden:  { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease } },
-}
-const stagger = {
-  hidden:  {},
-  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.1 } },
-}
-
-/* ─── Text overlay (shared by main + reduced-motion) ─── */
+/* ─── Text overlay ────────────────────────────────────── */
+/*
+ * Timing (mount-only, no scroll):
+ *   0.05s  eyebrow fades in
+ *   0.15s  H1 line 1 starts typing  (25 word-chars × 0.025s stagger → last char at 0.65s)
+ *   0.65s  H1 line 2 starts typing  (33 word-chars × 0.025s stagger → last char at 1.30s, done at 1.85s)
+ *   1.50s  description fades in
+ *   1.80s  CTAs fade in
+ *
+ * H1 line char counts (RevealText counts word-chars, not spaces):
+ *   "Là où votre marque trouve"          → Là(2)+où(2)+votre(5)+marque(6)+trouve(6) = 21 chars
+ *   last char delay = 0.15 + 20×0.025 = 0.65s  →  line 2 starts at 0.65s
+ */
 function HeroText() {
   return (
-    <motion.div
-      className="absolute inset-x-0 top-0 z-20 flex flex-col items-center text-center px-6"
-      style={{ paddingTop: '80px' }}
-      variants={stagger}
-      initial="hidden"
-      animate="visible"
-    >
+    /* pt-[72px] mobile (clears 72 px header exactly)
+       md:pt-[88px] desktop (72 px header + 16 px breathing room) */
+    <div className="absolute inset-x-0 top-0 z-20 flex flex-col items-center text-center px-6 pt-[72px] md:pt-[88px]">
+
       {/* Eyebrow */}
       <motion.p
-        variants={fadeUp}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 0.45, y: 0 }}
+        transition={{ duration: 0.5, ease, delay: 0.05 }}
         className="eyebrow text-soil mb-5"
-        style={{ opacity: 0.45 }}
       >
         Studio créatif et digital
       </motion.p>
 
-      {/* H1 — reduced from clamp(38px,7vw,80px) */}
-      <motion.div variants={fadeUp} className="mb-5 max-w-3xl">
-        <RevealText
-          text="Là où votre marque trouve sa forme, sa voix et son terrain."
-          as="h1"
-          className="np-900 text-[clamp(30px,4.5vw,60px)] text-soil leading-[1.05]"
-          stagger={0.025}
-          duration={0.55}
-          delay={0.15}
-          triggerOnMount
-        />
-      </motion.div>
+      {/* H1 — exactly 2 lines, explicit break, typing animation ONLY */}
+      <div className="mb-5 max-w-3xl">
+        <h1 className="np-900 text-[clamp(28px,4vw,60px)] text-soil leading-[1.1]">
+          {/* Line 1 */}
+          <RevealText
+            text="Là où votre marque trouve"
+            as="span"
+            className="block"
+            stagger={0.025}
+            duration={0.55}
+            delay={0.15}
+            triggerOnMount
+          />
+          {/* Line 2 — starts when line 1's last char begins */}
+          <RevealText
+            text="sa forme, sa voix et son terrain."
+            as="span"
+            className="block"
+            stagger={0.025}
+            duration={0.55}
+            delay={0.65}
+            triggerOnMount
+          />
+        </h1>
+      </div>
 
-      {/* Description */}
+      {/* Description — appears after H1 finishes */}
       <motion.p
-        variants={fadeUp}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease, delay: 1.5 }}
         className="font-body text-base md:text-lg text-soil/65 max-w-xl leading-relaxed mb-7"
       >
         Branding, sites web, acquisition, contenus et IA.
@@ -181,7 +177,9 @@ function HeroText() {
 
       {/* CTAs */}
       <motion.div
-        variants={fadeUp}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease, delay: 1.8 }}
         className="flex flex-wrap items-center justify-center gap-4"
       >
         <MagneticButton>
@@ -195,7 +193,7 @@ function HeroText() {
           </Link>
         </MagneticButton>
       </motion.div>
-    </motion.div>
+    </div>
   )
 }
 
@@ -230,6 +228,7 @@ export default function HeroFull() {
     const onLoad = () => {
       if (cancelled) return
       loadedRef.current++
+      // Paint frame 0 the instant it arrives
       if (loadedRef.current === 1 && images[0]?.complete) {
         const canvas = canvasRef.current
         if (canvas) {
@@ -254,7 +253,7 @@ export default function HeroFull() {
     return () => { cancelled = true }
   }, [reducedMotion])
 
-  /* DPR-aware canvas sizing — tracks sticky div dimensions */
+  /* DPR-aware canvas sizing + ResizeObserver */
   useEffect(() => {
     if (reducedMotion) return
     const canvas = canvasRef.current
@@ -281,7 +280,7 @@ export default function HeroFull() {
     return () => ro.disconnect()
   }, [scrollYProgress, reducedMotion])
 
-  /* Scroll → frame */
+  /* Scroll → frame (zero React re-renders) */
   useMotionValueEvent(scrollYProgress, 'change', (progress) => {
     if (reducedMotion) return
     const canvas = canvasRef.current
@@ -301,7 +300,7 @@ export default function HeroFull() {
     drawFrame(ctx, img, canvas.width / dpr, canvas.height / dpr)
   })
 
-  /* Reduced-motion: static first frame */
+  /* Reduced-motion: static first frame, same cover draw */
   if (reducedMotion) {
     return (
       <section
@@ -314,8 +313,7 @@ export default function HeroFull() {
             alt=""
             fill
             sizes="100vw"
-            className="object-contain object-bottom"
-            style={{ backgroundColor: SNOW }}
+            className="object-cover object-top"
             priority
           />
           <HeroText />
@@ -330,14 +328,9 @@ export default function HeroFull() {
       style={{ minHeight: `calc(100vh + ${EXTRA_SCROLL}px)` }}
       aria-label="Hero Yofield"
     >
-      {/*
-       * sticky h-screen relative:
-       *   canvas   — absolute inset-0, Snow background, image drawn inside
-       *   HeroText — absolute top-0 z-20, text over the sky area
-       */}
       <div className="sticky top-0 h-screen relative overflow-hidden bg-snow">
 
-        {/* Canvas — fills full viewport as background */}
+        {/* Canvas — full-viewport background */}
         <canvas
           ref={canvasRef}
           className="absolute inset-0 w-full h-full"
@@ -345,7 +338,7 @@ export default function HeroFull() {
           aria-hidden="true"
         />
 
-        {/* Text — absolute overlay, sits over the sky portion */}
+        {/* Text — absolute overlay, z-20 */}
         <HeroText />
 
         {/* Loader */}
