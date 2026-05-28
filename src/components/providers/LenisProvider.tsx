@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react'
 import Lenis from 'lenis'
 import { usePathname } from 'next/navigation'
+import SparkCursor from '@/components/animations/SparkCursor'
 
 export default function LenisProvider({
   children,
@@ -44,5 +45,10 @@ export default function LenisProvider({
     lenisRef.current?.scrollTo(0, { immediate: true })
   }, [pathname])
 
-  return <>{children}</>
+  return (
+    <>
+      <SparkCursor />
+      {children}
+    </>
+  )
 }
