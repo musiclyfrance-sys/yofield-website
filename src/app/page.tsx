@@ -64,6 +64,15 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }}
       />
 
+      {/* LCP: preload hero frame 0 at highest priority so it paints instantly */}
+      <link
+        rel="preload"
+        as="image"
+        href="/videos/frames/frame_0001.webp"
+        type="image/webp"
+        fetchPriority="high"
+      />
+
       {/* ─── 1+2. HERO — compact composition: text over video canvas ── */}
       <HeroFull />
 

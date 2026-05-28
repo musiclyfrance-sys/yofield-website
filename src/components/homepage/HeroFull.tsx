@@ -5,7 +5,7 @@
  * ─────────────────────────────────────────────────────────────────
  * Architecture
  * ─────────────
- *   <section>  min-height: 100vh + 968px   (scroll room for frame scrub)
+ *   <section>  min-height: 100vh + 584px   (scroll room for frame scrub)
  *     <div>    sticky top-0, h-screen, relative, overflow-hidden, bg-snow
  *       <canvas>  absolute inset-0, starts at translateY(50%)
  *       <div>     absolute inset-0, z-20   (text + CTAs, fades out)
@@ -17,7 +17,7 @@
  *   progress = -section.getBoundingClientRect().top / (sectionH - vh)
  *   [0 → 0.35]  canvas translateY 50% → 0%   (slides up to full-screen)
  *   [0 → 0.30]  text opacity 1 → 0          (fades out)
- *   [0 → 1.00]  frames 0 → 120             (scrubbing)
+ *   [0 → 1.00]  frames 0 → 72              (scrubbing)
  *
  * Canvas draw — drawCoverTopAligned (ALL viewports)
  * ──────────────────────────────────────────────────
@@ -33,9 +33,9 @@ import RevealText from '@/components/animations/RevealText'
 import MagneticButton from '@/components/animations/MagneticButton'
 
 /* ─── Config ──────────────────────────────────────────── */
-const FRAME_COUNT      = 121
+const FRAME_COUNT      = 73
 const SCROLL_PER_FRAME = 8
-const EXTRA_SCROLL     = FRAME_COUNT * SCROLL_PER_FRAME   // 968 px
+const EXTRA_SCROLL     = FRAME_COUNT * SCROLL_PER_FRAME   // 584 px
 
 const FRAME_URLS = Array.from({ length: FRAME_COUNT }, (_, i) =>
   `/videos/frames/frame_${String(i + 1).padStart(4, '0')}.webp`

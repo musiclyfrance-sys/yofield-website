@@ -4,8 +4,8 @@
  * HeroVideoScroll — Apple-style scroll-driven frame scrubbing
  * ───────────────────────────────────────────────────────────
  * • Sticky canvas fills 100 vh, no fade, no movement.
- * • 121 WebP frames (native 1928 × 1072) preloaded into memory on mount.
- * • Scroll progress [0→1] maps to frame index [0→120].
+ * • 73 WebP frames (1920 × 884) preloaded into memory on mount.
+ * • Scroll progress [0→1] maps to frame index [0→72].
  * • Canvas redraws via useMotionValueEvent — zero React re-renders.
  * • DPR-aware, imageSmoothingQuality = 'high' for crisp retina.
  * • Desktop (>768 px): object-cover — full-bleed landscape crop.
@@ -18,9 +18,9 @@ import { useScroll, useMotionValueEvent } from 'framer-motion'
 import NextImage from 'next/image'
 
 /* ─── Config ──────────────────────────────────────────── */
-const FRAME_COUNT      = 121
+const FRAME_COUNT      = 73
 const SCROLL_PER_FRAME = 8          // px of scroll room per frame
-const EXTRA_SCROLL     = FRAME_COUNT * SCROLL_PER_FRAME  // 968 px
+const EXTRA_SCROLL     = FRAME_COUNT * SCROLL_PER_FRAME  // 584 px
 const SNOW             = '#FAFAF7'
 
 const FRAME_URLS = Array.from({ length: FRAME_COUNT }, (_, i) =>
