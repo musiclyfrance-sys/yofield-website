@@ -290,13 +290,26 @@ export default function HeroFull() {
     return () => ro.disconnect()
   }, [reducedMotion, getProgress, applyProgress])
 
-  /* Native scroll listener — works with Lenis (Lenis dispatches window scroll) */
+  /* RAF loop — reads getBoundingClientRect() every frame.
+   * Lenis does NOT dispatch window 'scroll' events; it runs its own RAF-based
+   * interpolation. Polling via rAF is the only reliable way to stay in sync. */
   useEffect(() => {
     if (reducedMotion) return
-    const onScroll = () => applyProgress(getProgress())
-    window.addEventListener('scroll', onScroll, { passive: true })
-    onScroll() // set initial position before first scroll
-    return () => window.removeEventListener('scroll', onScroll)
+    let rafId: number
+    let lastProgress = -1
+
+    const tick = () => {
+      const progress = getProgress()
+      // Only repaint when progress actually changed (saves canvas work)
+      if (Math.abs(progress - lastProgress) > 0.0005) {
+        lastProgress = progress
+        applyProgress(progress)
+      }
+      rafId = requestAnimationFrame(tick)
+    }
+
+    rafId = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(rafId)
   }, [reducedMotion, getProgress, applyProgress])
 
   /* Reduced-motion: static first frame */
