@@ -298,14 +298,17 @@ export default function HeroFull() {
    * interpolation. Polling via rAF is the only reliable way to stay in sync.
    * getProgress/applyProgress read refs live — no stale closure risk. */
   useEffect(() => {
+    // Debug marker: always set, even if reducedMotion
+    ;(window as Window & { __rafEffectFired?: boolean }).__rafEffectFired = true
+    ;(window as Window & { __rafReducedMotion?: boolean }).__rafReducedMotion = reducedMotion
+
     if (reducedMotion) return
     let rafId: number
     let lastProgress = -1
 
     const tick = () => {
+      ;(window as Window & { __heroProgress?: number }).__heroProgress = getProgress()
       const progress = getProgress()
-      // Debug: expose to window for diagnosis (remove after fix confirmed)
-      ;(window as Window & { __heroProgress?: number }).__heroProgress = progress
       // Only repaint when progress actually changed (saves canvas work)
       if (Math.abs(progress - lastProgress) > 0.0005) {
         lastProgress = progress
