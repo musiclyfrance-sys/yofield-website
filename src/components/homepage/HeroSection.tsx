@@ -75,7 +75,7 @@ export default function HeroSection() {
               <RevealText
                 text="Là où votre marque trouve sa forme, sa voix et son terrain."
                 as="h1"
-                className="np-900 text-[clamp(44px,6.5vw,80px)] text-soil leading-[1.05]"
+                className="np-900 text-[clamp(38px,7vw,80px)] text-soil leading-[1.05]"
                 stagger={0.025}
                 duration={0.55}
                 delay={0.15}

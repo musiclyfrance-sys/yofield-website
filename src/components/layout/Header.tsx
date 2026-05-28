@@ -242,7 +242,7 @@ export default function Header() {
           {/* Mobile hamburger */}
           <button
             onClick={() => setIsMobileOpen((v) => !v)}
-            className="flex h-10 w-10 flex-col items-center justify-center gap-[5px] lg:hidden"
+            className="flex h-11 w-11 flex-col items-center justify-center gap-[5px] lg:hidden"
             aria-label={isMobileOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
             aria-expanded={isMobileOpen}
           >

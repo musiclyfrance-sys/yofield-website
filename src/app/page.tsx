@@ -319,7 +319,7 @@ export default function HomePage() {
         <div className="container">
           <div className="max-w-4xl">
             <p className="eyebrow text-soil mb-8">Prochaine étape</p>
-            <h2 className="np-900 text-5xl md:text-7xl text-soil leading-none mb-8">
+            <h2 className="np-900 text-4xl md:text-7xl text-soil leading-none mb-8">
               Votre marque,<br className="hidden md:block" /> construite.
             </h2>
             <p className="font-body text-lg text-soil/65 max-w-lg leading-relaxed mb-12">

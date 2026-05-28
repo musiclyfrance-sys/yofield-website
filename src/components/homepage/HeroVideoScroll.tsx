@@ -9,10 +9,12 @@
  * • Canvas redraws via useMotionValueEvent — zero React re-renders.
  * • DPR-aware for sharp retina rendering.
  * • ResizeObserver redraws on window resize.
+ * • prefers-reduced-motion: shows static first frame instead.
  */
 
 import { useRef, useEffect, useState } from 'react'
 import { useScroll, useMotionValueEvent } from 'framer-motion'
+import NextImage from 'next/image'
 
 /* ─── Config ─────────────────────────────────────────── */
 const FRAME_COUNT   = 121
@@ -63,6 +65,17 @@ export default function HeroVideoScroll() {
   const loadedRef   = useRef(0)
   const [ready, setReady] = useState(false)
 
+  /* prefers-reduced-motion — show static first frame */
+  const [reducedMotion, setReducedMotion] = useState(false)
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setReducedMotion(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+
   /* Scroll progress through the section */
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -71,6 +84,8 @@ export default function HeroVideoScroll() {
 
   /* ── Preload frames on mount ─────────────────────── */
   useEffect(() => {
+    if (reducedMotion) return   // skip heavy preload when reduced-motion
+
     let cancelled = false
     const images: HTMLImageElement[] = []
 
@@ -83,6 +98,7 @@ export default function HeroVideoScroll() {
         const canvas = canvasRef.current
         if (canvas) {
           const ctx = canvas.getContext('2d')
+          const dpr = window.devicePixelRatio || 1
           if (ctx) drawCover(ctx, images[0], canvas.width / dpr, canvas.height / dpr)
         }
       }
@@ -93,8 +109,6 @@ export default function HeroVideoScroll() {
       }
     }
 
-    const dpr = typeof window !== 'undefined' ? (window.devicePixelRatio || 1) : 1
-
     FRAME_URLS.forEach((src, i) => {
       const img = new Image()
       img.onload = onLoad
@@ -104,10 +118,12 @@ export default function HeroVideoScroll() {
     })
 
     return () => { cancelled = true }
-  }, [])
+  }, [reducedMotion])
 
   /* ── DPR-aware canvas sizing + ResizeObserver ────── */
   useEffect(() => {
+    if (reducedMotion) return   // skip canvas logic when reduced-motion
+
     const canvas = canvasRef.current
     if (!canvas) return
 
@@ -134,10 +150,12 @@ export default function HeroVideoScroll() {
     resize()
 
     return () => ro.disconnect()
-  }, [scrollYProgress])
+  }, [scrollYProgress, reducedMotion])
 
   /* ── Scroll → frame draw (no re-renders) ─────────── */
   useMotionValueEvent(scrollYProgress, 'change', (progress) => {
+    if (reducedMotion) return   // no animation when reduced-motion
+
     const canvas = canvasRef.current
     const images = framesRef.current
     if (!canvas || !images.length) return
@@ -155,6 +173,27 @@ export default function HeroVideoScroll() {
 
     drawCover(ctx, img, canvas.width / dpr, canvas.height / dpr)
   })
+
+  /* ── Reduced-motion fallback — static first frame ── */
+  if (reducedMotion) {
+    return (
+      <section
+        style={{ height: '100vh' }}
+        aria-label="Image de présentation Yofield"
+      >
+        <div className="relative w-full h-full">
+          <NextImage
+            src={FRAME_URLS[0]}
+            alt=""
+            fill
+            sizes="100vw"
+            className="object-cover"
+            priority
+          />
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section

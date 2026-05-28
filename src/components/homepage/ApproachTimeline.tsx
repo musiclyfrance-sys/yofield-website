@@ -50,79 +50,78 @@ export default function ApproachTimeline() {
     gsap.registerPlugin(ScrollTrigger)
 
     const ctx = gsap.context(() => {
-      // Animate each step in as it enters the viewport
-      stepRefs.current.forEach((el, i) => {
-        if (!el) return
+      const mm = gsap.matchMedia()
 
-        const dot = dotRefs.current[i]
-        const label = labelRefs.current[i]
-        const desc = descRefs.current[i]
+      /* ── Desktop (md+): scroll-driven opacity reveal + progress track ── */
+      mm.add('(min-width: 768px)', () => {
+        stepRefs.current.forEach((el, i) => {
+          if (!el) return
 
-        // Initial state
-        gsap.set([label, desc], { opacity: 0.22 })
-        gsap.set(dot, { scale: 0.7, backgroundColor: 'rgba(15,15,14,0.15)' })
+          const dot   = dotRefs.current[i]
+          const label = labelRefs.current[i]
+          const desc  = descRefs.current[i]
 
-        ScrollTrigger.create({
-          trigger: el,
-          start: 'top 62%',
-          end: 'bottom 38%',
-          onEnter: () => {
-            gsap.to(dot, {
-              scale: 1.4,
-              backgroundColor: '#D4F551',
-              duration: 0.4,
-              ease: 'back.out(1.5)',
-            })
-            gsap.to(label, { opacity: 1, duration: 0.35, ease: 'power2.out' })
-            gsap.to(desc, { opacity: 0.75, duration: 0.4, ease: 'power2.out' })
-            // Advance progress bar
-            if (progressRef.current) {
-              gsap.to(progressRef.current, {
-                scaleY: (i + 1) / steps.length,
-                duration: 0.6,
-                ease: 'power2.inOut',
-              })
-            }
-          },
-          onLeave: () => {
-            gsap.to(dot, {
-              scale: 1,
-              backgroundColor: '#D4F551',
-              duration: 0.3,
-              ease: 'power2.inOut',
-            })
-            gsap.to(label, { opacity: 0.45, duration: 0.3 })
-            gsap.to(desc, { opacity: 0.35, duration: 0.3 })
-          },
-          onEnterBack: () => {
-            gsap.to(dot, {
-              scale: 1.4,
-              backgroundColor: '#D4F551',
-              duration: 0.3,
-              ease: 'back.out(1.5)',
-            })
-            gsap.to(label, { opacity: 1, duration: 0.25 })
-            gsap.to(desc, { opacity: 0.75, duration: 0.3 })
-            if (progressRef.current) {
-              gsap.to(progressRef.current, {
-                scaleY: (i + 1) / steps.length,
-                duration: 0.5,
-                ease: 'power2.inOut',
-              })
-            }
-          },
-          onLeaveBack: () => {
-            gsap.to(dot, {
-              scale: 0.7,
-              backgroundColor: 'rgba(15,15,14,0.15)',
-              duration: 0.3,
-            })
-            gsap.to(label, { opacity: 0.22, duration: 0.25 })
-            gsap.to(desc, { opacity: 0.22, duration: 0.3 })
-            if (progressRef.current && i === 0) {
-              gsap.to(progressRef.current, { scaleY: 0, duration: 0.4 })
-            }
-          },
+          // Dim initially, reveal on scroll
+          gsap.set([label, desc], { opacity: 0.22 })
+          gsap.set(dot, { scale: 0.7, backgroundColor: 'rgba(15,15,14,0.15)' })
+
+          ScrollTrigger.create({
+            trigger: el,
+            start: 'top 62%',
+            end: 'bottom 38%',
+            onEnter: () => {
+              gsap.to(dot, { scale: 1.4, backgroundColor: '#D4F551', duration: 0.4, ease: 'back.out(1.5)' })
+              gsap.to(label, { opacity: 1, duration: 0.35, ease: 'power2.out' })
+              gsap.to(desc, { opacity: 0.75, duration: 0.4, ease: 'power2.out' })
+              if (progressRef.current) {
+                gsap.to(progressRef.current, { scaleY: (i + 1) / steps.length, duration: 0.6, ease: 'power2.inOut' })
+              }
+            },
+            onLeave: () => {
+              gsap.to(dot, { scale: 1, backgroundColor: '#D4F551', duration: 0.3, ease: 'power2.inOut' })
+              gsap.to(label, { opacity: 0.45, duration: 0.3 })
+              gsap.to(desc, { opacity: 0.35, duration: 0.3 })
+            },
+            onEnterBack: () => {
+              gsap.to(dot, { scale: 1.4, backgroundColor: '#D4F551', duration: 0.3, ease: 'back.out(1.5)' })
+              gsap.to(label, { opacity: 1, duration: 0.25 })
+              gsap.to(desc, { opacity: 0.75, duration: 0.3 })
+              if (progressRef.current) {
+                gsap.to(progressRef.current, { scaleY: (i + 1) / steps.length, duration: 0.5, ease: 'power2.inOut' })
+              }
+            },
+            onLeaveBack: () => {
+              gsap.to(dot, { scale: 0.7, backgroundColor: 'rgba(15,15,14,0.15)', duration: 0.3 })
+              gsap.to(label, { opacity: 0.22, duration: 0.25 })
+              gsap.to(desc, { opacity: 0.22, duration: 0.3 })
+              if (progressRef.current && i === 0) {
+                gsap.to(progressRef.current, { scaleY: 0, duration: 0.4 })
+              }
+            },
+          })
+        })
+      })
+
+      /* ── Mobile (<768px): content at full opacity, simple fade-in once ── */
+      mm.add('(max-width: 767px)', () => {
+        stepRefs.current.forEach((el, i) => {
+          if (!el) return
+
+          const label = labelRefs.current[i]
+          const desc  = descRefs.current[i]
+
+          // Start invisible, reveal once as step enters view
+          gsap.set([label, desc], { opacity: 0, y: 10 })
+
+          ScrollTrigger.create({
+            trigger: el,
+            start: 'top 82%',
+            onEnter: () => {
+              gsap.to(label, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' })
+              gsap.to(desc,  { opacity: 1, y: 0, duration: 0.5, delay: 0.08, ease: 'power2.out' })
+            },
+            once: true,
+          })
         })
       })
     }, sectionRef)
