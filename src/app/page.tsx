@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import SiteLayout from '@/components/layout/Navigation'
 import HeroSection from '@/components/homepage/HeroSection'
+import HeroVideoScroll from '@/components/homepage/HeroVideoScroll'
 import ApproachTimeline from '@/components/homepage/ApproachTimeline'
 import ScrollMarquee from '@/components/animations/ScrollMarquee'
 import MagneticButton from '@/components/animations/MagneticButton'
@@ -64,10 +65,17 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }}
       />
 
-      {/* ─── 1. HERO ──────────────────────────────────────────────── */}
+      {/* ─── 1. HERO TEXT — pinned sticky, sparks, fade on scroll ── */}
       <HeroSection />
 
-      {/* ─── 2. MANIFESTO ─────────────────────────────────────────── */}
+      {/* ─── 2. HERO VIDEO — full-screen placeholder / future scrub ─ */}
+      {/* When video is ready: add videoSrc="/videos/hero-scroll.mp4" videoDuration={12} */}
+      <HeroVideoScroll
+        placeholder="/images/hero/homepage.jpg"
+        placeholderAlt="Yofield — paysage cinématique avec fusée citron sur chemin de bois, champ de prairie dorée et montagnes"
+      />
+
+      {/* ─── 3. MANIFESTO ─────────────────────────────────────────── */}
       <section className="bg-snow py-24 md:py-36">
         <div className="container">
           <div className="max-w-3xl">
