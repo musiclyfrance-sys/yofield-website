@@ -68,12 +68,8 @@ export default function HomePage() {
       {/* ─── 1. HERO TEXT — pinned sticky, sparks, fade on scroll ── */}
       <HeroSection />
 
-      {/* ─── 2. HERO VIDEO — full-screen placeholder / future scrub ─ */}
-      {/* When video is ready: add videoSrc="/videos/hero-scroll.mp4" videoDuration={12} */}
-      <HeroVideoScroll
-        placeholder="/images/hero/homepage.jpg"
-        placeholderAlt="Yofield — paysage cinématique avec fusée citron sur chemin de bois, champ de prairie dorée et montagnes"
-      />
+      {/* ─── 2. HERO VIDEO — scroll-driven frame scrubbing ────────── */}
+      <HeroVideoScroll />
 
       {/* ─── 3. MANIFESTO ─────────────────────────────────────────── */}
       <section className="bg-snow py-24 md:py-36">
