@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import RevealText from '@/components/animations/RevealText'
 import MagneticButton from '@/components/animations/MagneticButton'
+import SparkField from '@/components/animations/SparkField'
 
 const ease = [0.16, 1, 0.3, 1] as [number, number, number, number]
 
@@ -29,8 +30,11 @@ export default function HeroSection() {
       className="relative flex min-h-[88vh] flex-col items-center justify-center overflow-hidden bg-snow pt-24 pb-16"
       aria-label="Hero Yofield"
     >
+      {/* SparkField WebGL — particle layer behind all content */}
+      <SparkField className="absolute inset-0 z-0 pointer-events-none" />
+
       <motion.div
-        className="container flex flex-col items-center text-center"
+        className="relative z-10 container flex flex-col items-center text-center"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
