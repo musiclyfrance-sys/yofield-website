@@ -155,6 +155,7 @@ export default function HeroFull() {
   const canvasRef  = useRef<HTMLCanvasElement>(null)
   const framesRef  = useRef<HTMLImageElement[]>([])
   const loadedRef  = useRef(0)
+  const drawnRef   = useRef(false)
   const textRef    = useRef<HTMLDivElement>(null)
   const [ready, setReady]                 = useState(false)
   const [reducedMotion, setReducedMotion] = useState(false)
@@ -202,6 +203,7 @@ export default function HeroFull() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
     drawFrame(ctx, img, canvas.width / dpr, canvas.height / dpr)
+    drawnRef.current = true
   }
 
   /* Preload frames */
@@ -209,23 +211,17 @@ export default function HeroFull() {
     if (reducedMotion) return
     let cancelled = false
     const images: HTMLImageElement[] = []
+    // Expose the array immediately (not only once every frame has loaded) so
+    // applyProgress / resize can paint frame 0 the moment it decodes — and
+    // repaint it after any canvas-clearing resize while the rest still loads.
+    framesRef.current = images
 
     const onLoad = () => {
       if (cancelled) return
       loadedRef.current++
-      // Paint frame 0 the instant it arrives
-      if (loadedRef.current === 1 && images[0]?.complete) {
-        const canvas = canvasRef.current
-        if (canvas) {
-          const ctx = canvas.getContext('2d')
-          const dpr = window.devicePixelRatio || 1
-          if (ctx) drawFrame(ctx, images[0], canvas.width / dpr, canvas.height / dpr)
-        }
-      }
-      if (loadedRef.current === FRAME_COUNT) {
-        framesRef.current = images
-        if (!cancelled) setReady(true)
-      }
+      // Paint as soon as the first frame is available — don't wait for the set.
+      if (loadedRef.current === 1) applyProgress(getProgress())
+      if (loadedRef.current === FRAME_COUNT && !cancelled) setReady(true)
     }
 
     FRAME_URLS.forEach((src, i) => {
@@ -236,6 +232,7 @@ export default function HeroFull() {
       images[i] = img
     })
     return () => { cancelled = true }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reducedMotion])
 
   /* DPR-aware canvas sizing + ResizeObserver */
@@ -275,8 +272,9 @@ export default function HeroFull() {
 
     const tick = () => {
       const progress = getProgress()
-      // Only repaint when progress actually changed (saves canvas work)
-      if (Math.abs(progress - lastProgress) > 0.0005) {
+      // Repaint on change — and keep trying until the first frame is on canvas,
+      // so frame 0 shows at load even though progress stays 0 (no scroll yet).
+      if (Math.abs(progress - lastProgress) > 0.0005 || !drawnRef.current) {
         lastProgress = progress
         applyProgress(progress)
       }
