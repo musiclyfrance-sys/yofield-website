@@ -124,7 +124,7 @@ export const casStudies: CasStudy[] = [
       'communication-digitale-acquisition',
       'production-contenus',
     ],
-    coverImage: '/images/cas/leblanc-associes-cover.jpg',
+    coverImage: '/images/cas/expert-comptable.jpg',
     coverAlt: 'Site vitrine Leblanc et Associés cabinet d\'expertise comptable',
     featured: false,
     tags: ['refonte', 'SEO local', 'expertise comptable', 'TPE PME', 'Île-de-France'],
@@ -152,7 +152,7 @@ export const casStudies: CasStudy[] = [
       'branding-identite-de-marque',
       'intelligence-artificielle-automatisation',
     ],
-    coverImage: '/images/cas/groupe-pavillon-cover.jpg',
+    coverImage: '/images/cas/immobilier-brand-voice.jpg',
     coverAlt: 'Interface du système AI Brand Voice Groupe Pavillon',
     featured: false,
     tags: ['AI brand voice', 'immobilier', 'cohérence marque', 'équipe commerciale', 'Claude'],
@@ -369,4 +369,143 @@ export function getCasByService(serviceSlug: string): CasStudy[] {
 
 export function getCasBySlugs(slugs: string[]): CasStudy[] {
   return slugs.map((s) => casStudies.find((c) => c.slug === s)).filter(Boolean) as CasStudy[]
+}
+
+/* ─── Données enrichies cas (durée, chiffres clés, citation, secteur lié) ───
+   Placeholder crédible — dérivé des résultats narratifs ci-dessus.
+──────────────────────────────────────────────────────────────────────────── */
+
+export interface CasMetric { value: string; label: string }
+export interface CasQuote { text: string; author: string; role: string }
+export interface CasExtra {
+  duration: string
+  metrics: CasMetric[]
+  sectorSlug?: string // /secteurs/[slug] quand une page secteur existe
+  quote?: CasQuote
+}
+
+export const casExtras: Record<string, CasExtra> = {
+  'branding-complet-studio-architecture': {
+    duration: '7 semaines',
+    metrics: [
+      { value: '1ʳᵉ page', label: 'sur 5 requêtes cibles à Paris' },
+      { value: '180 m²', label: 'premier projet signé via le site' },
+      { value: '7 sem.', label: 'du brief au lancement public' },
+    ],
+    quote: {
+      text: "On a enfin une identité et un site à la hauteur des projets qu'on livre.",
+      author: 'Associé fondateur',
+      role: 'Studio Forma',
+    },
+  },
+  'automatisation-ia-cabinet-conseil': {
+    duration: '5 semaines',
+    metrics: [
+      { value: '25 h → 3 h', label: 'de qualification manuelle par mois' },
+      { value: '48 h → 4 h', label: 'délai de première réponse aux leads' },
+      { value: '3 agents', label: 'IA déployés et supervisés' },
+    ],
+  },
+  'ecommerce-marque-cosmetique': {
+    duration: '3 mois',
+    metrics: [
+      { value: '67', label: 'commandes dans les 30 premiers jours' },
+      { value: '3,2 %', label: 'taux de conversion dès le 1er mois' },
+      { value: '58 €', label: 'panier moyen au lancement' },
+    ],
+    quote: {
+      text: "En trois mois, on est passés d'une idée à une vraie marque qui vend.",
+      author: 'Fondatrice',
+      role: 'Flore & Minéral',
+    },
+  },
+  'refonte-site-cabinet-expert-comptable': {
+    duration: '6 semaines',
+    metrics: [
+      { value: '12–18', label: 'leads qualifiés par mois via Google' },
+      { value: '+1', label: 'collaborateur recruté pour la charge' },
+      { value: '6 ans', label: 'de retard comblés en une refonte' },
+    ],
+  },
+  'ai-brand-voice-groupe-immobilier': {
+    duration: '8 semaines',
+    metrics: [
+      { value: '38 / 45', label: 'collaborateurs actifs sur le système' },
+      { value: '−40 %', label: 'de temps de rédaction des propositions' },
+      { value: '4', label: 'agences enfin alignées sur une voix' },
+    ],
+  },
+  'branding-fintech-credit-capital': {
+    duration: '9 semaines',
+    sectorSlug: 'banque-assurance',
+    metrics: [
+      { value: '+34 %', label: 'de conversion sur le simulateur' },
+      { value: '78 %', label: "associent 'clair' à la nouvelle identité" },
+      { value: '200', label: 'utilisateurs testés en perception' },
+    ],
+    quote: {
+      text: 'Notre marque inspire enfin la confiance que notre produit mérite.',
+      author: 'Directeur général',
+      role: 'Crédit Capital',
+    },
+  },
+  'lancement-marque-athletic-club': {
+    duration: '6 semaines',
+    sectorSlug: 'sport',
+    metrics: [
+      { value: '213', label: 'membres dès la première saison' },
+      { value: '+42 %', label: "au-dessus de l'objectif initial" },
+      { value: '2', label: 'médias sportifs régionaux au lancement' },
+    ],
+  },
+  'identite-dataflow-saas-b2b': {
+    duration: '7 semaines',
+    sectorSlug: 'tech',
+    metrics: [
+      { value: '4 % → 11 %', label: 'de conversion des essais gratuits' },
+      { value: '8 j → 3 j', label: 'de temps de décision moyen' },
+      { value: 'Levée', label: 'de fonds deux mois après le lancement' },
+    ],
+    quote: {
+      text: 'On a enfin une marque aussi claire que notre produit est puissant.',
+      author: 'CEO & cofondateur',
+      role: 'DataFlow',
+    },
+  },
+  'site-seo-medcare-clinique': {
+    duration: '10 semaines',
+    sectorSlug: 'sante',
+    metrics: [
+      { value: '35–45', label: 'nouveaux contacts qualifiés par mois' },
+      { value: '+1', label: 'site ouvert depuis la mise en ligne' },
+      { value: '3', label: "niveaux d'architecture SEO" },
+    ],
+  },
+  'branding-maison-tradition-gastronomie': {
+    duration: '8 semaines',
+    sectorSlug: 'restauration',
+    metrics: [
+      { value: '3 sem.', label: "complet à l'avance, en continu" },
+      { value: '30 % → 70 %', label: 'de réservations directes sans commission' },
+      { value: '12 000', label: 'abonnés Instagram en six mois' },
+    ],
+    quote: {
+      text: "L'image du restaurant est enfin à la hauteur de l'assiette.",
+      author: 'Chef & propriétaire',
+      role: 'Maison Tradition',
+    },
+  },
+  'plateforme-learnsphere-formation': {
+    duration: '9 semaines',
+    sectorSlug: 'education',
+    metrics: [
+      { value: '12 % → 29 %', label: 'de transformation des leads' },
+      { value: '+2', label: 'certifications lancées dans la foulée' },
+      { value: '3 mois', label: 'pour des résultats mesurables' },
+    ],
+  },
+}
+
+export function getCasExtra(slug: string): CasExtra | undefined {
+  return casExtras[slug]
 }

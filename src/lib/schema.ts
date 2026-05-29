@@ -202,6 +202,54 @@ export function localBusinessSchema() {
   }
 }
 
+/* ─── CreativeWork (cas client / case study) ────────────── */
+
+export function caseStudySchema({
+  title,
+  description,
+  slug,
+  image,
+  year,
+  clientName,
+  sector,
+}: {
+  title: string
+  description: string
+  slug: string
+  image?: string
+  year?: number
+  clientName?: string
+  sector?: string
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: title,
+    headline: title,
+    description,
+    url: `${siteUrl}/cas/${slug}`,
+    ...(year && { dateCreated: String(year) }),
+    ...(image && {
+      image: { '@type': 'ImageObject', url: `${siteUrl}${image}` },
+    }),
+    ...(sector && { about: sector }),
+    ...(clientName && {
+      sourceOrganization: { '@type': 'Organization', name: clientName },
+    }),
+    creator: {
+      '@type': 'Organization',
+      name: 'Yofield',
+      url: siteUrl,
+    },
+    inLanguage: 'fr-FR',
+    isPartOf: {
+      '@type': 'CollectionPage',
+      name: 'Cas clients Yofield',
+      url: `${siteUrl}/cas`,
+    },
+  }
+}
+
 /* ─── Utility: inject schema as script tag content ──────── */
 
 export function schemaToString(schema: object): string {

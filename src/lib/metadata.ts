@@ -78,11 +78,17 @@ export function buildPrestationMeta(
   })
 }
 
-export function buildCasMeta(title: string, description: string, slug: string): Metadata {
+export function buildCasMeta(
+  title: string,
+  description: string,
+  slug: string,
+  ogImage?: string
+): Metadata {
   return buildMetadata({
-    title: `${title} — Studio Yofield`,
+    title: `${title} — Cas client Yofield`,
     description,
     canonical: `/cas/${slug}`,
+    ogImage,
   })
 }
 

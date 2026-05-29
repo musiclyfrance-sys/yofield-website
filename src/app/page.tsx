@@ -7,6 +7,7 @@ import ScrollMarquee from '@/components/animations/ScrollMarquee'
 import MagneticButton from '@/components/animations/MagneticButton'
 import RevealText from '@/components/animations/RevealText'
 import ServicesShowcase from '@/components/homepage/ServicesShowcase'
+import { ClientLogo } from '@/components/cas/ClientLogos'
 import { getFeaturedCas } from '@/data/cas'
 import { buildMetadata } from '@/lib/metadata'
 import { organizationSchema, websiteSchema } from '@/lib/schema'
@@ -119,10 +120,14 @@ export default function HomePage() {
 
                 {/* Content */}
                 <div className="flex flex-col flex-1 p-5">
-                  <p className="eyebrow text-soil mb-3">
-                    {cas.client}&nbsp;&nbsp;·&nbsp;&nbsp;{cas.year}
-                  </p>
-                  <h3 className="np-700 text-base text-soil mb-3 leading-snug flex-1">
+                  <ClientLogo
+                    slug={cas.slug}
+                    name={cas.client}
+                    markClassName="h-7 w-7 text-soil transition-colors duration-300 group-hover:text-pine"
+                    nameClassName="text-base text-soil"
+                    className="mb-3 gap-2.5"
+                  />
+                  <h3 className="np-700 text-sm text-soil/70 mb-3 leading-snug flex-1">
                     {cas.title}
                   </h3>
                   <div className="flex flex-wrap gap-2 mt-4">

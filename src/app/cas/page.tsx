@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { casStudies } from '@/data/cas'
 import SiteLayout from '@/components/layout/Navigation'
 import { buildMetadata } from '@/lib/metadata'
+import { ClientLogo } from '@/components/cas/ClientLogos'
 
 export const metadata = buildMetadata({
   title: 'Cas clients — Studio Yofield',
@@ -35,53 +36,48 @@ export default function CasPage() {
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {casStudies.map((cas) => (
-              <article
+              <Link
                 key={cas.slug}
-                className="bg-snow rounded-2xl p-8 border border-soil/[0.08] hover:border-soil/20 transition-colors duration-200"
+                href={`/cas/${cas.slug}`}
+                className="group flex flex-col rounded-2xl border border-soil/[0.08] p-8 transition-all duration-300 hover:-translate-y-1 hover:border-pine/30"
               >
-                {/* Top row */}
-                <div className="flex items-start justify-between mb-1">
-                  <span className="np-700 text-soil">{cas.client}</span>
-                  <span className="gm text-sm" style={{ color: 'rgba(15,15,14,0.40)' }}>{cas.year}</span>
+                {/* Logo signature */}
+                <ClientLogo
+                  slug={cas.slug}
+                  name={cas.client}
+                  markClassName="h-10 w-10 text-soil transition-colors duration-300 group-hover:text-pine"
+                  nameClassName="text-xl text-soil"
+                  className="mb-6 gap-3"
+                />
+
+                {/* Sector · year */}
+                <div className="mb-3 flex items-center justify-between">
+                  <p className="eyebrow text-soil/50">{cas.sector}</p>
+                  <span className="gm text-sm text-soil/40">{cas.year}</span>
                 </div>
 
-                {/* Sector */}
-                <p className="eyebrow" style={{ color: 'rgba(15,15,14,0.50)' }}>{cas.sector}</p>
-
                 {/* Title */}
-                <h2 className="np-700 text-xl text-soil mt-3 mb-2">{cas.title}</h2>
+                <h2 className="np-700 mb-2 text-xl text-soil">{cas.title}</h2>
 
                 {/* Description */}
-                <p
-                  className="font-body text-sm leading-relaxed line-clamp-3"
-                  style={{ color: 'rgba(15,15,14,0.65)' }}
-                >
+                <p className="line-clamp-2 flex-1 font-body text-sm leading-relaxed text-soil/65">
                   {cas.description}
                 </p>
 
                 {/* Tags */}
-                <div className="flex gap-2 flex-wrap mt-4">
-                  {cas.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="font-body text-xs px-3 py-1 rounded-full"
-                      style={{ backgroundColor: '#EAF3E0', color: 'rgba(15,15,14,0.70)' }}
-                    >
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {cas.tags.slice(0, 4).map((tag) => (
+                    <span key={tag} className="rounded-full bg-mist px-3 py-1 font-body text-xs text-soil/70">
                       {tag}
                     </span>
                   ))}
                 </div>
 
                 {/* Link */}
-                <div className="mt-6">
-                  <Link
-                    href={`/cas/${cas.slug}`}
-                    className="font-body text-sm text-pine hover:underline"
-                  >
-                    Lire le cas complet →
-                  </Link>
-                </div>
-              </article>
+                <span className="mt-6 inline-block font-body text-sm text-pine transition-transform duration-300 group-hover:translate-x-1">
+                  Lire le cas complet →
+                </span>
+              </Link>
             ))}
           </div>
         </div>
