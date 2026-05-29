@@ -6,7 +6,7 @@ import ApproachTimeline from '@/components/homepage/ApproachTimeline'
 import ScrollMarquee from '@/components/animations/ScrollMarquee'
 import MagneticButton from '@/components/animations/MagneticButton'
 import RevealText from '@/components/animations/RevealText'
-import ServicesBento from '@/components/homepage/ServicesBento'
+import ServicesShowcase from '@/components/homepage/ServicesShowcase'
 import { getFeaturedCas } from '@/data/cas'
 import { buildMetadata } from '@/lib/metadata'
 import { organizationSchema, websiteSchema } from '@/lib/schema'
@@ -72,8 +72,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── SERVICES — bento ─────────────────────────────────────── */}
-      <ServicesBento />
+      {/* ─── SERVICES — interactive constellation ─────────────────── */}
+      <ServicesShowcase />
 
       {/* ─── MARQUEE ──────────────────────────────────────────────── */}
       <ScrollMarquee />
