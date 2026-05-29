@@ -9,24 +9,35 @@ import { serviceCategories } from '@/data/services'
 import { prestations } from '@/data/prestations'
 import { secteurs } from '@/data/secteurs'
 
-interface NavLink {
-  label: string
-  href: string
-}
-
-const mainLinks: NavLink[] = [
-  { label: 'Le studio', href: '/le-studio' },
-  { label: 'Cas clients', href: '/cas' },
-  { label: 'Blog', href: '/blog' },
-]
-
 const dropdownVariants = {
   hidden: { opacity: 0, y: 8 },
   visible: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: 8 },
 }
+const dropdownTransition = {
+  duration: 0.18,
+  ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+}
 
-const dropdownTransition = { duration: 0.18, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }
+/* Brand-color chip classes for the menu icons */
+const CHIP: Record<string, string> = {
+  pine: 'bg-pine text-snow',
+  soil: 'bg-soil text-snow',
+  sage: 'bg-sage text-soil',
+  mist: 'bg-mist text-pine',
+  citron: 'bg-citron text-soil',
+}
+/* Secteurs have no color/glyph in data → assigned here */
+const SECTEUR_COLOR = ['pine', 'citron', 'soil', 'sage', 'mist', 'pine']
+const SECTEUR_GLYPH = ['◇', '◈', '◉', '◌', '◎', '❖']
+
+function ArrowRight({ className = '' }: { className?: string }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" className={className}>
+      <path d="M3 7h8M7.5 3.5L11 7l-3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
 
 export default function Header() {
   const pathname = usePathname()
@@ -39,6 +50,9 @@ export default function Header() {
   const activeCat = serviceCategories[activeService]
   const activePrestations = prestations.filter((p) => p.categorySlug === activeCat.slug)
 
+  const featured = secteurs.slice(0, 2)
+  const otherSecteurs = secteurs.slice(2)
+
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 20)
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -46,19 +60,22 @@ export default function Header() {
   }, [])
 
   useEffect(() => {
-    if (isMobileOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
+    if (isMobileOpen) document.body.style.overflow = 'hidden'
+    else document.body.style.overflow = ''
+    return () => {
       document.body.style.overflow = ''
     }
-    return () => { document.body.style.overflow = '' }
   }, [isMobileOpen])
 
-  const isActive = (href: string) =>
-    href === '/' ? pathname === '/' : pathname.startsWith(href)
-
+  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href))
   const isServicesActive = pathname.startsWith('/services')
   const isSecteursActive = pathname.startsWith('/secteurs')
+
+  const linkClass = (active: boolean) =>
+    [
+      'font-body text-sm transition-colors duration-200',
+      active ? 'text-soil font-medium' : 'text-soil/70 hover:text-soil',
+    ].join(' ')
 
   return (
     <header
@@ -86,40 +103,27 @@ export default function Header() {
           {/* Desktop nav */}
           <nav className="hidden items-center gap-8 lg:flex" aria-label="Navigation principale">
             <ul className="flex items-center gap-8">
-              {mainLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className={[
-                      'font-body text-sm transition-colors duration-200',
-                      isActive(link.href)
-                        ? 'text-soil font-medium'
-                        : 'text-soil/70 hover:text-soil',
-                    ].join(' ')}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+              {/* 1 — Le studio */}
+              <li>
+                <Link href="/le-studio" className={linkClass(isActive('/le-studio'))}>
+                  Le studio
+                </Link>
+              </li>
 
-              {/* Secteurs dropdown */}
+              {/* 2 — Secteurs (mega-menu) */}
               <li
                 className="relative"
                 onMouseEnter={() => setIsSecteursOpen(true)}
                 onMouseLeave={() => setIsSecteursOpen(false)}
               >
                 <button
-                  className={[
-                    'flex items-center gap-1 font-body text-sm transition-colors duration-200',
-                    isSecteursActive ? 'text-soil font-medium' : 'text-soil/70 hover:text-soil',
-                  ].join(' ')}
+                  className={`flex items-center gap-1 ${linkClass(isSecteursActive)}`}
                   aria-expanded={isSecteursOpen}
                   aria-haspopup="true"
                 >
                   Secteurs
                   <svg
-                    width="12" height="12" viewBox="0 0 12 12" fill="none"
-                    aria-hidden="true"
+                    width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"
                     className={`transition-transform duration-200 ${isSecteursOpen ? 'rotate-180' : ''}`}
                   >
                     <path d="M2 4.5L6 8L10 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -134,61 +138,87 @@ export default function Header() {
                       animate="visible"
                       exit="exit"
                       transition={dropdownTransition}
-                      className="absolute left-1/2 top-full mt-3 w-[480px] -translate-x-1/2 rounded-xl bg-snow shadow-lg ring-1 ring-soil/[0.06]"
+                      className="absolute right-0 top-full pt-3"
                     >
-                      <div className="grid grid-cols-2 gap-1 p-2">
-                        {secteurs.map((s) => (
+                      <div className="w-[680px] overflow-hidden rounded-3xl bg-snow p-6 shadow-xl ring-1 ring-soil/[0.06]">
+                        <p className="eyebrow mb-5 text-soil/40">Secteurs</p>
+                        <div className="grid grid-cols-2 gap-5">
+                          {/* Featured cards */}
+                          <div className="flex flex-col gap-4">
+                            {featured.map((s, i) => (
+                              <Link
+                                key={s.slug}
+                                href={`/secteurs/${s.slug}`}
+                                onClick={() => setIsSecteursOpen(false)}
+                                className="group relative flex min-h-[118px] flex-col justify-end overflow-hidden rounded-2xl p-5 transition-transform duration-300 hover:-translate-y-0.5"
+                                style={{
+                                  background:
+                                    i === 0
+                                      ? 'linear-gradient(135deg,#1F3D2C,#0F0F0E)'
+                                      : 'linear-gradient(135deg,#A8B5AD,#1F3D2C)',
+                                }}
+                              >
+                                <span aria-hidden className="pointer-events-none absolute -right-2 -top-5 text-[84px] leading-none text-snow/10">
+                                  {SECTEUR_GLYPH[i]}
+                                </span>
+                                <h3 className="np-700 relative text-lg text-snow">{s.name}</h3>
+                                <p className="relative mt-1 line-clamp-2 font-body text-xs leading-snug text-snow/70">
+                                  {s.tagline}
+                                </p>
+                              </Link>
+                            ))}
+                          </div>
+
+                          {/* Other secteurs */}
+                          <ul className="flex flex-col justify-center gap-1">
+                            {otherSecteurs.map((s, idx) => {
+                              const i = idx + 2
+                              return (
+                                <li key={s.slug}>
+                                  <Link
+                                    href={`/secteurs/${s.slug}`}
+                                    onClick={() => setIsSecteursOpen(false)}
+                                    className="flex items-center gap-3 rounded-2xl px-3 py-2.5 transition-colors duration-150 hover:bg-mist"
+                                  >
+                                    <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl text-lg ${CHIP[SECTEUR_COLOR[i % SECTEUR_COLOR.length]]}`}>
+                                      {SECTEUR_GLYPH[i % SECTEUR_GLYPH.length]}
+                                    </span>
+                                    <span className="font-body text-[15px] text-soil">{s.name}</span>
+                                  </Link>
+                                </li>
+                              )
+                            })}
+                          </ul>
+                        </div>
+                        <div className="mt-5 border-t border-soil/[0.06] pt-3">
                           <Link
-                            key={s.slug}
-                            href={`/secteurs/${s.slug}`}
-                            className="flex items-start gap-3 rounded-lg px-3 py-2.5 transition-colors duration-150 hover:bg-mist"
+                            href="/secteurs"
                             onClick={() => setIsSecteursOpen(false)}
+                            className="inline-flex items-center gap-2 font-body text-sm font-medium text-soil transition-colors hover:text-pine"
                           >
-                            <span className="mt-px font-mono text-xs text-soil/40" aria-hidden="true">
-                              {s.num}
-                            </span>
-                            <div className="min-w-0">
-                              <p className="font-body text-sm text-soil">{s.name}</p>
-                              <p className="font-body text-xs text-soil/45 leading-snug mt-0.5 truncate">{s.tagline}</p>
-                            </div>
+                            Tous les secteurs <ArrowRight />
                           </Link>
-                        ))}
-                      </div>
-                      <div className="border-t border-soil/[0.06] p-2">
-                        <Link
-                          href="/secteurs"
-                          className="flex items-center gap-2 rounded-lg px-3 py-2.5 transition-colors duration-150 hover:bg-mist"
-                          onClick={() => setIsSecteursOpen(false)}
-                        >
-                          <span className="font-body text-sm font-medium text-soil">Tous les secteurs</span>
-                          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" className="text-soil/40">
-                            <path d="M2.5 6H9.5M6.5 3L9.5 6L6.5 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                        </Link>
+                        </div>
                       </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
               </li>
 
-              {/* Services dropdown */}
+              {/* 3 — Services (mega-menu) */}
               <li
                 className="relative"
                 onMouseEnter={() => setIsServicesOpen(true)}
                 onMouseLeave={() => setIsServicesOpen(false)}
               >
                 <button
-                  className={[
-                    'flex items-center gap-1 font-body text-sm transition-colors duration-200',
-                    isServicesActive ? 'text-soil font-medium' : 'text-soil/70 hover:text-soil',
-                  ].join(' ')}
+                  className={`flex items-center gap-1 ${linkClass(isServicesActive)}`}
                   aria-expanded={isServicesOpen}
                   aria-haspopup="true"
                 >
                   Services
                   <svg
-                    width="12" height="12" viewBox="0 0 12 12" fill="none"
-                    aria-hidden="true"
+                    width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"
                     className={`transition-transform duration-200 ${isServicesOpen ? 'rotate-180' : ''}`}
                   >
                     <path d="M2 4.5L6 8L10 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -203,70 +233,87 @@ export default function Header() {
                       animate="visible"
                       exit="exit"
                       transition={dropdownTransition}
-                      className="absolute right-0 top-full mt-3 w-[600px] overflow-hidden rounded-xl bg-snow shadow-xl ring-1 ring-soil/[0.06]"
+                      className="absolute right-0 top-full pt-3"
                     >
-                      <div className="grid grid-cols-[210px_1fr]">
-                        {/* Pillars — hover to reveal */}
-                        <ul className="border-r border-soil/[0.06] bg-mist/40 p-2">
-                          {serviceCategories.map((cat, i) => (
-                            <li key={cat.slug}>
-                              <Link
-                                href={`/services/${cat.slug}`}
-                                onMouseEnter={() => setActiveService(i)}
-                                onFocus={() => setActiveService(i)}
-                                onClick={() => setIsServicesOpen(false)}
-                                className={[
-                                  'flex items-center gap-2.5 rounded-lg px-3 py-2.5 transition-colors duration-150',
-                                  i === activeService
-                                    ? 'bg-snow text-soil shadow-sm'
-                                    : 'text-soil/65 hover:text-soil',
-                                ].join(' ')}
-                              >
-                                <span className="font-mono text-[10px] text-soil/35">{cat.num}</span>
-                                <span className="font-body text-sm">{cat.nameShort}</span>
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
+                      <div className="w-[680px] overflow-hidden rounded-3xl bg-snow shadow-xl ring-1 ring-soil/[0.06]">
+                        <div className="grid grid-cols-[280px_1fr]">
+                          {/* Pillars — hover to reveal */}
+                          <div className="border-r border-soil/[0.06] p-4">
+                            <p className="eyebrow mb-3 px-3 text-soil/40">Services</p>
+                            <ul>
+                              {serviceCategories.map((cat, i) => (
+                                <li key={cat.slug}>
+                                  <Link
+                                    href={`/services/${cat.slug}`}
+                                    onMouseEnter={() => setActiveService(i)}
+                                    onFocus={() => setActiveService(i)}
+                                    onClick={() => setIsServicesOpen(false)}
+                                    className={`flex items-center gap-3 rounded-2xl px-3 py-2.5 transition-colors duration-150 ${
+                                      i === activeService ? 'bg-mist' : 'hover:bg-mist/50'
+                                    }`}
+                                  >
+                                    <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl text-lg ${CHIP[cat.color] || 'bg-mist text-pine'}`}>
+                                      {cat.icon}
+                                    </span>
+                                    <span className="font-body text-[15px] text-soil">{cat.nameShort}</span>
+                                    <ArrowRight
+                                      className={`ml-auto text-soil transition-all duration-200 ${
+                                        i === activeService ? 'translate-x-0 opacity-100' : '-translate-x-1 opacity-0'
+                                      }`}
+                                    />
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
 
-                        {/* Prestations of the hovered pillar */}
-                        <div className="p-5">
-                          <p className="font-body text-sm font-medium text-soil">{activeCat.name}</p>
-                          <p className="mt-1 mb-4 font-body text-xs leading-snug text-soil/45">
-                            {activeCat.poetic}
-                          </p>
-                          <ul className="grid grid-cols-2 gap-x-4 gap-y-0.5">
-                            {activePrestations.map((p) => (
-                              <li key={p.slug}>
-                                <Link
-                                  href={`/prestations/${p.slug}`}
-                                  onClick={() => setIsServicesOpen(false)}
-                                  className="block rounded-md py-1.5 font-body text-[13px] text-soil/65 transition-colors duration-150 hover:text-pine"
-                                >
-                                  {p.name}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
+                          {/* Prestations of the active pillar */}
+                          <div className="p-6">
+                            <p className="mb-4 font-mono text-[11px] uppercase tracking-widest text-soil/40">
+                              Nos services <span className="italic text-soil/55">{activeCat.nameShort}</span>
+                            </p>
+                            <ul className="flex flex-col gap-2.5">
+                              {activePrestations.map((p) => (
+                                <li key={p.slug}>
+                                  <Link
+                                    href={`/prestations/${p.slug}`}
+                                    onClick={() => setIsServicesOpen(false)}
+                                    className="font-body text-[15px] text-soil/75 transition-colors duration-150 hover:text-pine"
+                                  >
+                                    {p.name}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
                         </div>
-                      </div>
-
-                      {/* Footer */}
-                      <div className="border-t border-soil/[0.06] px-5 py-3">
-                        <Link
-                          href="/services"
-                          onClick={() => setIsServicesOpen(false)}
-                          className="inline-flex items-center gap-2 font-body text-sm font-medium text-soil transition-colors hover:text-pine"
-                        >
-                          Tous les services
-                          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                            <path d="M2.5 6H9.5M6.5 3L9.5 6L6.5 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                        </Link>
+                        <div className="border-t border-soil/[0.06] px-6 py-3">
+                          <Link
+                            href="/services"
+                            onClick={() => setIsServicesOpen(false)}
+                            className="inline-flex items-center gap-2 font-body text-sm font-medium text-soil transition-colors hover:text-pine"
+                          >
+                            Tous les services <ArrowRight />
+                          </Link>
+                        </div>
                       </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
+              </li>
+
+              {/* 4 — Cas clients */}
+              <li>
+                <Link href="/cas" className={linkClass(isActive('/cas'))}>
+                  Cas clients
+                </Link>
+              </li>
+
+              {/* 5 — Blog */}
+              <li>
+                <Link href="/blog" className={linkClass(isActive('/blog'))}>
+                  Blog
+                </Link>
               </li>
             </ul>
 
@@ -283,21 +330,9 @@ export default function Header() {
             aria-label={isMobileOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
             aria-expanded={isMobileOpen}
           >
-            <motion.span
-              animate={isMobileOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
-              transition={{ duration: 0.22 }}
-              className="block h-[1.5px] w-5 bg-soil origin-center"
-            />
-            <motion.span
-              animate={isMobileOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
-              transition={{ duration: 0.18 }}
-              className="block h-[1.5px] w-5 bg-soil"
-            />
-            <motion.span
-              animate={isMobileOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
-              transition={{ duration: 0.22 }}
-              className="block h-[1.5px] w-5 bg-soil origin-center"
-            />
+            <motion.span animate={isMobileOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }} transition={{ duration: 0.22 }} className="block h-[1.5px] w-5 bg-soil origin-center" />
+            <motion.span animate={isMobileOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }} transition={{ duration: 0.18 }} className="block h-[1.5px] w-5 bg-soil" />
+            <motion.span animate={isMobileOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }} transition={{ duration: 0.22 }} className="block h-[1.5px] w-5 bg-soil origin-center" />
           </button>
         </div>
       </div>
@@ -315,19 +350,15 @@ export default function Header() {
             <nav className="flex flex-1 flex-col overflow-y-auto px-6 py-8" aria-label="Navigation mobile">
               <ul className="flex flex-col gap-1">
                 <li>
-                  <Link href="/" onClick={() => setIsMobileOpen(false)}
-                    className={['block rounded-lg px-4 py-3 font-display text-2xl transition-colors duration-150',
-                      isActive('/') ? 'np-700 text-soil' : 'np-300i text-soil/60 hover:text-soil'].join(' ')}
-                  >Accueil</Link>
+                  <Link href="/" onClick={() => setIsMobileOpen(false)} className={['block rounded-lg px-4 py-3 font-display text-2xl transition-colors duration-150', isActive('/') ? 'np-700 text-soil' : 'np-300i text-soil/60 hover:text-soil'].join(' ')}>
+                    Accueil
+                  </Link>
                 </li>
-                {mainLinks.map((link) => (
-                  <li key={link.href}>
-                    <Link href={link.href} onClick={() => setIsMobileOpen(false)}
-                      className={['block rounded-lg px-4 py-3 font-display text-2xl transition-colors duration-150',
-                        isActive(link.href) ? 'np-700 text-soil' : 'np-300i text-soil/60 hover:text-soil'].join(' ')}
-                    >{link.label}</Link>
-                  </li>
-                ))}
+                <li>
+                  <Link href="/le-studio" onClick={() => setIsMobileOpen(false)} className={['block rounded-lg px-4 py-3 font-display text-2xl transition-colors duration-150', isActive('/le-studio') ? 'np-700 text-soil' : 'np-300i text-soil/60 hover:text-soil'].join(' ')}>
+                    Le studio
+                  </Link>
+                </li>
               </ul>
 
               {/* Mobile secteurs */}
@@ -336,11 +367,7 @@ export default function Header() {
                 <ul className="flex flex-col gap-1">
                   {secteurs.map((s) => (
                     <li key={s.slug}>
-                      <Link
-                        href={`/secteurs/${s.slug}`}
-                        onClick={() => setIsMobileOpen(false)}
-                        className="flex items-center gap-3 rounded-lg px-4 py-2.5 transition-colors duration-150 hover:bg-mist"
-                      >
+                      <Link href={`/secteurs/${s.slug}`} onClick={() => setIsMobileOpen(false)} className="flex items-center gap-3 rounded-lg px-4 py-2.5 transition-colors duration-150 hover:bg-mist">
                         <span className="gm text-xs text-soil/40">{s.num}</span>
                         <span className="font-body text-base text-soil">{s.name}</span>
                       </Link>
@@ -355,11 +382,7 @@ export default function Header() {
                 <ul className="flex flex-col gap-1">
                   {serviceCategories.map((cat) => (
                     <li key={cat.slug}>
-                      <Link
-                        href={`/services/${cat.slug}`}
-                        onClick={() => setIsMobileOpen(false)}
-                        className="flex items-center gap-3 rounded-lg px-4 py-2.5 transition-colors duration-150 hover:bg-mist"
-                      >
+                      <Link href={`/services/${cat.slug}`} onClick={() => setIsMobileOpen(false)} className="flex items-center gap-3 rounded-lg px-4 py-2.5 transition-colors duration-150 hover:bg-mist">
                         <span className="gm text-xs text-soil/40">{cat.num}</span>
                         <span className="font-body text-base text-soil">{cat.name}</span>
                       </Link>
@@ -368,13 +391,23 @@ export default function Header() {
                 </ul>
               </div>
 
+              {/* Mobile tail links */}
+              <ul className="mt-6 flex flex-col gap-1 border-t border-soil/[0.08] pt-6">
+                <li>
+                  <Link href="/cas" onClick={() => setIsMobileOpen(false)} className={['block rounded-lg px-4 py-3 font-display text-2xl transition-colors duration-150', isActive('/cas') ? 'np-700 text-soil' : 'np-300i text-soil/60 hover:text-soil'].join(' ')}>
+                    Cas clients
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/blog" onClick={() => setIsMobileOpen(false)} className={['block rounded-lg px-4 py-3 font-display text-2xl transition-colors duration-150', isActive('/blog') ? 'np-700 text-soil' : 'np-300i text-soil/60 hover:text-soil'].join(' ')}>
+                    Blog
+                  </Link>
+                </li>
+              </ul>
+
               {/* Mobile CTA */}
               <div className="mt-auto pt-8">
-                <Link
-                  href="/contact"
-                  onClick={() => setIsMobileOpen(false)}
-                  className="btn btn-citron block w-full py-4 text-center text-base"
-                >
+                <Link href="/contact" onClick={() => setIsMobileOpen(false)} className="btn btn-citron block w-full py-4 text-center text-base">
                   Démarrer un projet
                 </Link>
               </div>
