@@ -9,17 +9,18 @@ import { serviceCategories } from '@/data/services'
 import { prestations } from '@/data/prestations'
 import { secteurs } from '@/data/secteurs'
 
+/* Dropdown enter/exit — x stays at -50% so left-1/2 positioning centers it */
 const dropdownVariants = {
-  hidden: { opacity: 0, y: 8 },
-  visible: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: 8 },
+  hidden: { opacity: 0, y: 8, x: '-50%' },
+  visible: { opacity: 1, y: 0, x: '-50%' },
+  exit: { opacity: 0, y: 8, x: '-50%' },
 }
 const dropdownTransition = {
   duration: 0.18,
   ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
 }
 
-/* Brand-color chip classes for the menu icons */
+/* Brand-color chip classes for menu icons */
 const CHIP: Record<string, string> = {
   pine: 'bg-pine text-snow',
   soil: 'bg-soil text-snow',
@@ -39,6 +40,14 @@ function ArrowRight({ className = '' }: { className?: string }) {
   )
 }
 
+function ChevronDown({ className = '' }: { className?: string }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" className={className}>
+      <path d="M3 5l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
 export default function Header() {
   const pathname = usePathname()
   const [isScrolled, setIsScrolled] = useState(false)
@@ -46,6 +55,7 @@ export default function Header() {
   const [isServicesOpen, setIsServicesOpen] = useState(false)
   const [isSecteursOpen, setIsSecteursOpen] = useState(false)
   const [activeService, setActiveService] = useState(0)
+  const [openMobileService, setOpenMobileService] = useState<number | null>(null)
 
   const activeCat = serviceCategories[activeService]
   const activePrestations = prestations.filter((p) => p.categorySlug === activeCat.slug)
@@ -138,7 +148,7 @@ export default function Header() {
                       animate="visible"
                       exit="exit"
                       transition={dropdownTransition}
-                      className="absolute right-0 top-full pt-3"
+                      className="absolute left-1/2 top-full pt-3"
                     >
                       <div className="w-[680px] overflow-hidden rounded-3xl bg-snow p-6 shadow-xl ring-1 ring-soil/[0.06]">
                         <p className="eyebrow mb-5 text-soil/40">Secteurs</p>
@@ -233,7 +243,7 @@ export default function Header() {
                       animate="visible"
                       exit="exit"
                       transition={dropdownTransition}
-                      className="absolute right-0 top-full pt-3"
+                      className="absolute left-1/2 top-full pt-3"
                     >
                       <div className="w-[680px] overflow-hidden rounded-3xl bg-snow shadow-xl ring-1 ring-soil/[0.06]">
                         <div className="grid grid-cols-[280px_1fr]">
@@ -268,19 +278,23 @@ export default function Header() {
                           </div>
 
                           {/* Prestations of the active pillar */}
-                          <div className="p-6">
-                            <p className="mb-4 font-mono text-[11px] uppercase tracking-widest text-soil/40">
+                          <div className="p-4">
+                            <p className="mb-3 px-3 font-mono text-[11px] uppercase tracking-widest text-soil/40">
                               Nos services <span className="italic text-soil/55">{activeCat.nameShort}</span>
                             </p>
-                            <ul className="flex flex-col gap-2.5">
+                            <ul className="flex flex-col gap-0.5">
                               {activePrestations.map((p) => (
                                 <li key={p.slug}>
                                   <Link
                                     href={`/prestations/${p.slug}`}
                                     onClick={() => setIsServicesOpen(false)}
-                                    className="font-body text-[15px] text-soil/75 transition-colors duration-150 hover:text-pine"
+                                    className="group flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all duration-150 hover:bg-mist/60"
                                   >
-                                    {p.name}
+                                    <span aria-hidden className="h-1.5 w-1.5 shrink-0 rounded-full bg-citron" />
+                                    <span className="flex-1 font-body text-[15px] text-soil/75 transition-colors group-hover:text-soil">
+                                      {p.name}
+                                    </span>
+                                    <ArrowRight className="-translate-x-1 text-pine opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100" />
                                   </Link>
                                 </li>
                               ))}
@@ -337,7 +351,7 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile overlay */}
+      {/* Mobile overlay — scrollable content + PINNED CTA at the bottom */}
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div
@@ -347,7 +361,9 @@ export default function Header() {
             transition={{ duration: 0.32, ease: [0.32, 0.72, 0, 1] }}
             className="fixed inset-0 top-[72px] z-40 flex flex-col bg-snow"
           >
-            <nav className="flex flex-1 flex-col overflow-y-auto px-6 py-8" aria-label="Navigation mobile">
+            {/* Scrollable area */}
+            <nav className="flex-1 overflow-y-auto px-6 py-8 pb-6" aria-label="Navigation mobile">
+              {/* Top links */}
               <ul className="flex flex-col gap-1">
                 <li>
                   <Link href="/" onClick={() => setIsMobileOpen(false)} className={['block rounded-lg px-4 py-3 font-display text-2xl transition-colors duration-150', isActive('/') ? 'np-700 text-soil' : 'np-300i text-soil/60 hover:text-soil'].join(' ')}>
@@ -361,7 +377,69 @@ export default function Header() {
                 </li>
               </ul>
 
-              {/* Mobile secteurs */}
+              {/* Mobile services — expandable, BOLD, above secteurs */}
+              <div className="mt-6 border-t border-soil/[0.08] pt-6">
+                <p className="eyebrow mb-4 px-4">Services</p>
+                <ul className="flex flex-col gap-1">
+                  {serviceCategories.map((cat, i) => {
+                    const isOpen = openMobileService === i
+                    const list = prestations.filter((p) => p.categorySlug === cat.slug)
+                    return (
+                      <li key={cat.slug}>
+                        <button
+                          type="button"
+                          onClick={() => setOpenMobileService(isOpen ? null : i)}
+                          className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-left transition-colors duration-150 hover:bg-mist"
+                          aria-expanded={isOpen}
+                        >
+                          <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-lg text-base ${CHIP[cat.color] || 'bg-mist text-pine'}`}>
+                            {cat.icon}
+                          </span>
+                          <span className="flex-1 font-body text-base font-semibold text-soil">{cat.nameShort}</span>
+                          <ChevronDown className={`shrink-0 text-soil/50 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+                        </button>
+                        <AnimatePresence initial={false}>
+                          {isOpen && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: 'auto', opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                              className="overflow-hidden"
+                            >
+                              <ul className="flex flex-col gap-0.5 pb-2 pl-16 pr-2 pt-1">
+                                {list.map((p) => (
+                                  <li key={p.slug}>
+                                    <Link
+                                      href={`/prestations/${p.slug}`}
+                                      onClick={() => setIsMobileOpen(false)}
+                                      className="flex items-center gap-3 rounded-md px-3 py-2 font-body text-sm text-soil/70 hover:bg-mist"
+                                    >
+                                      <span aria-hidden className="h-1 w-1 shrink-0 rounded-full bg-citron" />
+                                      <span>{p.name}</span>
+                                    </Link>
+                                  </li>
+                                ))}
+                                <li>
+                                  <Link
+                                    href={`/services/${cat.slug}`}
+                                    onClick={() => setIsMobileOpen(false)}
+                                    className="inline-flex items-center gap-2 rounded-md px-3 py-2 font-body text-sm font-medium text-pine hover:bg-mist"
+                                  >
+                                    Voir {cat.nameShort} <ArrowRight />
+                                  </Link>
+                                </li>
+                              </ul>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </div>
+
+              {/* Mobile secteurs — simple list, below services */}
               <div className="mt-6 border-t border-soil/[0.08] pt-6">
                 <p className="eyebrow mb-4 px-4">Secteurs</p>
                 <ul className="flex flex-col gap-1">
@@ -376,22 +454,7 @@ export default function Header() {
                 </ul>
               </div>
 
-              {/* Mobile services */}
-              <div className="mt-6 border-t border-soil/[0.08] pt-6">
-                <p className="eyebrow mb-4 px-4">Services</p>
-                <ul className="flex flex-col gap-1">
-                  {serviceCategories.map((cat) => (
-                    <li key={cat.slug}>
-                      <Link href={`/services/${cat.slug}`} onClick={() => setIsMobileOpen(false)} className="flex items-center gap-3 rounded-lg px-4 py-2.5 transition-colors duration-150 hover:bg-mist">
-                        <span className="gm text-xs text-soil/40">{cat.num}</span>
-                        <span className="font-body text-base text-soil">{cat.name}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Mobile tail links */}
+              {/* Tail links */}
               <ul className="mt-6 flex flex-col gap-1 border-t border-soil/[0.08] pt-6">
                 <li>
                   <Link href="/cas" onClick={() => setIsMobileOpen(false)} className={['block rounded-lg px-4 py-3 font-display text-2xl transition-colors duration-150', isActive('/cas') ? 'np-700 text-soil' : 'np-300i text-soil/60 hover:text-soil'].join(' ')}>
@@ -404,14 +467,21 @@ export default function Header() {
                   </Link>
                 </li>
               </ul>
-
-              {/* Mobile CTA */}
-              <div className="mt-auto pt-8">
-                <Link href="/contact" onClick={() => setIsMobileOpen(false)} className="btn btn-citron block w-full py-4 text-center text-base">
-                  Démarrer un projet
-                </Link>
-              </div>
             </nav>
+
+            {/* Pinned CTA — always visible */}
+            <div
+              className="border-t border-soil/[0.08] bg-snow px-6 py-4"
+              style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 1rem)' }}
+            >
+              <Link
+                href="/contact"
+                onClick={() => setIsMobileOpen(false)}
+                className="btn btn-citron block w-full py-4 text-center text-base"
+              >
+                Démarrer un projet
+              </Link>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
