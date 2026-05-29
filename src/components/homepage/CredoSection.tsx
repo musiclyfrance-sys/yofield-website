@@ -7,8 +7,8 @@
  * layout, citron numbering, CSS "sparks" (brand star motif), and a fast
  * staggered fade-up on enter (whileInView, once). Hover lifts the tile and
  * lights the edge in citron. prefers-reduced-motion → static, no transforms.
- * On mobile (< md) the entrance animation is disabled entirely — the bento
- * is already scannable on small screens and the fade-up reads as jittery.
+ * On mobile (< md) we render plain <div>s (no framer) so the tiles paint
+ * instantly — the entrance animation reads as jittery on small screens.
  */
 
 import { useEffect, useState } from 'react'
@@ -94,7 +94,8 @@ export default function CredoSection() {
     return () => mq.removeEventListener('change', handler)
   }, [])
 
-  /* No entrance animation when reduced-motion is requested OR on mobile. */
+  /* On mobile (or with prefers-reduced-motion) skip the framer wrapper
+     entirely and render plain divs — guarantees tiles are visible. */
   const disable = reduce || isMobile
 
   return (
@@ -123,30 +124,47 @@ export default function CredoSection() {
         </div>
 
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
-          {CREDO.map((c, i) => (
-            <motion.div
-              key={c.n}
-              initial={disable ? false : { opacity: 0, y: 24 }}
-              whileInView={disable ? undefined : { opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.5, delay: i * 0.06, ease }}
-              className={[
-                'group flex flex-col justify-between rounded-2xl bg-snow/[0.03] p-7 ring-1 ring-snow/10 transition-all duration-300 hover:-translate-y-1 hover:bg-snow/[0.05] hover:ring-citron/30 md:p-8',
-                c.big ? 'md:min-h-[200px]' : 'min-h-[150px] md:min-h-[176px]',
-                c.span,
-              ].join(' ')}
-            >
-              <span className="gm text-sm text-citron">{c.n}</span>
-              <p
-                className={[
-                  'np-700 leading-[1.2] text-snow',
-                  c.big ? 'max-w-3xl text-2xl md:text-3xl lg:text-4xl' : 'text-xl md:text-2xl',
-                ].join(' ')}
+          {CREDO.map((c, i) => {
+            const className = [
+              'group flex flex-col justify-between rounded-2xl bg-snow/[0.03] p-7 ring-1 ring-snow/10 transition-all duration-300 hover:-translate-y-1 hover:bg-snow/[0.05] hover:ring-citron/30 md:p-8',
+              c.big ? 'md:min-h-[200px]' : 'min-h-[150px] md:min-h-[176px]',
+              c.span,
+            ].join(' ')
+            const inner = (
+              <>
+                <span className="gm text-sm text-citron">{c.n}</span>
+                <p
+                  className={[
+                    'np-700 leading-[1.2] text-snow',
+                    c.big ? 'max-w-3xl text-2xl md:text-3xl lg:text-4xl' : 'text-xl md:text-2xl',
+                  ].join(' ')}
+                >
+                  {c.text}
+                </p>
+              </>
+            )
+
+            if (disable) {
+              return (
+                <div key={c.n} className={className}>
+                  {inner}
+                </div>
+              )
+            }
+
+            return (
+              <motion.div
+                key={c.n}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.5, delay: i * 0.06, ease }}
+                className={className}
               >
-                {c.text}
-              </p>
-            </motion.div>
-          ))}
+                {inner}
+              </motion.div>
+            )
+          })}
         </div>
       </div>
     </section>
