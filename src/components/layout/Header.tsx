@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { serviceCategories } from '@/data/services'
+import { prestations } from '@/data/prestations'
 import { secteurs } from '@/data/secteurs'
 
 interface NavLink {
@@ -33,6 +34,10 @@ export default function Header() {
   const [isMobileOpen, setIsMobileOpen] = useState(false)
   const [isServicesOpen, setIsServicesOpen] = useState(false)
   const [isSecteursOpen, setIsSecteursOpen] = useState(false)
+  const [activeService, setActiveService] = useState(0)
+
+  const activeCat = serviceCategories[activeService]
+  const activePrestations = prestations.filter((p) => p.categorySlug === activeCat.slug)
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 20)
@@ -198,34 +203,67 @@ export default function Header() {
                       animate="visible"
                       exit="exit"
                       transition={dropdownTransition}
-                      className="absolute left-1/2 top-full mt-3 w-72 -translate-x-1/2 rounded-xl bg-snow shadow-lg ring-1 ring-soil/[0.06]"
+                      className="absolute right-0 top-full mt-3 w-[600px] overflow-hidden rounded-xl bg-snow shadow-xl ring-1 ring-soil/[0.06]"
                     >
-                      <ul className="p-2">
-                        {serviceCategories.map((cat) => (
-                          <li key={cat.slug}>
-                            <Link
-                              href={`/services/${cat.slug}`}
-                              className="flex items-start gap-3 rounded-lg px-3 py-2.5 transition-colors duration-150 hover:bg-mist"
-                              onClick={() => setIsServicesOpen(false)}
-                            >
-                              <span className="mt-px font-mono text-xs text-soil/40" aria-hidden="true">{cat.num}</span>
-                              <span className="font-body text-sm text-soil">{cat.name}</span>
-                            </Link>
-                          </li>
-                        ))}
-                        <li className="mt-1 border-t border-soil/[0.06] pt-1">
-                          <Link
-                            href="/services"
-                            className="flex items-center gap-2 rounded-lg px-3 py-2.5 transition-colors duration-150 hover:bg-mist"
-                            onClick={() => setIsServicesOpen(false)}
-                          >
-                            <span className="font-body text-sm font-medium text-soil">Tous les services</span>
-                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" className="text-soil/40">
-                              <path d="M2.5 6H9.5M6.5 3L9.5 6L6.5 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                          </Link>
-                        </li>
-                      </ul>
+                      <div className="grid grid-cols-[210px_1fr]">
+                        {/* Pillars — hover to reveal */}
+                        <ul className="border-r border-soil/[0.06] bg-mist/40 p-2">
+                          {serviceCategories.map((cat, i) => (
+                            <li key={cat.slug}>
+                              <Link
+                                href={`/services/${cat.slug}`}
+                                onMouseEnter={() => setActiveService(i)}
+                                onFocus={() => setActiveService(i)}
+                                onClick={() => setIsServicesOpen(false)}
+                                className={[
+                                  'flex items-center gap-2.5 rounded-lg px-3 py-2.5 transition-colors duration-150',
+                                  i === activeService
+                                    ? 'bg-snow text-soil shadow-sm'
+                                    : 'text-soil/65 hover:text-soil',
+                                ].join(' ')}
+                              >
+                                <span className="font-mono text-[10px] text-soil/35">{cat.num}</span>
+                                <span className="font-body text-sm">{cat.nameShort}</span>
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+
+                        {/* Prestations of the hovered pillar */}
+                        <div className="p-5">
+                          <p className="font-body text-sm font-medium text-soil">{activeCat.name}</p>
+                          <p className="mt-1 mb-4 font-body text-xs leading-snug text-soil/45">
+                            {activeCat.poetic}
+                          </p>
+                          <ul className="grid grid-cols-2 gap-x-4 gap-y-0.5">
+                            {activePrestations.map((p) => (
+                              <li key={p.slug}>
+                                <Link
+                                  href={`/prestations/${p.slug}`}
+                                  onClick={() => setIsServicesOpen(false)}
+                                  className="block rounded-md py-1.5 font-body text-[13px] text-soil/65 transition-colors duration-150 hover:text-pine"
+                                >
+                                  {p.name}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+
+                      {/* Footer */}
+                      <div className="border-t border-soil/[0.06] px-5 py-3">
+                        <Link
+                          href="/services"
+                          onClick={() => setIsServicesOpen(false)}
+                          className="inline-flex items-center gap-2 font-body text-sm font-medium text-soil transition-colors hover:text-pine"
+                        >
+                          Tous les services
+                          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                            <path d="M2.5 6H9.5M6.5 3L9.5 6L6.5 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </Link>
+                      </div>
                     </motion.div>
                   )}
                 </AnimatePresence>

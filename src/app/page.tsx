@@ -123,7 +123,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── CREDO — manifesto cinématique (remplace la citation) ──── */}
+      {/* ─── CREDO — convictions en bento, lisible d'un coup d'œil ──── */}
       <CredoSection />
 
       {/* ─── CTA FINAL ────────────────────────────────────────────── */}
