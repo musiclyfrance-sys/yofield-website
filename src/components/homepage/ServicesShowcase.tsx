@@ -144,7 +144,7 @@ export default function ServicesShowcase() {
               >
                 <Link
                   href={`/services/${cat.slug}`}
-                  className="group relative block aspect-[4/3] overflow-hidden rounded-3xl ring-1 ring-snow/10"
+                  className="group relative block aspect-[16/10] overflow-hidden rounded-3xl ring-1 ring-snow/10"
                 >
                   <Image
                     src={IMG[cat.slug]}
@@ -171,7 +171,7 @@ export default function ServicesShowcase() {
                       >
                         <Link
                           href={`/prestations/${p.slug}`}
-                          className="inline-block rounded-full border border-snow/15 px-3.5 py-1.5 font-body text-xs text-snow/70 transition-colors hover:border-citron hover:text-citron"
+                          className="inline-block rounded-full border border-snow/15 px-4 py-2 font-body text-sm text-snow/70 transition-colors hover:border-citron hover:text-citron"
                         >
                           {p.name}
                         </Link>
@@ -180,7 +180,7 @@ export default function ServicesShowcase() {
                   </div>
                   <Link
                     href={`/services/${cat.slug}`}
-                    className="group mt-6 inline-flex items-center gap-2 font-body text-sm font-medium text-citron"
+                    className="group mt-6 inline-flex items-center gap-2 font-body text-base font-medium text-citron"
                   >
                     Découvrir {cat.nameShort}
                     <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
