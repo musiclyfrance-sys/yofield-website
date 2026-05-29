@@ -78,7 +78,7 @@ const HeroText = memo(function HeroText({ mobile = false }: { mobile?: boolean }
 
       {/* Eyebrow */}
       <motion.p
-        initial={{ opacity: 0, y: 12 }}
+        initial={mobile ? false : { opacity: 0, y: 12 }}
         animate={{ opacity: 0.45, y: 0 }}
         transition={{ duration: 0.5, ease, delay: 0.05 }}
         className="eyebrow text-soil mb-5"
@@ -88,8 +88,10 @@ const HeroText = memo(function HeroText({ mobile = false }: { mobile?: boolean }
 
       {/* H1 — exactly 2 lines */}
       <div className="mb-5 max-w-5xl">
-        <h1 className={`np-900 ${mobile ? 'text-[clamp(30px,8vw,36px)]' : 'text-[clamp(26px,3.5vw,54px)]'} text-soil leading-[1.1]`}>
-          {titleSettled ? (
+        <h1 className={`np-900 ${mobile ? 'text-[clamp(33px,9vw,40px)] leading-[1.12]' : 'text-[clamp(26px,3.5vw,54px)] leading-[1.1]'} text-soil`}>
+          {mobile ? (
+            'Là où votre marque trouve sa forme, sa voix et son terrain.'
+          ) : titleSettled ? (
             <>
               <span className="block">Là où votre marque trouve</span>
               <span className="block">sa forme, sa voix et son terrain.</span>
@@ -121,7 +123,7 @@ const HeroText = memo(function HeroText({ mobile = false }: { mobile?: boolean }
 
       {/* Description */}
       <motion.p
-        initial={{ opacity: 0, y: 12 }}
+        initial={mobile ? false : { opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease, delay: 1.5 }}
         className="font-body text-base md:text-lg text-soil/65 max-w-xl leading-relaxed mb-7"
@@ -133,7 +135,7 @@ const HeroText = memo(function HeroText({ mobile = false }: { mobile?: boolean }
 
       {/* CTAs */}
       <motion.div
-        initial={{ opacity: 0, y: 12 }}
+        initial={mobile ? false : { opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease, delay: 1.8 }}
         className="flex flex-wrap items-center justify-center gap-4"
@@ -315,18 +317,20 @@ export default function HeroFull() {
     <>
       {/* ─── MOBILE — static hero: title + CTAs, full-width photo right below, all visible (no fade) ─── */}
       <section className="md:hidden bg-snow">
-        <div className="px-6 pt-[88px] flex flex-col items-center text-center">
+        <div className="px-6 pt-[48px] flex flex-col items-center text-center">
           <HeroText mobile />
         </div>
         <div className="relative w-full mt-6" style={{ aspectRatio: '1920 / 884' }}>
-          <NextImage
-            src={FRAME_URLS[0]}
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover"
-            priority
-          />
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster={FRAME_URLS[0]}
+            className="absolute inset-0 w-full h-full object-cover"
+          >
+            <source src="/videos/hero-mobile.mp4" type="video/mp4" />
+          </video>
         </div>
       </section>
 
