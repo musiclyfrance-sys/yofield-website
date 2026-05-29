@@ -1,28 +1,28 @@
 'use client'
 
 /**
- * HeroFull — photo below CTAs, slides up on scroll, text fades out
- * ─────────────────────────────────────────────────────────────────
+ * HeroFull — full-width photo band anchored to the bottom, visible from load
+ * ─────────────────────────────────────────────────────────────────────────
  * Architecture
  * ─────────────
  *   <section>  min-height: 100vh + 584px   (scroll room for frame scrub)
  *     <div>    sticky top-0, h-screen, relative, overflow-hidden, bg-snow
- *       <canvas>  absolute inset-0, starts at translateY(50%)
- *       <div>     absolute inset-0, z-20   (text + CTAs, fades out)
+ *       <div>     absolute bottom-0 left-0 w-full, aspect-ratio 1920/884
+ *         <canvas>  fills the band — whole frame, NO crop, sky ≈ Snow at top
+ *       <div>     absolute inset-0, z-20   (text + CTAs, fade out on scroll)
  *     </div>
  *   </section>
  *
- * Scroll behaviour (native scroll listener — Lenis-compatible)
- * ─────────────────────────────────────────────────────────────
+ * Scroll behaviour (RAF loop — Lenis-compatible, no window 'scroll' event)
+ * ─────────────────────────────────────────────────────────────────────────
  *   progress = -section.getBoundingClientRect().top / (sectionH - vh)
- *   [0 → 0.35]  canvas translateY 50% → 0%   (slides up to full-screen)
- *   [0 → 0.30]  text opacity 1 → 0          (fades out)
- *   [0 → 1.00]  frames 0 → 72              (scrubbing)
+ *   [0 → 0.30]  text opacity 1 → 0   (fades out)
+ *   [0 → 1.00]  frames 0 → 72        (scrubbing the launch in place)
  *
- * Canvas draw — drawCoverTopAligned (ALL viewports)
- * ──────────────────────────────────────────────────
- *   • object-cover: fills 100% of canvas, zero bars.
- *   • sy = 0 always: sky at canvas top, rocket in lower third.
+ * Canvas draw — whole frame (ALL viewports)
+ * ──────────────────────────────────────────
+ *   • Canvas aspect === image aspect (1920/884) → full frame, full width, no crop.
+ *   • Anchored bottom: grass meets the viewport bottom, sky blends into Snow.
  */
 
 import { memo, useRef, useEffect, useState } from 'react'
@@ -41,45 +41,20 @@ const FRAME_URLS = Array.from({ length: FRAME_COUNT }, (_, i) =>
   `/videos/frames/frame_${String(i + 1).padStart(4, '0')}.webp`
 )
 
-/* ─── Canvas draw — cover, top-aligned (all viewports) ── */
-function drawCoverTopAligned(
-  ctx: CanvasRenderingContext2D,
-  img: HTMLImageElement,
-  canvasW: number,
-  canvasH: number
-) {
-  if (!img.naturalWidth || !img.naturalHeight) return
-
-  const imgAspect    = img.naturalWidth / img.naturalHeight
-  const canvasAspect = canvasW / canvasH
-
-  let sx: number, sy: number, sw: number, sh: number
-
-  if (imgAspect >= canvasAspect) {
-    sh = img.naturalHeight
-    sw = sh * canvasAspect
-    sx = (img.naturalWidth - sw) / 2
-    sy = 0
-  } else {
-    sw = img.naturalWidth
-    sh = sw / canvasAspect
-    sx = 0
-    sy = 0
-  }
-
-  ctx.clearRect(0, 0, canvasW, canvasH)
-  ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvasW, canvasH)
-}
-
+/* ─── Canvas draw — whole frame, no crop (canvas aspect = image aspect) ── */
 function drawFrame(
   ctx: CanvasRenderingContext2D,
   img: HTMLImageElement,
   canvasW: number,
   canvasH: number
 ) {
+  if (!img.naturalWidth || !img.naturalHeight) return
   ctx.imageSmoothingEnabled = true
   ctx.imageSmoothingQuality = 'high'
-  drawCoverTopAligned(ctx, img, canvasW, canvasH)
+  ctx.clearRect(0, 0, canvasW, canvasH)
+  // Canvas is sized to the frame's native aspect (1920/884), so the entire
+  // image fills it exactly — full width, zero cropping, no distortion.
+  ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, canvasW, canvasH)
 }
 
 /* ─── Shared easing ───────────────────────────────────── */
@@ -209,10 +184,6 @@ export default function HeroFull() {
     const canvas = canvasRef.current
     if (!canvas) return
 
-    // Canvas slide-up: translateY(50% → 0%) over [0 → 0.35]
-    const posP = Math.min(progress / 0.35, 1)
-    canvas.style.transform = `translateY(${50 * (1 - posP)}%)`
-
     // Text fade: opacity 1 → 0 over [0 → 0.30]
     const textEl = textRef.current
     if (textEl) {
@@ -325,14 +296,19 @@ export default function HeroFull() {
         aria-label="Hero Yofield"
       >
         <div className="sticky top-0 h-screen relative overflow-hidden bg-snow">
-          <NextImage
-            src={FRAME_URLS[0]}
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover object-top"
-            priority
-          />
+          <div
+            className="absolute bottom-0 left-0 w-full"
+            style={{ aspectRatio: '1920 / 884' }}
+          >
+            <NextImage
+              src={FRAME_URLS[0]}
+              alt=""
+              fill
+              sizes="100vw"
+              className="object-cover"
+              priority
+            />
+          </div>
           <HeroText />
         </div>
       </section>
@@ -347,15 +323,20 @@ export default function HeroFull() {
     >
       <div className="sticky top-0 h-screen relative overflow-hidden bg-snow">
 
-        {/* Canvas — starts at translateY(50%), slides to 0 on scroll */}
-        <canvas
-          ref={canvasRef}
-          className="absolute inset-0 w-full h-full"
-          style={{ display: 'block', willChange: 'transform' }}
-          aria-hidden="true"
-        />
+        {/* Canvas — full-width photo band anchored to the bottom (visible from load) */}
+        <div
+          className="absolute bottom-0 left-0 w-full"
+          style={{ aspectRatio: '1920 / 884' }}
+        >
+          <canvas
+            ref={canvasRef}
+            className="absolute inset-0 w-full h-full"
+            style={{ display: 'block' }}
+            aria-hidden="true"
+          />
+        </div>
 
-        {/* Text — fades out as canvas expands */}
+        {/* Text — fades out on scroll */}
         <div ref={textRef} className="absolute inset-0 z-20" style={{ willChange: 'opacity' }}>
           <HeroText />
         </div>
