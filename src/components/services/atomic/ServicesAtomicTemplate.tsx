@@ -30,7 +30,7 @@ export default function ServicesAtomicTemplate({
           { label: prestation.name, href: `/prestations/${prestation.slug}` },
         ]}
         ctaPrimary={{ label: 'Démarrer ce projet', href: '/contact' }}
-        ctaSecondary={{ label: "Voir l'approche", href: '/approche' }}
+        ctaSecondary={{ label: 'Le studio', href: '/le-studio' }}
         colorAccent={parentCategory.color}
       />
 

@@ -136,15 +136,15 @@ export default function ApproachTimeline() {
         <div className="mb-16 md:mb-20 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div>
             <p className="eyebrow text-soil mb-4">La méthode</p>
-            <h2 className="np-800 text-4xl md:text-5xl text-soil max-w-sm leading-[1.1]">
-              Du brief au lancement public.
+            <h2 className="np-800 text-4xl md:text-5xl text-soil leading-[1.1]">
+              Du brief au<br className="hidden md:block" /> lancement public.
             </h2>
           </div>
           <Link
-            href="/approche"
+            href="/le-studio"
             className="font-body text-sm font-medium text-soil/60 hover:text-soil underline underline-offset-4 transition-colors duration-200 self-start md:self-end"
           >
-            Lire l'approche complète →
+            Le studio et notre approche →
           </Link>
         </div>
 

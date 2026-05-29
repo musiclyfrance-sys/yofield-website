@@ -15,7 +15,6 @@ interface NavLink {
 
 const mainLinks: NavLink[] = [
   { label: 'Le studio', href: '/le-studio' },
-  { label: 'Approche', href: '/approche' },
   { label: 'Cas clients', href: '/cas' },
   { label: 'Blog', href: '/blog' },
 ]

@@ -88,12 +88,11 @@ export default function ServicesShowcase() {
             {cats.map((c, i) => {
               const on = i === active
               return (
-                <button
+                <Link
                   key={c.slug}
-                  type="button"
+                  href={`/services/${c.slug}`}
                   onMouseEnter={() => setActive(i)}
                   onFocus={() => setActive(i)}
-                  onClick={() => setActive(i)}
                   className="group relative block w-full border-t border-snow/10 py-6 text-left last:border-b"
                 >
                   {on && (
@@ -127,7 +126,7 @@ export default function ServicesShowcase() {
                       →
                     </span>
                   </div>
-                </button>
+                </Link>
               )
             })}
           </div>
@@ -159,7 +158,7 @@ export default function ServicesShowcase() {
                   </p>
                 </Link>
 
-                <div className="mt-6">
+                <div className="mt-6 min-h-[230px]">
                   <h3 className="np-700 text-2xl text-snow">{cat.name}</h3>
                   <div className="mt-4 flex flex-wrap gap-2">
                     {activePrest.map((p, pi) => (

@@ -1,15 +1,11 @@
-'use client'
-
-import { useRef } from 'react'
-import {
-  motion,
-  useScroll,
-  useSpring,
-  useTransform,
-  useMotionValue,
-  useVelocity,
-  useAnimationFrame,
-} from 'framer-motion'
+/**
+ * ScrollMarquee — constant-speed seamless marquee of the 5 pillars.
+ * ─────────────────────────────────────────────────────────────────
+ * Pure CSS loop (translateX 0 → -50% on a doubled track) → continuous,
+ * never resets visibly, and is NOT coupled to scroll (no stop / speed-up
+ * when scrolling). overflow-x-clip + generous line-height so descenders
+ * (the "g" in Branding) are never cut.
+ */
 
 const ITEMS = [
   { num: '01', label: 'Branding & Identité' },
@@ -19,68 +15,24 @@ const ITEMS = [
   { num: '05', label: 'IA & Automatisation' },
 ]
 
-/* Duplicate so the loop is seamless at -50% */
 const DOUBLED = [...ITEMS, ...ITEMS]
-
-interface TrackProps {
-  baseVelocity: number
-}
-
-function Track({ baseVelocity }: TrackProps) {
-  const baseX = useMotionValue(0)
-
-  const { scrollY } = useScroll()
-  const scrollVelocity = useVelocity(scrollY)
-  const smoothVelocity = useSpring(scrollVelocity, { damping: 50, stiffness: 400 })
-  const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 4], {
-    clamp: false,
-  })
-
-  const directionFactor = useRef<number>(1)
-
-  useAnimationFrame((_, delta) => {
-    const vf = velocityFactor.get()
-    if (vf < 0) directionFactor.current = -1
-    else if (vf > 0) directionFactor.current = 1
-
-    const step =
-      (baseVelocity + baseVelocity * Math.abs(vf) * directionFactor.current) *
-      (delta / 1000)
-
-    let next = baseX.get() + step
-    // Wrap in [-50, 0) — seamless because items are doubled
-    if (next < -50) next += 50
-    if (next >= 0) next -= 50
-    baseX.set(next)
-  })
-
-  const x = useTransform(baseX, (v) => `${v}%`)
-
-  return (
-    <div className="overflow-hidden" aria-hidden="true">
-      <motion.div
-        className="flex items-center whitespace-nowrap will-change-transform"
-        style={{ x }}
-      >
-        {DOUBLED.map((item, i) => (
-          <span key={i} className="inline-flex items-baseline gap-4 flex-shrink-0 px-8 md:px-14">
-            <span className="gm text-[10px] text-soil/30">{item.num}</span>
-            <span className="np-800 text-4xl md:text-6xl text-soil">{item.label}</span>
-            <span className="text-soil/20 text-2xl ml-4">·</span>
-          </span>
-        ))}
-      </motion.div>
-    </div>
-  )
-}
 
 export default function ScrollMarquee() {
   return (
     <section
-      className="py-10 md:py-14 overflow-hidden"
+      className="overflow-x-clip py-12 md:py-16"
       style={{ borderTop: '0.5px solid rgba(15,15,14,0.08)', borderBottom: '0.5px solid rgba(15,15,14,0.08)' }}
+      aria-hidden="true"
     >
-      <Track baseVelocity={-4} />
+      <div className="flex w-max items-center whitespace-nowrap animate-[marquee_36s_linear_infinite] will-change-transform">
+        {DOUBLED.map((item, i) => (
+          <span key={i} className="inline-flex flex-shrink-0 items-baseline gap-4 px-8 md:px-14">
+            <span className="gm text-[10px] text-soil/30">{item.num}</span>
+            <span className="np-800 text-4xl leading-[1.25] text-soil md:text-6xl">{item.label}</span>
+            <span className="ml-4 text-2xl text-soil/20">·</span>
+          </span>
+        ))}
+      </div>
     </section>
   )
 }
