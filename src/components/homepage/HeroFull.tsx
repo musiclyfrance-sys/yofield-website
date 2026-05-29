@@ -238,6 +238,9 @@ export default function HeroFull() {
   useEffect(() => {
     if (reducedMotion) return
     let cancelled = false
+    // Mobile loads every 2nd frame (~half the weight) — plenty smooth for the
+    // small in-flow scrub; desktop loads the full 73-frame sequence.
+    const urls = isMobile ? FRAME_URLS.filter((_, i) => i % 2 === 0) : FRAME_URLS
     const images: HTMLImageElement[] = []
     // Expose the array immediately (not only once every frame has loaded) so
     // applyProgress / resize can paint frame 0 the moment it decodes — and
@@ -249,10 +252,10 @@ export default function HeroFull() {
       loadedRef.current++
       // Paint as soon as the first frame is available — don't wait for the set.
       if (loadedRef.current === 1) applyProgress(getProgress())
-      if (loadedRef.current === FRAME_COUNT && !cancelled) setReady(true)
+      if (loadedRef.current === urls.length && !cancelled) setReady(true)
     }
 
-    FRAME_URLS.forEach((src, i) => {
+    urls.forEach((src, i) => {
       const img = new Image()
       img.onload  = onLoad
       img.onerror = onLoad
@@ -261,7 +264,7 @@ export default function HeroFull() {
     })
     return () => { cancelled = true }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reducedMotion])
+  }, [reducedMotion, isMobile])
 
   /* DPR-aware canvas sizing + ResizeObserver */
   useEffect(() => {
@@ -344,7 +347,7 @@ export default function HeroFull() {
       const progress = Math.max(0, Math.min(1, window.scrollY / scrubPx))
       const images   = framesRef.current
       if (images.length) {
-        const idx = Math.min(Math.round(progress * (FRAME_COUNT - 1)), FRAME_COUNT - 1)
+        const idx = Math.min(Math.round(progress * (images.length - 1)), images.length - 1)
         const img = images[idx]
         if (img?.complete && (Math.abs(progress - last) > 0.0005 || !drawn)) {
           last = progress
