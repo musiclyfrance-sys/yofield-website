@@ -16,8 +16,9 @@
  * Scroll behaviour (RAF loop — Lenis-compatible, no window 'scroll' event)
  * ─────────────────────────────────────────────────────────────────────────
  *   progress = -section.getBoundingClientRect().top / (sectionH - vh)
- *   [0 → 0.30]  text opacity 1 → 0   (fades out)
- *   [0 → 1.00]  frames 0 → 72        (scrubbing the launch in place)
+ *   [0 → 0.35]  band translateY 40% → 0   (photo starts low, slides up)
+ *   [0 → 0.30]  text opacity 1 → 0         (fades out)
+ *   [0 → 1.00]  frames 0 → 72              (scrubbing the launch)
  *
  * Canvas draw — whole frame (ALL viewports)
  * ──────────────────────────────────────────
@@ -36,6 +37,7 @@ import MagneticButton from '@/components/animations/MagneticButton'
 const FRAME_COUNT      = 73
 const SCROLL_PER_FRAME = 8
 const EXTRA_SCROLL     = FRAME_COUNT * SCROLL_PER_FRAME   // 584 px
+const INITIAL_DROP     = 40   // % of band height — photo starts low (peek under CTAs), slides to 0 by progress 0.35
 
 const FRAME_URLS = Array.from({ length: FRAME_COUNT }, (_, i) =>
   `/videos/frames/frame_${String(i + 1).padStart(4, '0')}.webp`
@@ -157,6 +159,7 @@ export default function HeroFull() {
   const loadedRef  = useRef(0)
   const drawnRef   = useRef(false)
   const textRef    = useRef<HTMLDivElement>(null)
+  const bandRef    = useRef<HTMLDivElement>(null)
   const [ready, setReady]                 = useState(false)
   const [reducedMotion, setReducedMotion] = useState(false)
 
@@ -184,6 +187,13 @@ export default function HeroFull() {
   const applyProgress = (progress: number) => {
     const canvas = canvasRef.current
     if (!canvas) return
+
+    // Photo band: starts low (peeks under the CTAs) and slides up into place
+    const bandEl = bandRef.current
+    if (bandEl) {
+      const posP = Math.min(progress / 0.35, 1)
+      bandEl.style.transform = `translateY(${INITIAL_DROP * (1 - posP)}%)`
+    }
 
     // Text fade: opacity 1 → 0 over [0 → 0.30]
     const textEl = textRef.current
@@ -321,10 +331,11 @@ export default function HeroFull() {
     >
       <div className="sticky top-0 h-screen relative overflow-hidden bg-snow">
 
-        {/* Canvas — full-width photo band anchored to the bottom (visible from load) */}
+        {/* Canvas — full-width photo band, starts low then slides up on scroll */}
         <div
+          ref={bandRef}
           className="absolute bottom-0 left-0 w-full"
-          style={{ aspectRatio: '1920 / 884' }}
+          style={{ aspectRatio: '1920 / 884', willChange: 'transform' }}
         >
           <canvas
             ref={canvasRef}
