@@ -126,7 +126,7 @@ const HeroText = memo(function HeroText({ mobile = false }: { mobile?: boolean }
         transition={{ duration: 0.6, ease, delay: 1.5 }}
         className="font-body text-base md:text-lg text-soil/65 max-w-xl leading-relaxed mb-7"
       >
-        Branding, sites web, acquisition, contenus et IA.
+        Branding, sites web, acquisition, contenus et IA.{' '}
         <br className="hidden sm:block" />
         Du brief au lancement public, sans intermédiaires.
       </motion.p>
@@ -318,7 +318,7 @@ export default function HeroFull() {
         <div className="px-6 pt-[88px] flex flex-col items-center text-center">
           <HeroText mobile />
         </div>
-        <div className="w-full mt-6" style={{ aspectRatio: '1920 / 884' }}>
+        <div className="relative w-full mt-6" style={{ aspectRatio: '1920 / 884' }}>
           <NextImage
             src={FRAME_URLS[0]}
             alt=""
