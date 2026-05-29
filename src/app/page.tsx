@@ -6,7 +6,7 @@ import ApproachTimeline from '@/components/homepage/ApproachTimeline'
 import ScrollMarquee from '@/components/animations/ScrollMarquee'
 import MagneticButton from '@/components/animations/MagneticButton'
 import RevealText from '@/components/animations/RevealText'
-import { serviceCategories } from '@/data/services'
+import ServicesBento from '@/components/homepage/ServicesBento'
 import { getFeaturedCas } from '@/data/cas'
 import { buildMetadata } from '@/lib/metadata'
 import { organizationSchema, websiteSchema } from '@/lib/schema'
@@ -17,37 +17,6 @@ export const metadata = buildMetadata({
     "Yofield assemble pour les fondateurs une marque complète : identité, site, communication, contenus et IA. Du brief au lancement public, en cycle court.",
   canonical: '/',
 })
-
-/* ─── Image mapping for service cards ─── */
-const serviceImages: Record<string, string> = {
-  'branding-identite-de-marque': '/images/services/branding.jpg',
-  'creation-sites-applications': '/images/services/sites-web.jpg',
-  'communication-digitale-acquisition': '/images/services/communication.jpg',
-  'production-contenus': '/images/services/contenus.jpg',
-  'intelligence-artificielle-automatisation': '/images/services/ia.jpg',
-}
-
-/* ─── Static blog teasers ─── */
-const blogTeasers = [
-  {
-    label: 'Branding',
-    title: 'Pourquoi votre logo n\'est pas votre marque',
-    date: 'Mai 2025',
-    href: '/blog/logo-vs-marque',
-  },
-  {
-    label: 'Web',
-    title: 'Les 5 erreurs qui plombent le SEO d\'un site vitrine au lancement',
-    date: 'Avril 2025',
-    href: '/blog/erreurs-seo-lancement',
-  },
-  {
-    label: 'IA',
-    title: 'Ce qu\'un agent IA peut réellement faire pour une TPE en 2025',
-    date: 'Avril 2025',
-    href: '/blog/agents-ia-tpe-2025',
-  },
-]
 
 export default function HomePage() {
   const featuredCas = getFeaturedCas().slice(0, 3)
@@ -103,87 +72,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── 3. SERVICES GRID ─────────────────────────────────────── */}
-      <section className="bg-soil py-24 md:py-32">
-        <div className="container">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
-            <div>
-              <p className="eyebrow text-snow mb-4" style={{ opacity: 0.4 }}>
-                05 piliers
-              </p>
-              <h2 className="np-800 text-4xl md:text-5xl text-snow leading-[1.1]">
-                Tout ce dont une marque<br className="hidden md:block" /> a besoin.
-              </h2>
-            </div>
-            <Link
-              href="/services"
-              className="font-body text-sm text-snow/50 hover:text-snow underline underline-offset-4 transition-colors duration-200 self-start md:self-end"
-            >
-              Voir tous les services →
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
-            {serviceCategories.map((cat, i) => {
-              const isLastOdd =
-                i === serviceCategories.length - 1 &&
-                serviceCategories.length % 3 !== 0
-              const imgSrc = serviceImages[cat.slug]
-
-              return (
-                <Link
-                  key={cat.slug}
-                  href={`/services/${cat.slug}`}
-                  className={[
-                    'group relative flex flex-col rounded-2xl overflow-hidden transition-all duration-300',
-                    'ring-1 ring-snow/[0.08] hover:ring-snow/20 hover:-translate-y-1',
-                    isLastOdd ? 'md:col-span-2 xl:col-span-1' : '',
-                  ]
-                    .filter(Boolean)
-                    .join(' ')}
-                  style={{ minHeight: '280px' }}
-                >
-                  {/* Image */}
-                  {imgSrc && (
-                    <div className="relative flex-shrink-0 overflow-hidden" style={{ height: '160px' }}>
-                      <Image
-                        src={imgSrc}
-                        alt={cat.name}
-                        fill
-                        sizes="(max-width:768px) 100vw,(max-width:1280px) 50vw,33vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-soil/40" />
-                    </div>
-                  )}
-
-                  {/* Content */}
-                  <div className="flex flex-col flex-1 justify-between p-5 bg-snow/[0.05]">
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="gm text-xs text-snow/30">{cat.num}</span>
-                        <span
-                          className="np text-3xl text-snow/15 leading-none"
-                          aria-hidden="true"
-                        >
-                          {cat.icon}
-                        </span>
-                      </div>
-                      <p className="np-700 text-base text-snow mb-2">{cat.name}</p>
-                      <p className="font-body text-xs text-snow/55 leading-relaxed line-clamp-2">
-                        {cat.description}
-                      </p>
-                    </div>
-                    <p className="font-body text-xs text-snow/30 mt-5 transition-colors duration-200 group-hover:text-snow/60">
-                      Découvrir →
-                    </p>
-                  </div>
-                </Link>
-              )
-            })}
-          </div>
-        </div>
-      </section>
+      {/* ─── SERVICES — bento ─────────────────────────────────────── */}
+      <ServicesBento />
 
       {/* ─── MARQUEE ──────────────────────────────────────────────── */}
       <ScrollMarquee />
@@ -274,52 +164,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── 7. BLOG TEASER ───────────────────────────────────────── */}
-      <section className="bg-snow py-24 md:py-32">
-        <div className="container">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
-            <div>
-              <p className="eyebrow text-soil mb-4">Ressources</p>
-              <h2 className="np-800 text-4xl md:text-5xl text-soil leading-[1.1]">
-                Ce qu'on apprend<br className="hidden md:block" /> en faisant.
-              </h2>
-            </div>
-            <Link
-              href="/blog"
-              className="font-body text-sm text-soil/50 hover:text-soil underline underline-offset-4 transition-colors duration-200 self-start md:self-end"
-            >
-              Tous les articles →
-            </Link>
-          </div>
-
-          <div className="flex flex-col">
-            {blogTeasers.map((post, i) => (
-              <div key={post.href}>
-                {i > 0 && (
-                  <div className="divider-soil" />
-                )}
-                <Link
-                  href={post.href}
-                  className="group flex flex-col md:flex-row md:items-center md:justify-between gap-4 py-8 transition-opacity duration-200 hover:opacity-70"
-                >
-                  <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-8 flex-1 min-w-0">
-                    <span className="eyebrow text-soil flex-shrink-0">{post.label}</span>
-                    <h3 className="np-700 text-lg text-soil leading-snug">{post.title}</h3>
-                  </div>
-                  <div className="flex items-center gap-6 flex-shrink-0">
-                    <span className="font-body text-sm text-soil/40">{post.date}</span>
-                    <span className="font-body text-sm text-soil/40 group-hover:text-pine transition-colors duration-200">
-                      Lire →
-                    </span>
-                  </div>
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── 8. CTA FINAL ─────────────────────────────────────────── */}
+      {/* ─── CTA FINAL ────────────────────────────────────────────── */}
       <section className="bg-citron py-32 md:py-40">
         <div className="container">
           <div className="max-w-4xl">
