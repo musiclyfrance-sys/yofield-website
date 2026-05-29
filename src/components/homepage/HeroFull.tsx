@@ -164,6 +164,7 @@ export default function HeroFull() {
   const drawnRef   = useRef(false)
   const textRef    = useRef<HTMLDivElement>(null)
   const bandRef    = useRef<HTMLDivElement>(null)
+  const mobileCanvasRef = useRef<HTMLCanvasElement>(null)
   const [ready, setReady]                 = useState(false)
   const [reducedMotion, setReducedMotion] = useState(false)
   // Synchronous on the client so the scrub effects below never start loading
@@ -235,7 +236,7 @@ export default function HeroFull() {
 
   /* Preload frames */
   useEffect(() => {
-    if (reducedMotion || isMobile) return
+    if (reducedMotion) return
     let cancelled = false
     const images: HTMLImageElement[] = []
     // Expose the array immediately (not only once every frame has loaded) so
@@ -260,7 +261,7 @@ export default function HeroFull() {
     })
     return () => { cancelled = true }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reducedMotion, isMobile])
+  }, [reducedMotion])
 
   /* DPR-aware canvas sizing + ResizeObserver */
   useEffect(() => {
@@ -313,6 +314,51 @@ export default function HeroFull() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reducedMotion, isMobile])
 
+  /* Mobile: scroll-driven frame scrub (in-flow, non-sticky).
+   * Same sliced-frame sequence as desktop — frame 0 at load, advancing as
+   * the photo box scrolls up through the viewport ("plus tu slide, plus ça avance"). */
+  useEffect(() => {
+    if (reducedMotion || !isMobile) return
+    const canvas = mobileCanvasRef.current
+    if (!canvas) return
+    const dpr = window.devicePixelRatio || 1
+    let rafId: number
+    let last = -1
+    let drawn = false
+
+    const resize = () => {
+      canvas.width  = canvas.offsetWidth * dpr
+      canvas.height = canvas.offsetHeight * dpr
+      const ctx = canvas.getContext('2d')
+      if (!ctx) return
+      ctx.scale(dpr, dpr)
+      drawn = false
+    }
+    const ro = new ResizeObserver(resize)
+    ro.observe(canvas)
+    resize()
+
+    const tick = () => {
+      const rect     = canvas.getBoundingClientRect()
+      const scrubPx  = Math.max(1, rect.top + window.scrollY + rect.height) // box's distance from doc top to its bottom
+      const progress = Math.max(0, Math.min(1, window.scrollY / scrubPx))
+      const images   = framesRef.current
+      if (images.length) {
+        const idx = Math.min(Math.round(progress * (FRAME_COUNT - 1)), FRAME_COUNT - 1)
+        const img = images[idx]
+        if (img?.complete && (Math.abs(progress - last) > 0.0005 || !drawn)) {
+          last = progress
+          const ctx = canvas.getContext('2d')
+          if (ctx) { drawFrame(ctx, img, canvas.width / dpr, canvas.height / dpr); drawn = true }
+        }
+      }
+      rafId = requestAnimationFrame(tick)
+    }
+    rafId = requestAnimationFrame(tick)
+    return () => { cancelAnimationFrame(rafId); ro.disconnect() }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reducedMotion, isMobile])
+
   return (
     <>
       {/* ─── MOBILE — static hero: title + CTAs, full-width photo right below, all visible (no fade) ─── */}
@@ -321,16 +367,12 @@ export default function HeroFull() {
           <HeroText mobile />
         </div>
         <div className="relative w-full mt-6" style={{ aspectRatio: '1920 / 884' }}>
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            poster={FRAME_URLS[0]}
-            className="absolute inset-0 w-full h-full object-cover"
-          >
-            <source src="/videos/hero-mobile.mp4" type="video/mp4" />
-          </video>
+          <canvas
+            ref={mobileCanvasRef}
+            className="absolute inset-0 w-full h-full"
+            style={{ display: 'block' }}
+            aria-hidden="true"
+          />
         </div>
       </section>
 
