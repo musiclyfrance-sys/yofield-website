@@ -56,18 +56,6 @@ const methodSteps = [
   },
 ]
 
-const notItems = [
-  "On ne prend pas plus de projets qu'on ne peut en gérer correctement en parallèle.",
-  "On ne fait pas de réunions de validation hebdomadaires pour montrer qu'on travaille.",
-  "On ne garde pas vos fichiers sources comme moyen de vous garder comme client.",
-]
-
-const doItems = [
-  "On livre en 3 à 8 semaines selon le périmètre défini au brief.",
-  "Vous avez accès aux personnes qui font le travail, directement.",
-  "Tous les fichiers sources vous sont transmis à la livraison, sans exception.",
-]
-
 export default function LeStudioPage() {
   return (
     <SiteLayout>
@@ -208,50 +196,6 @@ export default function LeStudioPage() {
                 </div>
               </ScrollReveal>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── CE QU'ON FAIT / NE FAIT PAS ──────────────────────────── */}
-      <section className="section-padding bg-soil text-snow">
-        <div className="container">
-          <ScrollReveal>
-            <p className="eyebrow text-snow/45 mb-6">Ce qui change</p>
-          </ScrollReveal>
-          <ScrollReveal delay={0.1}>
-            <h2 className="np-700 text-3xl text-snow mb-12">Ce qu&apos;on fait, ce qu&apos;on ne fait pas.</h2>
-          </ScrollReveal>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12">
-            <ScrollReveal delay={0.1}>
-              <div className="flex flex-col gap-6">
-                {notItems.map((item, i) => (
-                  <div key={i} className="flex items-start gap-4">
-                    <span
-                      className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center mt-0.5 text-xs font-bold"
-                      style={{ background: 'rgba(220,38,38,0.18)', color: 'rgb(248,113,113)' }}
-                    >
-                      ✗
-                    </span>
-                    <p className="font-body text-sm text-snow/70 leading-relaxed">{item}</p>
-                  </div>
-                ))}
-              </div>
-            </ScrollReveal>
-            <ScrollReveal delay={0.15}>
-              <div className="flex flex-col gap-6">
-                {doItems.map((item, i) => (
-                  <div key={i} className="flex items-start gap-4">
-                    <span
-                      className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center mt-0.5 text-xs font-bold"
-                      style={{ background: 'rgba(212,245,81,0.25)', color: '#D4F551' }}
-                    >
-                      ✓
-                    </span>
-                    <p className="font-body text-sm text-snow/70 leading-relaxed">{item}</p>
-                  </div>
-                ))}
-              </div>
-            </ScrollReveal>
           </div>
         </div>
       </section>

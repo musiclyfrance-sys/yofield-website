@@ -7,8 +7,11 @@
  * layout, citron numbering, CSS "sparks" (brand star motif), and a fast
  * staggered fade-up on enter (whileInView, once). Hover lifts the tile and
  * lights the edge in citron. prefers-reduced-motion → static, no transforms.
+ * On mobile (< md) the entrance animation is disabled entirely — the bento
+ * is already scannable on small screens and the fade-up reads as jittery.
  */
 
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { motion, useReducedMotion } from 'framer-motion'
 
@@ -81,6 +84,18 @@ function Sparks() {
 
 export default function CredoSection() {
   const reduce = useReducedMotion()
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)')
+    setIsMobile(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+
+  /* No entrance animation when reduced-motion is requested OR on mobile. */
+  const disable = reduce || isMobile
 
   return (
     <section className="relative overflow-hidden bg-pine py-24 md:py-32">
@@ -111,8 +126,8 @@ export default function CredoSection() {
           {CREDO.map((c, i) => (
             <motion.div
               key={c.n}
-              initial={reduce ? false : { opacity: 0, y: 24 }}
-              whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
+              initial={disable ? false : { opacity: 0, y: 24 }}
+              whileInView={disable ? undefined : { opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.5, delay: i * 0.06, ease }}
               className={[

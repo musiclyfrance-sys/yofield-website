@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { serviceCategories } from '@/data/services'
 import { prestations } from '@/data/prestations'
 import { secteurs } from '@/data/secteurs'
@@ -56,6 +57,11 @@ export default function Header() {
   const [isSecteursOpen, setIsSecteursOpen] = useState(false)
   const [activeService, setActiveService] = useState(0)
   const [openMobileService, setOpenMobileService] = useState<number | null>(null)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const activeCat = serviceCategories[activeService]
   const activePrestations = prestations.filter((p) => p.categorySlug === activeCat.slug)
@@ -88,6 +94,7 @@ export default function Header() {
     ].join(' ')
 
   return (
+    <>
     <header
       className="sticky top-0 z-50 transition-all duration-300"
       style={{
@@ -350,8 +357,12 @@ export default function Header() {
           </button>
         </div>
       </div>
+    </header>
 
-      {/* Mobile overlay — scrollable content + PINNED CTA at the bottom */}
+    {/* Mobile overlay — portaled to body to escape the sticky header's
+        containing block (backdrop-filter creates one on iOS Safari and
+        traps `position: fixed` children inside the header). */}
+    {mounted && createPortal(
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div
@@ -484,7 +495,9 @@ export default function Header() {
             </div>
           </motion.div>
         )}
-      </AnimatePresence>
-    </header>
+      </AnimatePresence>,
+      document.body
+    )}
+    </>
   )
 }
