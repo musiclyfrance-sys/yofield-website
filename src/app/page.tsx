@@ -5,8 +5,8 @@ import HeroFull from '@/components/homepage/HeroFull'
 import ApproachTimeline from '@/components/homepage/ApproachTimeline'
 import ScrollMarquee from '@/components/animations/ScrollMarquee'
 import MagneticButton from '@/components/animations/MagneticButton'
-import RevealText from '@/components/animations/RevealText'
 import ServicesShowcase from '@/components/homepage/ServicesShowcase'
+import CredoSection from '@/components/homepage/CredoSection'
 import { ClientLogo } from '@/components/cas/ClientLogos'
 import { getFeaturedCas } from '@/data/cas'
 import { buildMetadata } from '@/lib/metadata'
@@ -45,33 +45,6 @@ export default function HomePage() {
 
       {/* ─── 1+2. HERO — compact composition: text over video canvas ── */}
       <HeroFull />
-
-      {/* ─── 3. MANIFESTO ─────────────────────────────────────────── */}
-      <section className="bg-snow py-24 md:py-36">
-        <div className="container">
-          <div className="max-w-3xl">
-            <p className="eyebrow text-soil mb-8">Le studio</p>
-            <RevealText
-              text="On ne prend qu'un client par catégorie de marché à la fois."
-              as="p"
-              className="np-700 text-3xl md:text-4xl text-soil leading-[1.2] mb-8 block"
-              stagger={0.025}
-              duration={0.5}
-            />
-            <p className="font-body text-base text-soil/65 leading-relaxed max-w-2xl mb-10">
-              Parce qu'on ne peut pas construire la meilleure version d'une marque
-              si on travaille simultanément pour son concurrent direct. Le cycle court n'est pas
-              un argument de vente. C'est la seule façon de livrer quelque chose de bon.
-            </p>
-            <Link
-              href="/le-studio"
-              className="font-body text-sm font-medium text-soil hover:text-pine underline underline-offset-4 transition-colors duration-200"
-            >
-              En savoir plus sur le studio →
-            </Link>
-          </div>
-        </div>
-      </section>
 
       {/* ─── SERVICES — interactive constellation ─────────────────── */}
       <ServicesShowcase />
@@ -150,24 +123,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── 6. CITATION FORTE ────────────────────────────────────── */}
-      <section className="bg-pine py-24 md:py-36">
-        <div className="container">
-          <div className="max-w-3xl mx-auto text-center">
-            <p className="eyebrow text-snow mb-10" style={{ opacity: 0.4 }}>
-              Ce en quoi on croit
-            </p>
-            <blockquote>
-              <p className="np-700 text-3xl md:text-5xl text-snow leading-[1.2] mb-10">
-                Une marque qui sait ce qu'elle est n'a pas besoin de crier pour être entendue.
-              </p>
-              <footer className="font-body text-sm text-snow/50">
-                Yofield Studio, 2025
-              </footer>
-            </blockquote>
-          </div>
-        </div>
-      </section>
+      {/* ─── CREDO — manifesto cinématique (remplace la citation) ──── */}
+      <CredoSection />
 
       {/* ─── CTA FINAL ────────────────────────────────────────────── */}
       <section className="bg-citron py-32 md:py-40">
