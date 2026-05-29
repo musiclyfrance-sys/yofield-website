@@ -144,7 +144,7 @@ export default function ServicesShowcase() {
               >
                 <Link
                   href={`/services/${cat.slug}`}
-                  className="group relative block aspect-[16/10] overflow-hidden rounded-3xl ring-1 ring-snow/10"
+                  className="group relative block aspect-[2/1] overflow-hidden rounded-3xl ring-1 ring-snow/10"
                 >
                   <Image
                     src={IMG[cat.slug]}
