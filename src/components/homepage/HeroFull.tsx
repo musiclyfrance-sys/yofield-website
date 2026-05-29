@@ -63,7 +63,7 @@ function drawFrame(
 const ease = [0.16, 1, 0.3, 1] as [number, number, number, number]
 
 /* ─── Text overlay (memo = never re-renders from parent) ─ */
-const HeroText = memo(function HeroText() {
+const HeroText = memo(function HeroText({ mobile = false }: { mobile?: boolean }) {
   const [titleSettled, setTitleSettled] = useState(false)
 
   useEffect(() => {
@@ -72,7 +72,9 @@ const HeroText = memo(function HeroText() {
   }, [])
 
   return (
-    <div className="absolute inset-x-0 top-0 z-20 flex flex-col items-center text-center px-6 pt-[72px] md:pt-[88px]">
+    <div className={mobile
+      ? 'flex flex-col items-center text-center'
+      : 'absolute inset-x-0 top-0 z-20 flex flex-col items-center text-center px-6 pt-[72px] md:pt-[88px]'}>
 
       {/* Eyebrow */}
       <motion.p
@@ -86,7 +88,7 @@ const HeroText = memo(function HeroText() {
 
       {/* H1 — exactly 2 lines */}
       <div className="mb-5 max-w-5xl">
-        <h1 className="np-900 text-[clamp(26px,3.5vw,54px)] text-soil leading-[1.1]">
+        <h1 className={`np-900 ${mobile ? 'text-[clamp(30px,8vw,36px)]' : 'text-[clamp(26px,3.5vw,54px)]'} text-soil leading-[1.1]`}>
           {titleSettled ? (
             <>
               <span className="block">Là où votre marque trouve</span>
@@ -162,11 +164,24 @@ export default function HeroFull() {
   const bandRef    = useRef<HTMLDivElement>(null)
   const [ready, setReady]                 = useState(false)
   const [reducedMotion, setReducedMotion] = useState(false)
+  // Synchronous on the client so the scrub effects below never start loading
+  // the 73 frames on a phone (mobile uses a single static image instead).
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches
+  )
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
     setReducedMotion(mq.matches)
     const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)')
+    setIsMobile(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
     mq.addEventListener('change', handler)
     return () => mq.removeEventListener('change', handler)
   }, [])
@@ -218,7 +233,7 @@ export default function HeroFull() {
 
   /* Preload frames */
   useEffect(() => {
-    if (reducedMotion) return
+    if (reducedMotion || isMobile) return
     let cancelled = false
     const images: HTMLImageElement[] = []
     // Expose the array immediately (not only once every frame has loaded) so
@@ -243,11 +258,11 @@ export default function HeroFull() {
     })
     return () => { cancelled = true }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reducedMotion])
+  }, [reducedMotion, isMobile])
 
   /* DPR-aware canvas sizing + ResizeObserver */
   useEffect(() => {
-    if (reducedMotion) return
+    if (reducedMotion || isMobile) return
     const canvas = canvasRef.current
     if (!canvas) return
     const dpr = window.devicePixelRatio || 1
@@ -269,14 +284,14 @@ export default function HeroFull() {
     resize()
     return () => ro.disconnect()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reducedMotion])
+  }, [reducedMotion, isMobile])
 
   /* RAF loop — reads getBoundingClientRect() every frame.
    * Lenis does NOT dispatch window 'scroll' events; it runs its own RAF-based
    * interpolation. Polling via rAF is the only reliable way to stay in sync.
    * getProgress/applyProgress read refs live — no stale closure risk. */
   useEffect(() => {
-    if (reducedMotion) return
+    if (reducedMotion || isMobile) return
     let rafId: number
     let lastProgress = -1
 
@@ -294,75 +309,74 @@ export default function HeroFull() {
     rafId = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(rafId)
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reducedMotion])
+  }, [reducedMotion, isMobile])
 
-  /* Reduced-motion: static first frame */
-  if (reducedMotion) {
-    return (
+  return (
+    <>
+      {/* ─── MOBILE — static hero: title + CTAs, full-width photo right below, all visible (no fade) ─── */}
+      <section className="md:hidden bg-snow">
+        <div className="px-6 pt-[88px] flex flex-col items-center text-center">
+          <HeroText mobile />
+        </div>
+        <div className="w-full mt-6" style={{ aspectRatio: '1920 / 884' }}>
+          <NextImage
+            src={FRAME_URLS[0]}
+            alt=""
+            fill
+            sizes="100vw"
+            className="object-cover"
+            priority
+          />
+        </div>
+      </section>
+
+      {/* ─── DESKTOP — scroll-driven scrub (unchanged) ─── */}
       <section
+        ref={sectionRef}
+        className="hidden md:block"
         style={{ minHeight: `calc(100vh + ${EXTRA_SCROLL}px)` }}
         aria-label="Hero Yofield"
       >
         <div className="sticky top-0 h-screen relative overflow-hidden bg-snow">
-          <div
-            className="absolute bottom-0 left-0 w-full"
-            style={{ aspectRatio: '1920 / 884' }}
-          >
-            <NextImage
-              src={FRAME_URLS[0]}
-              alt=""
-              fill
-              sizes="100vw"
-              className="object-cover"
-              priority
-            />
+
+          {reducedMotion ? (
+            <div className="absolute bottom-0 left-0 w-full" style={{ aspectRatio: '1920 / 884' }}>
+              <NextImage src={FRAME_URLS[0]} alt="" fill sizes="100vw" className="object-cover" priority />
+            </div>
+          ) : (
+            <div
+              ref={bandRef}
+              className="absolute bottom-0 left-0 w-full"
+              style={{ aspectRatio: '1920 / 884', willChange: 'transform' }}
+            >
+              <canvas
+                ref={canvasRef}
+                className="absolute inset-0 w-full h-full"
+                style={{ display: 'block' }}
+                aria-hidden="true"
+              />
+            </div>
+          )}
+
+          {/* Text — fades out on scroll */}
+          <div ref={textRef} className="absolute inset-0 z-20" style={{ willChange: 'opacity' }}>
+            <HeroText />
           </div>
-          <HeroText />
+
+          {/* Loader */}
+          {!reducedMotion && !ready && (
+            <div
+              className="fixed bottom-6 right-6 z-50 flex items-center gap-2 pointer-events-none"
+              aria-hidden="true"
+            >
+              <span className="block h-1.5 w-1.5 rounded-full bg-citron animate-pulse" />
+              <span className="font-mono text-[10px] text-soil/40 tracking-widest">
+                chargement
+              </span>
+            </div>
+          )}
         </div>
       </section>
-    )
-  }
-
-  return (
-    <section
-      ref={sectionRef}
-      style={{ minHeight: `calc(100vh + ${EXTRA_SCROLL}px)` }}
-      aria-label="Hero Yofield"
-    >
-      <div className="sticky top-0 h-screen relative overflow-hidden bg-snow">
-
-        {/* Canvas — full-width photo band, starts low then slides up on scroll */}
-        <div
-          ref={bandRef}
-          className="absolute bottom-0 left-0 w-full"
-          style={{ aspectRatio: '1920 / 884', willChange: 'transform' }}
-        >
-          <canvas
-            ref={canvasRef}
-            className="absolute inset-0 w-full h-full"
-            style={{ display: 'block' }}
-            aria-hidden="true"
-          />
-        </div>
-
-        {/* Text — fades out on scroll */}
-        <div ref={textRef} className="absolute inset-0 z-20" style={{ willChange: 'opacity' }}>
-          <HeroText />
-        </div>
-
-        {/* Loader */}
-        {!ready && (
-          <div
-            className="fixed bottom-6 right-6 z-50 flex items-center gap-2 pointer-events-none"
-            aria-hidden="true"
-          >
-            <span className="block h-1.5 w-1.5 rounded-full bg-citron animate-pulse" />
-            <span className="font-mono text-[10px] text-soil/40 tracking-widest">
-              chargement
-            </span>
-          </div>
-        )}
-      </div>
-    </section>
+    </>
   )
 }
