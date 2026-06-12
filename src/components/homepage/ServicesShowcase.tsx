@@ -74,10 +74,9 @@ export default function ServicesShowcase() {
           </div>
           <Link
             href="/services"
-            className="group inline-flex items-center gap-2 self-start font-body text-sm text-snow/55 transition-colors hover:text-citron md:self-end"
+            className="btn btn-outline-snow self-start px-5 py-2.5 text-sm md:self-end"
           >
             Voir tous les services
-            <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
           </Link>
         </div>
 
@@ -172,10 +171,15 @@ export default function ServicesShowcase() {
                   </div>
                   <Link
                     href={`/services/${cat.slug}`}
-                    className="group mt-6 inline-flex items-center gap-2 font-body text-base font-medium text-citron"
+                    className="btn btn-citron group mt-7 px-6 py-3 text-sm"
                   >
                     Découvrir {cat.nameShort}
-                    <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                    <span
+                      aria-hidden="true"
+                      className="transition-transform duration-300 group-hover:translate-x-1"
+                    >
+                      →
+                    </span>
                   </Link>
                 </div>
               </motion.div>
@@ -214,8 +218,8 @@ export default function ServicesShowcase() {
                         </li>
                       ))}
                     </ul>
-                    <span className="mt-4 inline-flex items-center gap-2 font-body text-sm font-medium text-citron">
-                      Découvrir →
+                    <span className="btn btn-citron mt-5 px-5 py-2.5 text-sm">
+                      Découvrir
                     </span>
                   </div>
                 </Link>

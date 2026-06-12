@@ -8,6 +8,7 @@ import MagneticButton from '@/components/animations/MagneticButton'
 import ServicesShowcase from '@/components/homepage/ServicesShowcase'
 import CredoSection from '@/components/homepage/CredoSection'
 import { ClientLogo } from '@/components/cas/ClientLogos'
+import ArrowCircle from '@/components/ui/ArrowCircle'
 import { getFeaturedCas } from '@/data/cas'
 import { buildMetadata } from '@/lib/metadata'
 import { organizationSchema, websiteSchema } from '@/lib/schema'
@@ -113,9 +114,12 @@ export default function HomePage() {
                       </span>
                     ))}
                   </div>
-                  <p className="font-body text-xs text-soil/40 mt-4 transition-colors duration-200 group-hover:text-pine">
-                    Lire le cas →
-                  </p>
+                  <div className="mt-4 flex items-center justify-between">
+                    <span className="font-body text-xs text-soil/45 transition-colors duration-200 group-hover:text-soil/70">
+                      Lire le cas
+                    </span>
+                    <ArrowCircle size="sm" />
+                  </div>
                 </div>
               </Link>
             ))}

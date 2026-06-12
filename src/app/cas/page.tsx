@@ -3,6 +3,7 @@ import { casStudies } from '@/data/cas'
 import SiteLayout from '@/components/layout/Navigation'
 import { buildMetadata } from '@/lib/metadata'
 import { ClientLogo } from '@/components/cas/ClientLogos'
+import ArrowCircle from '@/components/ui/ArrowCircle'
 
 export const metadata = buildMetadata({
   title: 'Cas clients — Studio Yofield',
@@ -74,9 +75,12 @@ export default function CasPage() {
                 </div>
 
                 {/* Link */}
-                <span className="mt-6 inline-block font-body text-sm text-pine transition-transform duration-300 group-hover:translate-x-1">
-                  Lire le cas complet →
-                </span>
+                <div className="mt-6 flex items-center justify-between">
+                  <span className="font-body text-sm text-soil/45 transition-colors duration-200 group-hover:text-soil/70">
+                    Lire le cas complet
+                  </span>
+                  <ArrowCircle size="sm" />
+                </div>
               </Link>
             ))}
           </div>

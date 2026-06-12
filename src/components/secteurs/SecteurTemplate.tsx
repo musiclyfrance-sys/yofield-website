@@ -5,6 +5,8 @@ import type { CasStudy } from '@/types'
 import { serviceCategories } from '@/data/services'
 import FAQAccordion from '@/components/services/shared/FAQAccordion'
 import CTABanner from '@/components/services/shared/CTABanner'
+import SecteurSections from '@/components/secteurs/SecteurSections'
+import ArrowCircle from '@/components/ui/ArrowCircle'
 
 /* ─── Client logo placeholder ─── */
 function ClientLogo({ name, initials, color }: { name: string; initials: string; color: string }) {
@@ -14,41 +16,6 @@ function ClientLogo({ name, initials, color }: { name: string; initials: string;
       title={name}
     >
       <span className="gm text-xs text-snow/70 tracking-widest">{initials}</span>
-    </div>
-  )
-}
-
-/* ─── Section content renderer ─── */
-function ContentSection({
-  heading,
-  body,
-  subsections,
-}: {
-  heading: string
-  body: string
-  subsections?: Array<{ heading: string; body: string }>
-}) {
-  const paragraphs = body.split('\n\n').filter(Boolean)
-  return (
-    <div className="mb-16">
-      <h2 className="np-800 text-2xl md:text-3xl text-soil mb-6 max-w-2xl">{heading}</h2>
-      <div className="max-w-3xl space-y-4">
-        {paragraphs.map((p, i) => (
-          <p key={i} className="font-body text-base text-soil/70 leading-relaxed">
-            {p}
-          </p>
-        ))}
-      </div>
-      {subsections && subsections.length > 0 && (
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl">
-          {subsections.map((sub, i) => (
-            <div key={i} className="bg-mist rounded-xl p-6">
-              <h3 className="np-700 text-base text-soil mb-3">{sub.heading}</h3>
-              <p className="font-body text-sm text-soil/65 leading-relaxed">{sub.body}</p>
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   )
 }
@@ -120,9 +87,12 @@ export default function SecteurTemplate({ secteur, casClients }: SecteurTemplate
                   <p className="font-body text-sm text-soil/60 leading-relaxed flex-1">
                     {svc.why}
                   </p>
-                  <p className="font-body text-xs text-soil/35 group-hover:text-pine transition-colors duration-200">
-                    Voir ce pilier →
-                  </p>
+                  <div className="mt-1 flex items-center justify-between">
+                    <span className="font-body text-xs text-soil/40 transition-colors duration-200 group-hover:text-soil/70">
+                      Voir ce pilier
+                    </span>
+                    <ArrowCircle size="sm" />
+                  </div>
                 </Link>
               )
             })}
@@ -159,9 +129,12 @@ export default function SecteurTemplate({ secteur, casClients }: SecteurTemplate
                     <h3 className="np-700 text-sm text-soil mb-3 leading-snug flex-1">
                       {cas.title}
                     </h3>
-                    <p className="font-body text-xs text-soil/40 group-hover:text-pine transition-colors duration-200">
-                      Lire le cas →
-                    </p>
+                    <div className="mt-1 flex items-center justify-between">
+                      <span className="font-body text-xs text-soil/40 transition-colors duration-200 group-hover:text-soil/70">
+                        Lire le cas
+                      </span>
+                      <ArrowCircle size="sm" />
+                    </div>
                   </div>
                 </Link>
               ))}
@@ -170,17 +143,14 @@ export default function SecteurTemplate({ secteur, casClients }: SecteurTemplate
         </section>
       )}
 
-      {/* ─── CONTENU LONG FORM ─────────────────────────────────────────── */}
-      <section className="bg-snow py-20">
-        <div className="container max-w-5xl">
-          {secteur.sections.map((section, i) => (
-            <ContentSection
-              key={i}
-              heading={section.heading}
-              body={section.body}
-              subsections={section.subsections}
-            />
-          ))}
+      {/* ─── CONTENU LONG FORM — accordéon, contenu toujours dans le DOM ── */}
+      <section className="bg-snow py-20 md:py-24">
+        <div className="container">
+          <p className="eyebrow text-soil mb-6">Pour approfondir</p>
+          <h2 className="np-800 text-3xl md:text-4xl text-soil mb-10 md:mb-12">
+            Le secteur, en détail.
+          </h2>
+          <SecteurSections sections={secteur.sections} />
         </div>
       </section>
 

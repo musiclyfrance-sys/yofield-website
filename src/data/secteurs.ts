@@ -58,7 +58,7 @@ export const secteurs: Secteur[] = [
     headline:
       'Une marque financière qui inspire confiance dès le premier contact.',
     intro:
-      "Dans le secteur bancaire et assurantiel, la confiance ne se déclare pas, elle se construit visuellement et verbalement sur chaque point de contact. Une charte graphique vieillissante, un discours générique ou un site difficile à lire suffisent à faire douter un prospect avant même qu'il ait lu votre offre. Yofield travaille avec des établissements financiers et des mutuelles pour aligner leur identité de marque avec la solidité réelle de leurs produits : un positionnement précis, un design qui rassure, une voix qui parle à des personnes et non à des dossiers.",
+      "Dans la banque et l'assurance, la confiance se construit à chaque point de contact. Yofield aligne votre identité de marque sur la solidité réelle de vos produits.",
     clients: [
       { name: 'Crédit Capital', initials: 'CC', color: 'bg-pine' },
       { name: 'Mutuelle Solidaire', initials: 'MS', color: 'bg-soil' },
@@ -195,7 +195,7 @@ export const secteurs: Secteur[] = [
     headline:
       'Une marque sportive aussi forte que ceux qui la portent.',
     intro:
-      "Le sport est l'un des rares secteurs où l'identité de marque déclenche une réponse émotionnelle immédiate. Le maillot d'un club, le logo d'une salle de sport, les couleurs d'une marque de performance : ces éléments visuels créent de l'appartenance avant même que la performance sportive ne soit là pour la justifier. Yofield travaille avec des clubs, des salles, des coachs et des marques de sport pour construire des identités à la hauteur de cette intensité. Des systèmes visuels qui tiennent aussi bien sur un écran qu'en broderie sur un maillot, aussi bien dans une pub Instagram que sur une bâche de gymnase.",
+      "Dans le sport, l'identité crée l'appartenance avant la performance. Yofield construit des marques qui tiennent sur un écran comme en broderie sur un maillot.",
     clients: [
       { name: 'Athletic Club', initials: 'AC', color: 'bg-pine' },
       { name: 'Performance Lab', initials: 'PL', color: 'bg-soil' },
@@ -318,7 +318,7 @@ export const secteurs: Secteur[] = [
     headline:
       'Une marque tech qui transforme la complexité en clarté.',
     intro:
-      "Le défi des startups tech et des éditeurs SaaS n'est pas la qualité du produit : dans la plupart des cas, la technologie est au rendez-vous. Le défi est de faire comprendre cette valeur à des décideurs qui évaluent dix outils en parallèle et prennent leur décision en partie sur des critères de perception. Une marque bien construite, un site clair, un discours précis : ces éléments font basculer les comparaisons. Yofield travaille avec des startups B2B, des éditeurs SaaS et des équipes fondatrices pour construire les marques tech qui gagnent la confiance avant la démonstration produit.",
+      "Votre produit tech est bon, mais le décideur compare dix outils à la fois. Yofield construit les marques SaaS qui gagnent la confiance avant la démo.",
     clients: [
       { name: 'DataFlow', initials: 'DF', color: 'bg-pine' },
       { name: 'CloudSync', initials: 'CS', color: 'bg-soil' },
@@ -453,7 +453,7 @@ export const secteurs: Secteur[] = [
     headline:
       'Une marque santé qui rassure dès le premier regard.',
     intro:
-      "Dans le secteur de la santé et du bien-être, la confiance est la première décision du patient ou du client. Avant même d'évaluer les compétences médicales ou la qualité des soins, il évalue les signaux de crédibilité : le design du site, la clarté du discours, la cohérence visuelle de la communication. Ces éléments ne remplacent pas l'excellence clinique, mais sans eux, cette excellence reste invisible. Yofield travaille avec des professionnels de santé, des cliniques, des centres de bien-être et des marques santé pour construire des identités qui rassurent, informent et fidélisent.",
+      "En santé, la confiance est la première décision du patient. Yofield construit des marques médicales qui rassurent, informent et fidélisent, sans jargon.",
     clients: [
       { name: 'MedCare Plus', initials: 'MC', color: 'bg-pine' },
       { name: 'Sana Clinic', initials: 'SC', color: 'bg-soil' },
@@ -576,7 +576,7 @@ export const secteurs: Secteur[] = [
     headline:
       'Une marque qui donne envie avant la première visite.',
     intro:
-      "Dans la restauration et l'hôtellerie, la décision de réservation se prend souvent sur la base d'une image, d'un post, d'une page Google ou d'un site consulté en trente secondes depuis un téléphone. Cette réalité fait de l'identité visuelle et de la présence digitale un levier direct sur le remplissage. Un restaurant gastronomique avec un Instagram médiocre, un hôtel boutique avec un site générique ou une marque de table sans cohérence visuelle laissent de la valeur sur le terrain chaque semaine. Yofield travaille avec des restaurateurs, hôteliers et marques de l'univers table pour construire des identités qui déclenchent l'envie.",
+      "En restauration et hôtellerie, la réservation se joue sur une image vue en trente secondes. Yofield construit des identités qui donnent envie avant la première visite.",
     clients: [
       { name: 'Maison Tradition', initials: 'MT', color: 'bg-pine' },
       { name: 'The Grand Table', initials: 'GT', color: 'bg-soil' },
@@ -706,7 +706,7 @@ export const secteurs: Secteur[] = [
     headline:
       'Une marque qui attire les bons apprenants, et les garde.',
     intro:
-      "Le marché de la formation et de l'éducation a radicalement changé. Les apprenants comparent les organismes comme ils comparent des produits : sur le site, sur les réseaux, sur les avis. Une école avec un positionnement flou et un site vieillissant perd des inscriptions au profit de concurrents qui communiquent mieux, indépendamment de la qualité réelle de leur pédagogie. Yofield travaille avec des écoles, des organismes de formation professionnelle, des coachs et des plateformes EdTech pour construire des marques éducatives qui attirent les bons apprenants et convainquent les décideurs RH des entreprises partenaires.",
+      "Les apprenants comparent les organismes de formation comme des produits. Yofield construit des marques éducatives qui attirent les bons apprenants, et les gardent.",
     clients: [
       { name: 'LearnSphere', initials: 'LS', color: 'bg-pine' },
       { name: 'EduPath', initials: 'EP', color: 'bg-soil' },

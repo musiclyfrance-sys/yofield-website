@@ -6,6 +6,7 @@ import CTABanner from '@/components/services/shared/CTABanner'
 import FAQAccordion from '@/components/services/shared/FAQAccordion'
 import RelatedLinks from '@/components/services/shared/RelatedLinks'
 import ScrollReveal from '@/components/animations/ScrollReveal'
+import { splitProse } from '@/lib/text'
 import type { Prestation, ServiceCategory } from '@/types'
 
 /* Category universe images (same set as the homepage showcase) */
@@ -64,9 +65,13 @@ export default function ServicesAtomicTemplate({
               </div>
             </ScrollReveal>
             <ScrollReveal delay={0.1}>
-              <p className="font-body max-w-2xl text-base leading-relaxed text-soil/75 md:text-lg">
-                {prestation.longDescription}
-              </p>
+              <div className="max-w-2xl space-y-5">
+                {splitProse(prestation.longDescription).map((p, i) => (
+                  <p key={i} className="font-body text-base leading-relaxed text-soil/75 md:text-lg">
+                    {p}
+                  </p>
+                ))}
+              </div>
             </ScrollReveal>
           </div>
         </div>

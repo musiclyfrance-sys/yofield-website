@@ -9,6 +9,8 @@ import { breadcrumbSchema, caseStudySchema } from '@/lib/schema'
 import SiteLayout from '@/components/layout/Navigation'
 import ScrollReveal from '@/components/animations/ScrollReveal'
 import { ClientMark, ClientLogo } from '@/components/cas/ClientLogos'
+import ArrowCircle from '@/components/ui/ArrowCircle'
+import { splitProse } from '@/lib/text'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -246,9 +248,12 @@ export default async function CasPage({ params }: PageProps) {
                       className="mb-5 gap-2.5"
                     />
                     <p className="np-700 flex-1 text-base leading-snug text-soil/80">{r.title}</p>
-                    <span className="mt-5 font-body text-sm text-pine transition-transform duration-300 group-hover:translate-x-1">
-                      Lire le cas →
-                    </span>
+                    <div className="mt-5 flex items-center justify-between">
+                      <span className="font-body text-sm text-soil/45 transition-colors duration-200 group-hover:text-soil/70">
+                        Lire le cas
+                      </span>
+                      <ArrowCircle size="sm" />
+                    </div>
                   </Link>
                 </ScrollReveal>
               ))}
@@ -298,7 +303,13 @@ function Block({ label, body }: { label: string; body: string }) {
   return (
     <div>
       <h2 className="np-700 mb-4 text-2xl text-soil md:text-3xl">{label}</h2>
-      <p className="font-body text-base leading-relaxed text-soil/75">{body}</p>
+      <div className="space-y-4">
+        {splitProse(body).map((p, i) => (
+          <p key={i} className="font-body text-base leading-relaxed text-soil/75">
+            {p}
+          </p>
+        ))}
+      </div>
     </div>
   )
 }

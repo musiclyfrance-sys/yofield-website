@@ -4,6 +4,7 @@ import {
   getCasByService,
   getCasByCategory,
 } from '@/data/cas'
+import ArrowCircle from '@/components/ui/ArrowCircle'
 import type { CasStudy } from '@/types'
 
 interface ClientTableProps {
@@ -72,13 +73,16 @@ export default function ClientTable({
                       {cas.description}
                     </p>
                   </td>
-                  <td className="py-5 text-right">
+                  <td className="py-5">
                     <Link
                       href={`/cas/${cas.slug}`}
-                      className="font-body text-sm text-soil transition-colors duration-200 hover:text-pine"
+                      className="group ml-auto flex w-fit items-center gap-3"
                       aria-label={`Lire le cas ${cas.client}`}
                     >
-                      Lire le cas &rarr;
+                      <span className="font-body text-sm text-soil/45 transition-colors duration-200 group-hover:text-soil">
+                        Lire le cas
+                      </span>
+                      <ArrowCircle size="sm" />
                     </Link>
                   </td>
                 </tr>
@@ -90,26 +94,27 @@ export default function ClientTable({
         {/* Mobile cards */}
         <div className="flex flex-col gap-6 md:hidden">
           {items.map((cas) => (
-            <div
+            <Link
               key={cas.slug}
-              className="rounded-2xl border border-soil/10 bg-snow p-6 transition-colors duration-150 hover:bg-mist"
+              href={`/cas/${cas.slug}`}
+              className="group block rounded-2xl border border-soil/10 bg-snow p-6 transition-colors duration-150 hover:bg-mist"
+              aria-label={`Lire le cas ${cas.client}`}
             >
               <div className="mb-3 flex items-start justify-between gap-4">
                 <span className="np-700 text-soil">{cas.client}</span>
                 <span className="font-body text-sm text-soil/50">{cas.year}</span>
               </div>
               <p className="eyebrow mb-3 text-soil/50">{cas.sector}</p>
-              <p className="mb-4 font-body text-sm leading-relaxed text-soil/70">
+              <p className="mb-5 font-body text-sm leading-relaxed text-soil/70">
                 {cas.description}
               </p>
-              <Link
-                href={`/cas/${cas.slug}`}
-                className="font-body text-sm text-soil transition-colors duration-200 hover:text-pine"
-                aria-label={`Lire le cas ${cas.client}`}
-              >
-                Lire le cas &rarr;
-              </Link>
-            </div>
+              <div className="flex items-center justify-between">
+                <span className="font-body text-sm text-soil/45 transition-colors duration-200 group-hover:text-soil/70">
+                  Lire le cas
+                </span>
+                <ArrowCircle size="sm" />
+              </div>
+            </Link>
           ))}
         </div>
       </div>

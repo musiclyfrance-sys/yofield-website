@@ -2,6 +2,7 @@ import Link from 'next/link'
 import SiteLayout from '@/components/layout/Navigation'
 import { secteurs } from '@/data/secteurs'
 import { buildMetadata } from '@/lib/metadata'
+import ArrowCircle from '@/components/ui/ArrowCircle'
 
 export const metadata = buildMetadata({
   title: 'Secteurs — Studio créatif et digital | Yofield',
@@ -45,9 +46,12 @@ export default function SecteursPage() {
                     {secteur.tagline}
                   </p>
                 </div>
-                <p className="font-body text-xs text-soil/30 mt-6 group-hover:text-pine transition-colors duration-200">
-                  Explorer ce secteur →
-                </p>
+                <div className="mt-6 flex items-center justify-between">
+                  <span className="font-body text-xs text-soil/40 transition-colors duration-200 group-hover:text-soil/70">
+                    Explorer ce secteur
+                  </span>
+                  <ArrowCircle size="sm" />
+                </div>
               </Link>
             ))}
           </div>

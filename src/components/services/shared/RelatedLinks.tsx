@@ -1,9 +1,9 @@
 /**
- * RelatedLinks — "Aller plus loin" as a grid of real cards.
- * Every destination (prestation, domaine, cas client) becomes a tactile
- * card: tag chip, big title, and an arrow-in-a-circle that fills citron
- * on hover. Staggered reveal on scroll. The closing CTA lives in
- * CTABanner, appended by the templates right after this section.
+ * RelatedLinks — "Aller plus loin" as a compact index.
+ * Internal-linking section (SEO + discovery) kept deliberately light:
+ * slim rows in two columns, color-coded dot by destination type, a small
+ * ↗ that straightens on hover. The heavy lifting (CTA) happens right
+ * after in CTABanner — this block should never steal the show.
  */
 
 import Link from 'next/link'
@@ -22,55 +22,41 @@ interface RelatedLinksProps {
   parentCategorySlug?: string
 }
 
-interface CardItem {
+interface RowItem {
   href: string
   tag: string
-  dot: string // tailwind bg class for the tag dot
+  dot: string
   title: string
 }
 
-function RelatedCard({ item, index }: { item: CardItem; index: number }) {
+function RelatedRow({ item }: { item: RowItem }) {
   return (
-    <ScrollReveal delay={0.06 * index} className="h-full">
-      <Link
-        href={item.href}
-        className="group flex h-full flex-col justify-between gap-6 rounded-2xl bg-snow p-5 ring-1 ring-soil/[0.08] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:ring-soil/20 md:min-h-[180px] md:gap-8 md:p-7"
+    <Link
+      href={item.href}
+      className="group flex items-center gap-3 border-b border-soil/[0.08] py-3.5"
+    >
+      <span aria-hidden className={`h-1.5 w-1.5 flex-shrink-0 rounded-full ${item.dot}`} />
+      <span className="sr-only">{item.tag} :</span>
+      <span className="min-w-0 flex-1 truncate font-body text-[15px] text-soil/75 transition-colors duration-200 group-hover:text-pine">
+        {item.title}
+      </span>
+      <svg
+        width="13"
+        height="13"
+        viewBox="0 0 14 14"
+        fill="none"
+        aria-hidden="true"
+        className="-rotate-45 flex-shrink-0 text-soil/30 transition-all duration-300 group-hover:rotate-0 group-hover:text-pine"
       >
-        <div>
-          <p className="mb-4 flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-soil/45">
-            <span aria-hidden className={`h-1.5 w-1.5 rounded-full ${item.dot}`} />
-            {item.tag}
-          </p>
-          <h3 className="np-700 text-lg leading-snug text-soil transition-colors duration-200 group-hover:text-pine md:text-xl">
-            {item.title}
-          </h3>
-        </div>
-
-        <div className="flex items-center justify-between">
-          <span className="font-body text-sm text-soil/45 transition-colors duration-200 group-hover:text-soil/70">
-            Découvrir
-          </span>
-          <span className="grid h-10 w-10 place-items-center rounded-full ring-1 ring-soil/15 transition-all duration-300 group-hover:bg-citron group-hover:ring-citron">
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 14 14"
-              fill="none"
-              aria-hidden="true"
-              className="-rotate-45 text-soil transition-transform duration-300 group-hover:rotate-0"
-            >
-              <path
-                d="M2.5 7H11.5M7.5 3L11.5 7L7.5 11"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
-        </div>
-      </Link>
-    </ScrollReveal>
+        <path
+          d="M2.5 7H11.5M7.5 3L11.5 7L7.5 11"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </Link>
   )
 }
 
@@ -115,8 +101,7 @@ export default function RelatedLinks({
     relatedCas = getCasByCategory(currentSlug).slice(0, 2)
   }
 
-  /* Flatten everything into a single, consistent card list */
-  const cards: CardItem[] = [
+  const rows: RowItem[] = [
     ...(currentType === 'prestation' && parentCategory
       ? [{
           href: `/services/${parentCategory.slug}`,
@@ -149,34 +134,38 @@ export default function RelatedLinks({
       dot: 'bg-sage',
       title: cas.title,
     })),
-  ]
+  ].slice(0, 6)
 
-  /* Hard cap: 6 cards max — keeps the section scannable, no endless mobile scroll */
-  const visibleCards = cards.slice(0, 6)
-
-  if (visibleCards.length === 0) return null
+  if (rows.length === 0) return null
 
   return (
-    <section className="section-padding bg-mist">
+    <section className="bg-mist py-14 md:py-20">
       <div className="container">
-        <div className="mb-12 flex flex-col gap-4 md:mb-14 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p className="eyebrow mb-3 text-soil/50">Explorer</p>
-            <h2 className="np-800 text-3xl text-soil md:text-4xl">Aller plus loin.</h2>
+        <ScrollReveal>
+          <div className="mb-8 flex items-end justify-between gap-4 md:mb-10">
+            <div>
+              <p className="eyebrow mb-2 text-soil/50">Explorer</p>
+              <h2 className="np-700 text-2xl text-soil md:text-3xl">Aller plus loin.</h2>
+            </div>
+            <div className="hidden sm:block">
+              <Link href="/services" className="btn btn-outline-soil px-5 py-2.5 text-sm">
+                Tous les services
+              </Link>
+            </div>
           </div>
-          <Link
-            href="/services"
-            className="btn btn-outline-soil self-start px-5 py-2.5 text-sm md:self-end"
-          >
-            Tous les services
-          </Link>
-        </div>
 
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-3">
-          {visibleCards.map((item, i) => (
-            <RelatedCard key={item.href} item={item} index={i} />
-          ))}
-        </div>
+          <div className="grid grid-cols-1 gap-x-12 border-t border-soil/[0.08] md:grid-cols-2">
+            {rows.map((item) => (
+              <RelatedRow key={item.href} item={item} />
+            ))}
+          </div>
+
+          <div className="mt-8 sm:hidden">
+            <Link href="/services" className="btn btn-outline-soil px-5 py-2.5 text-sm">
+              Tous les services
+            </Link>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   )
