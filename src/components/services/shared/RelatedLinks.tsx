@@ -1,7 +1,15 @@
+/**
+ * RelatedLinks — "Aller plus loin" as a grid of real cards.
+ * Every destination (prestation, domaine, cas client) becomes a tactile
+ * card: tag chip, big title, and an arrow-in-a-circle that fills citron
+ * on hover. Staggered reveal on scroll. The closing CTA lives in
+ * CTABanner, appended by the templates right after this section.
+ */
+
 import Link from 'next/link'
+import ScrollReveal from '@/components/animations/ScrollReveal'
 import { serviceCategories, getCategoryBySlug } from '@/data/services'
 import {
-  prestations,
   getPrestationsByCategory,
   getPrestationBySlug,
 } from '@/data/prestations'
@@ -14,38 +22,55 @@ interface RelatedLinksProps {
   parentCategorySlug?: string
 }
 
-function LinkItem({
-  href,
-  label,
-}: {
+interface CardItem {
   href: string
-  label: string
-}) {
-  return (
-    <Link
-      href={href}
-      className="group flex items-center gap-1.5 font-body text-sm text-soil transition-colors duration-200 hover:text-pine"
-    >
-      <span>{label}</span>
-      <span className="transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true">
-        &rarr;
-      </span>
-    </Link>
-  )
+  tag: string
+  dot: string // tailwind bg class for the tag dot
+  title: string
 }
 
-function GroupSection({
-  heading,
-  children,
-}: {
-  heading: string
-  children: React.ReactNode
-}) {
+function RelatedCard({ item, index }: { item: CardItem; index: number }) {
   return (
-    <div className="flex flex-col gap-3">
-      <p className="eyebrow text-soil/50">{heading}</p>
-      <div className="flex flex-col gap-2">{children}</div>
-    </div>
+    <ScrollReveal delay={0.06 * index} className="h-full">
+      <Link
+        href={item.href}
+        className="group flex h-full min-h-[180px] flex-col justify-between gap-8 rounded-2xl bg-snow p-6 ring-1 ring-soil/[0.08] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:ring-soil/20 md:p-7"
+      >
+        <div>
+          <p className="mb-4 flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-soil/45">
+            <span aria-hidden className={`h-1.5 w-1.5 rounded-full ${item.dot}`} />
+            {item.tag}
+          </p>
+          <h3 className="np-700 text-lg leading-snug text-soil transition-colors duration-200 group-hover:text-pine md:text-xl">
+            {item.title}
+          </h3>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <span className="font-body text-sm text-soil/45 transition-colors duration-200 group-hover:text-soil/70">
+            Découvrir
+          </span>
+          <span className="grid h-10 w-10 place-items-center rounded-full ring-1 ring-soil/15 transition-all duration-300 group-hover:bg-citron group-hover:ring-citron">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 14 14"
+              fill="none"
+              aria-hidden="true"
+              className="-rotate-45 text-soil transition-transform duration-300 group-hover:rotate-0"
+            >
+              <path
+                d="M2.5 7H11.5M7.5 3L11.5 7L7.5 11"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </span>
+        </div>
+      </Link>
+    </ScrollReveal>
   )
 }
 
@@ -61,7 +86,6 @@ export default function RelatedLinks({
   let currentCategoryPrestations: Prestation[] = []
 
   if (currentType === 'prestation') {
-    // Parent category
     if (parentCategorySlug) {
       parentCategory = getCategoryBySlug(parentCategorySlug)
     } else {
@@ -71,21 +95,17 @@ export default function RelatedLinks({
       }
     }
 
-    // Sister prestations: same category, exclude current
     const catSlug = parentCategory?.slug ?? parentCategorySlug ?? ''
     sisterPrestations = getPrestationsByCategory(catSlug)
       .filter((p) => p.slug !== currentSlug)
       .slice(0, 3)
 
-    // Sister categories: exclude parent
     sisterCategories = serviceCategories
       .filter((c) => c.slug !== catSlug)
       .slice(0, 2)
 
-    // Related cas
     relatedCas = getCasByService(currentSlug).slice(0, 2)
   } else {
-    // Category page
     sisterCategories = serviceCategories
       .filter((c) => c.slug !== currentSlug)
       .slice(0, 3)
@@ -95,107 +115,65 @@ export default function RelatedLinks({
     relatedCas = getCasByCategory(currentSlug).slice(0, 2)
   }
 
-  const hasContent =
-    (parentCategory !== undefined) ||
-    sisterPrestations.length > 0 ||
-    sisterCategories.length > 0 ||
-    relatedCas.length > 0 ||
-    currentCategoryPrestations.length > 0
+  /* Flatten everything into a single, consistent card list */
+  const cards: CardItem[] = [
+    ...(currentType === 'prestation' && parentCategory
+      ? [{
+          href: `/services/${parentCategory.slug}`,
+          tag: 'Domaine parent',
+          dot: 'bg-pine',
+          title: parentCategory.name,
+        }]
+      : []),
+    ...currentCategoryPrestations.map((p) => ({
+      href: `/prestations/${p.slug}`,
+      tag: 'Prestation incluse',
+      dot: 'bg-citron',
+      title: p.nameFull,
+    })),
+    ...sisterPrestations.map((p) => ({
+      href: `/prestations/${p.slug}`,
+      tag: 'Prestation liée',
+      dot: 'bg-citron',
+      title: p.nameFull,
+    })),
+    ...sisterCategories.map((c) => ({
+      href: `/services/${c.slug}`,
+      tag: 'Autre domaine',
+      dot: 'bg-pine',
+      title: c.name,
+    })),
+    ...relatedCas.map((cas) => ({
+      href: `/cas/${cas.slug}`,
+      tag: 'Cas client',
+      dot: 'bg-sage',
+      title: cas.title,
+    })),
+  ]
 
-  if (!hasContent) return null
+  if (cards.length === 0) return null
 
   return (
     <section className="section-padding bg-mist">
       <div className="container">
-        {/* Header */}
-        <div className="mb-10">
-          <p className="eyebrow mb-2 text-soil/50">Explorer</p>
-          <h2 className="np-700 text-2xl text-soil">Aller plus loin</h2>
-        </div>
-
-        <div className="mb-12 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
-          {/* Prestation page: parent category */}
-          {currentType === 'prestation' && parentCategory && (
-            <GroupSection heading="Categorie parente">
-              <LinkItem
-                href={`/services/${parentCategory.slug}`}
-                label={parentCategory.name}
-              />
-            </GroupSection>
-          )}
-
-          {/* Prestation page: sister prestations */}
-          {currentType === 'prestation' && sisterPrestations.length > 0 && (
-            <GroupSection heading="Prestations liées">
-              {sisterPrestations.map((p) => (
-                <LinkItem
-                  key={p.slug}
-                  href={`/prestations/${p.slug}`}
-                  label={p.nameFull}
-                />
-              ))}
-            </GroupSection>
-          )}
-
-          {/* Category page: prestations in this category */}
-          {currentType === 'category' && currentCategoryPrestations.length > 0 && (
-            <GroupSection heading="Prestations incluses">
-              {currentCategoryPrestations.map((p) => (
-                <LinkItem
-                  key={p.slug}
-                  href={`/prestations/${p.slug}`}
-                  label={p.nameFull}
-                />
-              ))}
-            </GroupSection>
-          )}
-
-          {/* Other service categories */}
-          {sisterCategories.length > 0 && (
-            <GroupSection heading="Autres domaines">
-              {sisterCategories.map((c) => (
-                <LinkItem
-                  key={c.slug}
-                  href={`/services/${c.slug}`}
-                  label={c.name}
-                />
-              ))}
-            </GroupSection>
-          )}
-
-          {/* Related cas */}
-          {relatedCas.length > 0 && (
-            <GroupSection heading="Cas concrets">
-              {relatedCas.map((cas) => (
-                <LinkItem
-                  key={cas.slug}
-                  href={`/cas/${cas.slug}`}
-                  label={cas.title}
-                />
-              ))}
-            </GroupSection>
-          )}
-        </div>
-
-        {/* Final CTA row */}
-        <div className="rounded-2xl bg-pine p-6 md:p-8">
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-            <div className="flex flex-col gap-1">
-              <p className="np-700 text-xl text-snow">Démarrer un projet</p>
-              <p className="font-body text-sm text-snow/60">
-                Ou écrire directement à{' '}
-                <a
-                  href="mailto:hello@yofield.com"
-                  className="text-snow/80 underline underline-offset-2 transition-colors duration-200 hover:text-citron"
-                >
-                  hello@yofield.com
-                </a>
-              </p>
-            </div>
-            <Link href="/contact" className="btn btn-citron self-start md:self-auto">
-              Démarrer la conversation
-            </Link>
+        <div className="mb-12 flex flex-col gap-4 md:mb-14 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="eyebrow mb-3 text-soil/50">Explorer</p>
+            <h2 className="np-800 text-3xl text-soil md:text-4xl">Aller plus loin.</h2>
           </div>
+          <Link
+            href="/services"
+            className="group inline-flex items-center gap-2 self-start font-body text-sm text-soil/50 transition-colors duration-200 hover:text-soil md:self-end"
+          >
+            Tous les services
+            <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {cards.map((item, i) => (
+            <RelatedCard key={item.href} item={item} index={i} />
+          ))}
         </div>
       </div>
     </section>

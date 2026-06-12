@@ -1,3 +1,5 @@
+import ScrollReveal from '@/components/animations/ScrollReveal'
+
 interface ValueBulletsProps {
   promises: string[]
   title?: string
@@ -6,7 +8,7 @@ interface ValueBulletsProps {
 function CheckIcon() {
   return (
     <span
-      className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-citron"
+      className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-citron transition-transform duration-300 group-hover:scale-110"
       aria-hidden="true"
     >
       <svg
@@ -35,19 +37,21 @@ export default function ValueBullets({
   return (
     <section className="section-padding bg-mist">
       <div className="container">
-        <h2 className="np-700 mb-12 text-3xl text-soil">{title}</h2>
+        <ScrollReveal>
+          <p className="eyebrow mb-3 text-soil/50">Les engagements</p>
+          <h2 className="np-800 mb-12 text-3xl text-soil md:text-4xl">{title}</h2>
+        </ScrollReveal>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {promises.map((promise, i) => (
-            <div
-              key={i}
-              className="flex items-start gap-4 rounded-2xl bg-snow p-6"
-            >
-              <CheckIcon />
-              <p className="font-body text-base leading-relaxed text-soil">
-                {promise}
-              </p>
-            </div>
+            <ScrollReveal key={i} delay={0.06 * i} className="h-full">
+              <div className="group flex h-full items-start gap-4 rounded-2xl bg-snow p-6 ring-1 ring-soil/[0.05] transition-all duration-300 hover:ring-soil/15 md:p-7">
+                <CheckIcon />
+                <p className="font-body text-base leading-relaxed text-soil">
+                  {promise}
+                </p>
+              </div>
+            </ScrollReveal>
           ))}
         </div>
       </div>

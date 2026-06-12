@@ -1,9 +1,19 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import SiteLayout from '@/components/layout/Navigation'
 import ScrollReveal from '@/components/animations/ScrollReveal'
+import CTABanner from '@/components/services/shared/CTABanner'
 import { buildMetadata } from '@/lib/metadata'
 import { serviceCategories } from '@/data/services'
 import { prestations } from '@/data/prestations'
+
+const SERVICE_IMAGES: Record<string, string> = {
+  'branding-identite-de-marque': '/images/services/branding.jpg',
+  'creation-sites-applications': '/images/services/sites-web.jpg',
+  'communication-digitale-acquisition': '/images/services/communication.jpg',
+  'production-contenus': '/images/services/contenus.jpg',
+  'intelligence-artificielle-automatisation': '/images/services/ia.jpg',
+}
 
 export const metadata = buildMetadata({
   title: 'Services — Studio Yofield',
@@ -78,11 +88,19 @@ export default function ServicesPage() {
           <div className="flex flex-col gap-6">
             {serviceCategories.map((cat, i) => (
               <ScrollReveal key={cat.slug} delay={0.06 * i}>
-                <article className="flex items-start gap-8 p-8 rounded-2xl bg-mist hover:bg-sage/20 transition-colors duration-300 group">
-                  {/* Left: num + icon */}
-                  <div className="flex-shrink-0 flex flex-col items-center gap-2 pt-1">
-                    <span className="gm text-4xl text-soil/20 leading-none">{cat.num}</span>
-                    <span className="np text-5xl text-soil/15 leading-none">{cat.icon}</span>
+                <article className="group flex items-start gap-8 rounded-2xl bg-mist p-6 ring-1 ring-soil/[0.04] transition-all duration-300 hover:-translate-y-0.5 hover:bg-sage/20 hover:ring-soil/10 md:p-8">
+                  {/* Left: category universe image */}
+                  <div className="relative hidden h-36 w-36 flex-shrink-0 overflow-hidden rounded-2xl sm:block lg:h-44 lg:w-44">
+                    <Image
+                      src={SERVICE_IMAGES[cat.slug]}
+                      alt={cat.name}
+                      fill
+                      sizes="176px"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <span className="gm absolute left-2.5 top-2.5 rounded-full bg-soil/55 px-2.5 py-1 text-[10px] text-snow backdrop-blur-sm">
+                      {cat.num}
+                    </span>
                   </div>
 
                   {/* Middle: content */}
@@ -139,27 +157,11 @@ export default function ServicesPage() {
       </section>
 
       {/* ─── CTA ──────────────────────────────────────────────── */}
-      <section className="section-padding bg-citron">
-        <div className="container">
-          <ScrollReveal>
-            <h2 className="np-800 text-4xl text-soil mb-6 leading-tight">
-              Pas sûr par où commencer ?
-            </h2>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.1}>
-            <p className="font-body text-base text-soil/70 mb-10 max-w-lg leading-relaxed">
-              L'entretien de brief est là pour ça. On définit ensemble ce dont vous avez vraiment besoin.
-            </p>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.15}>
-            <Link href="/contact" className="btn btn-outline-soil">
-              Démarrer la conversation
-            </Link>
-          </ScrollReveal>
-        </div>
-      </section>
+      <CTABanner
+        title="Pas sûr par où commencer ?"
+        subtitle="L'entretien de brief est là pour ça. On définit ensemble ce dont vous avez vraiment besoin, sans engagement."
+        outerBg="snow"
+      />
     </SiteLayout>
   )
 }

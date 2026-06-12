@@ -4,6 +4,7 @@ import type { Secteur } from '@/data/secteurs'
 import type { CasStudy } from '@/types'
 import { serviceCategories } from '@/data/services'
 import FAQAccordion from '@/components/services/shared/FAQAccordion'
+import CTABanner from '@/components/services/shared/CTABanner'
 
 /* ─── Client logo placeholder ─── */
 function ClientLogo({ name, initials, color }: { name: string; initials: string; color: string }) {
@@ -192,20 +193,11 @@ export default function SecteurTemplate({ secteur, casClients }: SecteurTemplate
       <FAQAccordion faq={secteur.faq} title="Questions fréquentes sur ce secteur" />
 
       {/* ─── CTA FINAL ─────────────────────────────────────────────────── */}
-      <section className="bg-citron py-24 md:py-32">
-        <div className="container">
-          <p className="eyebrow text-soil mb-8">Prochaine étape</p>
-          <h2 className="np-900 text-4xl md:text-6xl text-soil leading-none mb-6">
-            Votre marque {secteur.nameShort.toLowerCase()},<br className="hidden md:block" /> construite.
-          </h2>
-          <p className="font-body text-lg text-soil/65 max-w-lg leading-relaxed mb-10">
-            Dites-nous où vous en êtes. On vous dit comment on peut aider, sans engagement.
-          </p>
-          <Link href="/contact" className="btn btn-outline-soil">
-            Démarrer la conversation
-          </Link>
-        </div>
-      </section>
+      <CTABanner
+        title={`Votre marque ${secteur.nameShort.toLowerCase()}, construite.`}
+        subtitle="Dites-nous où vous en êtes. On vous dit comment on peut aider, sans engagement."
+        outerBg="snow"
+      />
     </>
   )
 }
