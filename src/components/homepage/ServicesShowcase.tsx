@@ -102,14 +102,7 @@ export default function ServicesShowcase() {
                       transition={{ duration: 0.4, ease }}
                     />
                   )}
-                  <div className="flex items-center gap-5 pl-5">
-                    <span
-                      className={`gm text-xs transition-colors duration-300 ${
-                        on ? 'text-citron' : 'text-snow/30'
-                      }`}
-                    >
-                      {c.num}
-                    </span>
+                  <div className="flex items-center pl-5">
                     <span
                       className={`np-700 text-2xl transition-colors duration-300 lg:text-[28px] ${
                         on ? 'text-snow' : 'text-snow/35'
@@ -209,7 +202,6 @@ export default function ServicesShowcase() {
                   <div className="relative aspect-[16/10]">
                     <Image src={IMG[c.slug]} alt={c.name} fill sizes="100vw" className="object-cover" />
                     <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-soil/80 via-soil/10 to-transparent" />
-                    <span className="gm absolute left-4 top-4 text-xs text-citron">{c.num}</span>
                     <h3 className="np-700 absolute inset-x-4 bottom-4 text-xl text-snow">{c.name}</h3>
                   </div>
                   <div className="p-5">

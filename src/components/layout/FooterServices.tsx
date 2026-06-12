@@ -16,9 +16,8 @@ export default function FooterServices() {
           <li key={c.slug}>
             <Link
               href={`/services/${c.slug}`}
-              className="flex items-center gap-2.5 font-body text-sm text-snow/70 transition-colors duration-200 hover:text-citron"
+              className="font-body text-sm text-snow/70 transition-colors duration-200 hover:text-citron"
             >
-              <span className="gm text-[10px] text-snow/30">{c.num}</span>
               {c.nameShort}
             </Link>
           </li>

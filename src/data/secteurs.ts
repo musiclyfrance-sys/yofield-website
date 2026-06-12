@@ -56,7 +56,7 @@ export const secteurs: Secteur[] = [
     nameShort: 'Banque',
     tagline: 'Marques financières qui inspirent confiance dès le premier contact.',
     headline:
-      'Votre marque financière mérite une identité à la hauteur de la confiance que vos clients vous accordent chaque jour.',
+      'Une marque financière qui inspire confiance dès le premier contact.',
     intro:
       "Dans le secteur bancaire et assurantiel, la confiance ne se déclare pas, elle se construit visuellement et verbalement sur chaque point de contact. Une charte graphique vieillissante, un discours générique ou un site difficile à lire suffisent à faire douter un prospect avant même qu'il ait lu votre offre. Yofield travaille avec des établissements financiers et des mutuelles pour aligner leur identité de marque avec la solidité réelle de leurs produits : un positionnement précis, un design qui rassure, une voix qui parle à des personnes et non à des dossiers.",
     clients: [
@@ -193,7 +193,7 @@ export const secteurs: Secteur[] = [
     nameShort: 'Sport',
     tagline: 'Des marques sportives à l\'image de leur intensité.',
     headline:
-      'Votre club, votre salle ou votre marque de sport mérite une identité aussi forte que les athlètes qui la représentent chaque semaine.',
+      'Une marque sportive aussi forte que ceux qui la portent.',
     intro:
       "Le sport est l'un des rares secteurs où l'identité de marque déclenche une réponse émotionnelle immédiate. Le maillot d'un club, le logo d'une salle de sport, les couleurs d'une marque de performance : ces éléments visuels créent de l'appartenance avant même que la performance sportive ne soit là pour la justifier. Yofield travaille avec des clubs, des salles, des coachs et des marques de sport pour construire des identités à la hauteur de cette intensité. Des systèmes visuels qui tiennent aussi bien sur un écran qu'en broderie sur un maillot, aussi bien dans une pub Instagram que sur une bâche de gymnase.",
     clients: [
@@ -316,7 +316,7 @@ export const secteurs: Secteur[] = [
     nameShort: 'Tech',
     tagline: 'Des marques tech qui s\'imposent dans leur segment avant l\'échelle.',
     headline:
-      'Votre produit tech mérite une identité de marque qui traduit sa complexité en clarté pour les équipes qui décident de l\'acheter.',
+      'Une marque tech qui transforme la complexité en clarté.',
     intro:
       "Le défi des startups tech et des éditeurs SaaS n'est pas la qualité du produit : dans la plupart des cas, la technologie est au rendez-vous. Le défi est de faire comprendre cette valeur à des décideurs qui évaluent dix outils en parallèle et prennent leur décision en partie sur des critères de perception. Une marque bien construite, un site clair, un discours précis : ces éléments font basculer les comparaisons. Yofield travaille avec des startups B2B, des éditeurs SaaS et des équipes fondatrices pour construire les marques tech qui gagnent la confiance avant la démonstration produit.",
     clients: [
@@ -451,7 +451,7 @@ export const secteurs: Secteur[] = [
     nameShort: 'Santé',
     tagline: 'Des marques médicales qui inspirent confiance sans jargon.',
     headline:
-      'Votre cabinet, votre clinique ou votre marque de santé mérite une identité qui rassure dès le premier regard et tient à chaque point de contact.',
+      'Une marque santé qui rassure dès le premier regard.',
     intro:
       "Dans le secteur de la santé et du bien-être, la confiance est la première décision du patient ou du client. Avant même d'évaluer les compétences médicales ou la qualité des soins, il évalue les signaux de crédibilité : le design du site, la clarté du discours, la cohérence visuelle de la communication. Ces éléments ne remplacent pas l'excellence clinique, mais sans eux, cette excellence reste invisible. Yofield travaille avec des professionnels de santé, des cliniques, des centres de bien-être et des marques santé pour construire des identités qui rassurent, informent et fidélisent.",
     clients: [
@@ -574,7 +574,7 @@ export const secteurs: Secteur[] = [
     nameShort: 'Restauration',
     tagline: 'Des marques de table et d\'accueil qui donnent envie avant l\'arrivée.',
     headline:
-      'Votre restaurant, votre hôtel ou votre marque de table mérite une identité qui crée l\'envie avant que le client franchisse votre porte.',
+      'Une marque qui donne envie avant la première visite.',
     intro:
       "Dans la restauration et l'hôtellerie, la décision de réservation se prend souvent sur la base d'une image, d'un post, d'une page Google ou d'un site consulté en trente secondes depuis un téléphone. Cette réalité fait de l'identité visuelle et de la présence digitale un levier direct sur le remplissage. Un restaurant gastronomique avec un Instagram médiocre, un hôtel boutique avec un site générique ou une marque de table sans cohérence visuelle laissent de la valeur sur le terrain chaque semaine. Yofield travaille avec des restaurateurs, hôteliers et marques de l'univers table pour construire des identités qui déclenchent l'envie.",
     clients: [
@@ -704,7 +704,7 @@ export const secteurs: Secteur[] = [
     nameShort: 'Éducation',
     tagline: 'Des marques éducatives qui inspirent confiance et attirent les bons apprenants.',
     headline:
-      'Votre école, votre organisme de formation ou votre plateforme EdTech mérite une identité qui attire les bons apprenants et fidélise les entreprises partenaires.',
+      'Une marque qui attire les bons apprenants, et les garde.',
     intro:
       "Le marché de la formation et de l'éducation a radicalement changé. Les apprenants comparent les organismes comme ils comparent des produits : sur le site, sur les réseaux, sur les avis. Une école avec un positionnement flou et un site vieillissant perd des inscriptions au profit de concurrents qui communiquent mieux, indépendamment de la qualité réelle de leur pédagogie. Yofield travaille avec des écoles, des organismes de formation professionnelle, des coachs et des plateformes EdTech pour construire des marques éducatives qui attirent les bons apprenants et convainquent les décideurs RH des entreprises partenaires.",
     clients: [

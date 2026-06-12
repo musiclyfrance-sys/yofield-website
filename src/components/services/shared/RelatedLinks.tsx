@@ -34,7 +34,7 @@ function RelatedCard({ item, index }: { item: CardItem; index: number }) {
     <ScrollReveal delay={0.06 * index} className="h-full">
       <Link
         href={item.href}
-        className="group flex h-full min-h-[180px] flex-col justify-between gap-8 rounded-2xl bg-snow p-6 ring-1 ring-soil/[0.08] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:ring-soil/20 md:p-7"
+        className="group flex h-full flex-col justify-between gap-6 rounded-2xl bg-snow p-5 ring-1 ring-soil/[0.08] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:ring-soil/20 md:min-h-[180px] md:gap-8 md:p-7"
       >
         <div>
           <p className="mb-4 flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-soil/45">
@@ -98,19 +98,19 @@ export default function RelatedLinks({
     const catSlug = parentCategory?.slug ?? parentCategorySlug ?? ''
     sisterPrestations = getPrestationsByCategory(catSlug)
       .filter((p) => p.slug !== currentSlug)
-      .slice(0, 3)
+      .slice(0, 2)
 
     sisterCategories = serviceCategories
       .filter((c) => c.slug !== catSlug)
-      .slice(0, 2)
+      .slice(0, 1)
 
     relatedCas = getCasByService(currentSlug).slice(0, 2)
   } else {
     sisterCategories = serviceCategories
       .filter((c) => c.slug !== currentSlug)
-      .slice(0, 3)
+      .slice(0, 2)
 
-    currentCategoryPrestations = getPrestationsByCategory(currentSlug).slice(0, 3)
+    currentCategoryPrestations = getPrestationsByCategory(currentSlug).slice(0, 2)
 
     relatedCas = getCasByCategory(currentSlug).slice(0, 2)
   }
@@ -151,7 +151,10 @@ export default function RelatedLinks({
     })),
   ]
 
-  if (cards.length === 0) return null
+  /* Hard cap: 6 cards max — keeps the section scannable, no endless mobile scroll */
+  const visibleCards = cards.slice(0, 6)
+
+  if (visibleCards.length === 0) return null
 
   return (
     <section className="section-padding bg-mist">
@@ -163,15 +166,14 @@ export default function RelatedLinks({
           </div>
           <Link
             href="/services"
-            className="group inline-flex items-center gap-2 self-start font-body text-sm text-soil/50 transition-colors duration-200 hover:text-soil md:self-end"
+            className="btn btn-outline-soil self-start px-5 py-2.5 text-sm md:self-end"
           >
             Tous les services
-            <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">→</span>
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {cards.map((item, i) => (
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-3">
+          {visibleCards.map((item, i) => (
             <RelatedCard key={item.href} item={item} index={i} />
           ))}
         </div>

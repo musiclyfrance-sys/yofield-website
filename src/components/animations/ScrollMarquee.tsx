@@ -27,7 +27,6 @@ export default function ScrollMarquee() {
       <div className="flex w-max items-center whitespace-nowrap animate-[marquee_36s_linear_infinite] will-change-transform">
         {DOUBLED.map((item, i) => (
           <span key={i} className="inline-flex flex-shrink-0 items-baseline gap-4 px-8 md:px-14">
-            <span className="gm text-[10px] text-soil/30">{item.num}</span>
             <span className="np-800 text-4xl leading-[1.25] text-soil md:text-6xl">{item.label}</span>
             <span className="ml-4 text-2xl text-soil/20">·</span>
           </span>

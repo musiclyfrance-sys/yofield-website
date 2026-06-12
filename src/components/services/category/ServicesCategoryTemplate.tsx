@@ -50,7 +50,7 @@ export default function ServicesCategoryTemplate({
     <>
       {/* 1. Hero — text + category universe visual */}
       <HeroService
-        eyebrow={`${category.num} — Services`}
+        eyebrow="Services"
         title={category.name}
         subtitle={category.description}
         breadcrumbs={[

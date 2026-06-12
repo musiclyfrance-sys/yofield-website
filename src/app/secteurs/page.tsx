@@ -40,9 +40,6 @@ export default function SecteursPage() {
                 className="group flex flex-col justify-between rounded-2xl p-6 ring-1 ring-soil/[0.08] hover:ring-soil/20 hover:-translate-y-1 transition-all duration-300 min-h-[200px]"
               >
                 <div>
-                  <div className="flex items-start justify-between mb-4">
-                    <span className="gm text-xs text-soil/30">{secteur.num}</span>
-                  </div>
                   <h2 className="np-700 text-xl text-soil mb-3">{secteur.name}</h2>
                   <p className="font-body text-sm text-soil/60 leading-relaxed">
                     {secteur.tagline}

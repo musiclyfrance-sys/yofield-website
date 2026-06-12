@@ -11,8 +11,6 @@ export default function SubServiceCard({ prestation }: SubServiceCardProps) {
       href={`/prestations/${prestation.slug}`}
       className="group flex flex-col rounded-2xl bg-snow p-6 ring-1 ring-snow/0 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:ring-citron/50 md:p-7"
     >
-      <span className="gm mb-5 text-xs text-soil/40">{prestation.num}</span>
-
       <h3 className="np-700 mb-3 text-xl text-soil transition-colors duration-200 group-hover:text-pine">
         {prestation.name}
       </h3>

@@ -32,7 +32,7 @@ export default function ServicesAtomicTemplate({
     <>
       {/* 1. Hero — text + parent universe visual */}
       <HeroService
-        eyebrow={`${parentCategory.num} — ${parentCategory.nameShort}`}
+        eyebrow={parentCategory.nameShort}
         title={prestation.nameFull}
         subtitle={prestation.description}
         breadcrumbs={[

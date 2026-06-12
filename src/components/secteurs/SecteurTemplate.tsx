@@ -69,7 +69,7 @@ export default function SecteurTemplate({ secteur, casClients }: SecteurTemplate
       <section className="bg-soil pt-32 pb-24">
         <div className="container">
           <p className="eyebrow text-snow mb-8" style={{ opacity: 0.4 }}>
-            {secteur.num}&nbsp;&nbsp;Secteur
+            Secteur
           </p>
           <h1 className="np-900 text-[clamp(36px,5vw,64px)] text-snow leading-[1.1] max-w-4xl mb-8">
             {secteur.headline}
@@ -116,12 +116,7 @@ export default function SecteurTemplate({ secteur, casClients }: SecteurTemplate
                   href={cat ? `/services/${cat.slug}` : '/services'}
                   className="group flex flex-col gap-3 rounded-xl bg-snow p-5 ring-1 ring-soil/[0.08] hover:ring-soil/20 hover:-translate-y-0.5 transition-all duration-200"
                 >
-                  <div className="flex items-start justify-between">
-                    <p className="np-700 text-base text-soil">{svc.label}</p>
-                    {cat && (
-                      <span className="gm text-[10px] text-soil/30">{cat.num}</span>
-                    )}
-                  </div>
+                  <p className="np-700 text-base text-soil">{svc.label}</p>
                   <p className="font-body text-sm text-soil/60 leading-relaxed flex-1">
                     {svc.why}
                   </p>

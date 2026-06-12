@@ -98,9 +98,6 @@ export default function ServicesPage() {
                       sizes="176px"
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
-                    <span className="gm absolute left-2.5 top-2.5 rounded-full bg-soil/55 px-2.5 py-1 text-[10px] text-snow backdrop-blur-sm">
-                      {cat.num}
-                    </span>
                   </div>
 
                   {/* Middle: content */}

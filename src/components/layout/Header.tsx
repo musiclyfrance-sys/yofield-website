@@ -456,8 +456,7 @@ export default function Header() {
                 <ul className="flex flex-col gap-1">
                   {secteurs.map((s) => (
                     <li key={s.slug}>
-                      <Link href={`/secteurs/${s.slug}`} onClick={() => setIsMobileOpen(false)} className="flex items-center gap-3 rounded-lg px-4 py-2.5 transition-colors duration-150 hover:bg-mist">
-                        <span className="gm text-xs text-soil/40">{s.num}</span>
+                      <Link href={`/secteurs/${s.slug}`} onClick={() => setIsMobileOpen(false)} className="flex items-center rounded-lg px-4 py-2.5 transition-colors duration-150 hover:bg-mist">
                         <span className="font-body text-base text-soil">{s.name}</span>
                       </Link>
                     </li>

@@ -69,13 +69,15 @@ export default function CTABanner({
               className="pointer-events-none absolute -bottom-40 -right-32 h-[480px] w-[480px] rounded-full opacity-[0.12] blur-[120px]"
               style={{ background: 'radial-gradient(circle, #D4F551, transparent 70%)' }}
             />
-            {/* Giant faded pictogram echo */}
-            <span
-              aria-hidden
-              className="np-900 pointer-events-none absolute -right-6 -top-14 select-none text-[220px] leading-none text-snow/[0.04] md:text-[320px]"
+            {/* Giant faded 4-point spark — the star from the pictogram */}
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 100 100"
+              className="pointer-events-none absolute -right-12 -top-16 h-[240px] w-[240px] rotate-12 text-snow/[0.05] md:-right-8 md:-top-20 md:h-[360px] md:w-[360px]"
+              fill="currentColor"
             >
-              ❋
-            </span>
+              <path d="M50 0 C54.5 31 69 45.5 100 50 C69 54.5 54.5 69 50 100 C45.5 69 31 54.5 0 50 C31 45.5 45.5 31 50 0 Z" />
+            </svg>
 
             <div className="relative max-w-3xl">
               <p className="eyebrow mb-6 text-citron">Prochaine étape</p>

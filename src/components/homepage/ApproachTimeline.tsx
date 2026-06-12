@@ -142,9 +142,9 @@ export default function ApproachTimeline() {
           </div>
           <Link
             href="/le-studio"
-            className="font-body text-sm font-medium text-soil/60 hover:text-soil underline underline-offset-4 transition-colors duration-200 self-start md:self-end"
+            className="btn btn-outline-soil self-start px-5 py-2.5 text-sm md:self-end"
           >
-            Le studio et notre approche →
+            Le studio et notre approche
           </Link>
         </div>
 

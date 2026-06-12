@@ -116,10 +116,9 @@ export default function CredoSection() {
           </div>
           <Link
             href="/le-studio"
-            className="group inline-flex items-center gap-2 self-start font-body text-sm text-snow/60 transition-colors hover:text-citron md:self-end"
+            className="btn btn-outline-snow self-start px-5 py-2.5 text-sm md:self-end"
           >
             Le studio, en détail
-            <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
           </Link>
         </div>
 

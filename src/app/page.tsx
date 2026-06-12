@@ -67,9 +67,9 @@ export default function HomePage() {
             </div>
             <Link
               href="/cas"
-              className="font-body text-sm text-soil/50 hover:text-soil underline underline-offset-4 transition-colors duration-200 self-start md:self-end"
+              className="btn btn-outline-soil self-start px-5 py-2.5 text-sm md:self-end"
             >
-              Tous les cas →
+              Tous les cas
             </Link>
           </div>
 
