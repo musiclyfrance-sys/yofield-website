@@ -3,7 +3,7 @@ import { serviceCategories } from '@/data/services'
 import { prestations } from '@/data/prestations'
 import { casStudies } from '@/data/cas'
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yofield.fr'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yofield.com'
 
 const now = new Date().toISOString()
 

@@ -5,7 +5,7 @@ import { getCategoryBySlug } from '@/data/services'
 import ServicesAtomicTemplate from '@/components/services/atomic/ServicesAtomicTemplate'
 import SiteLayout from '@/components/layout/Navigation'
 import { buildPrestationMeta } from '@/lib/metadata'
-import { breadcrumbSchema, serviceSchema, faqSchema } from '@/lib/schema'
+import { breadcrumbSchema, serviceSchema } from '@/lib/schema'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -44,13 +44,13 @@ export default async function PrestationPage({ params }: PageProps) {
     category: parentCategory.name,
   })
 
-  const faq = faqSchema(prestation.faq)
-
+  /* FAQPage JSON-LD is emitted once by <FAQAccordion> inside the template,
+     so it is intentionally omitted from this page-level graph. */
   return (
     <SiteLayout>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@graph': [breadcrumb, service, faq] }) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@graph': [breadcrumb, service] }) }}
       />
       <ServicesAtomicTemplate prestation={prestation} parentCategory={parentCategory} />
     </SiteLayout>

@@ -5,7 +5,7 @@ import { buildMetadata } from '@/lib/metadata'
 import ArrowCircle from '@/components/ui/ArrowCircle'
 
 export const metadata = buildMetadata({
-  title: 'Secteurs — Studio créatif et digital | Yofield',
+  title: 'Secteurs · Studio créatif et digital | Yofield',
   description:
     "Yofield accompagne les marques dans 6 secteurs clés : banque, sport, tech, santé, restauration et éducation. Identité, sites web, contenus et IA sur mesure.",
   canonical: '/secteurs',

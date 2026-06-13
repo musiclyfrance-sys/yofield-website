@@ -169,7 +169,7 @@ export const secteurs: Secteur[] = [
           "Yofield travaille avec les deux. Les fintech et insurtech ont souvent des défis inverses aux établissements traditionnels : elles ont un design moderne mais manquent de profondeur de marque et de contenu de confiance. On adapte l'intervention selon le diagnostic : refonte de positionnement pour les uns, modernisation de l'identité visuelle pour les autres.",
       },
     ],
-    seoTitle: 'Banque & Assurance — Studio créatif et digital | Yofield',
+    seoTitle: 'Banque & Assurance · Studio créatif et digital | Yofield',
     seoDescription:
       'Studio Yofield conçoit l\'identité et la présence digitale des marques bancaires et assurantielles. Branding, site, SEO, brand voice. Cycle court, livraison directe.',
     seoKeywords: [
@@ -292,7 +292,7 @@ export const secteurs: Secteur[] = [
           "Les indicateurs varient selon les objectifs définis au départ. Pour un club qui cherche à recruter des membres : suivi du trafic SEO local et des demandes d'inscription. Pour une structure qui développe ses partenariats : nombre de demandes de dossier sponsor et valeur des contrats conclus. Pour une salle de sport : taux de conversion des visiteurs du site en essais gratuits. Ces indicateurs sont définis avant le début du projet et suivis après la mise en ligne.",
       },
     ],
-    seoTitle: 'Sport & Performance — Studio créatif et digital | Yofield',
+    seoTitle: 'Sport & Performance · Studio créatif et digital | Yofield',
     seoDescription:
       'Yofield crée l\'identité de marque, le site et les contenus des clubs et marques sportives. Branding sport, logos, templates, présence digitale. Studio créatif.',
     seoKeywords: [
@@ -427,7 +427,7 @@ export const secteurs: Secteur[] = [
           "Oui. La plupart des sites SaaS B2B s'adressent à des profils différents selon les pages : page d'accueil pour les décideurs, documentation et intégrations pour les développeurs, cas clients pour les équipes financières. Yofield structure l'architecture et le contenu pour que chaque audience trouve ce dont elle a besoin sans friction, dans un registre adapté à son niveau de technicité.",
       },
     ],
-    seoTitle: 'Tech & SaaS — Studio créatif et digital | Yofield',
+    seoTitle: 'Tech & SaaS · Studio créatif et digital | Yofield',
     seoDescription:
       'Yofield construit les marques SaaS et startups tech qui gagnent la confiance avant la démo. Branding, site marketing, SEO B2B, contenus, IA. Studio créatif.',
     seoKeywords: [
@@ -550,7 +550,7 @@ export const secteurs: Secteur[] = [
           "Oui. Les sites médicaux manipulent des données de santé sensibles et sont soumis à des obligations RGPD strictes. Yofield intègre ces contraintes dans la conception technique du site : bannière de cookies conforme, formulaires de contact avec mentions légales adaptées, absence de traceurs tiers non consentis. On vous oriente également vers les démarches CNIL spécifiques aux professionnels de santé.",
       },
     ],
-    seoTitle: 'Santé & Bien-être — Studio créatif et digital | Yofield',
+    seoTitle: 'Santé & Bien-être · Studio créatif et digital | Yofield',
     seoDescription:
       'Yofield construit l\'identité et la présence digitale des cabinets, cliniques et marques santé. Branding médical, site, SEO local, contenus. Studio créatif.',
     seoKeywords: [
@@ -680,7 +680,7 @@ export const secteurs: Secteur[] = [
           "Une refonte d'identité complète pour un hôtel boutique, incluant le positionnement, le logo, la charte graphique, le site et les supports principaux, prend entre dix et seize semaines selon la complexité de l'établissement et le nombre de points de contact à couvrir. Les phases de validation sont planifiées au départ pour éviter les allers-retours qui allongent le calendrier.",
       },
     ],
-    seoTitle: 'Restauration & Hôtellerie — Studio créatif et digital | Yofield',
+    seoTitle: 'Restauration & Hôtellerie · Studio créatif et digital | Yofield',
     seoDescription:
       'Yofield crée l\'identité et la présence digitale des restaurants et hôtels. Branding gastronomique, site, réservation, contenus, réseaux sociaux. Studio créatif.',
     seoKeywords: [
@@ -815,7 +815,7 @@ export const secteurs: Secteur[] = [
           "Oui. La stratégie de contenus pédagogiques gratuits (blog, podcast, vidéos, ressources téléchargeables) est l'un des leviers d'acquisition les plus puissants dans le secteur éducatif. Yofield définit la stratégie de contenu, les formats adaptés à votre audience et votre capacité de production, puis prend en charge la production ou forme votre équipe à la produire en autonomie.",
       },
     ],
-    seoTitle: 'Éducation & Formation — Studio créatif et digital | Yofield',
+    seoTitle: 'Éducation & Formation · Studio créatif et digital | Yofield',
     seoDescription:
       'Yofield construit l\'identité et la présence digitale des écoles et organismes de formation. Branding, site, SEO, contenus, IA. Studio créatif EdTech.',
     seoKeywords: [

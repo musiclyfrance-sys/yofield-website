@@ -3,7 +3,7 @@ import SiteLayout from '@/components/layout/Navigation'
 import { buildMetadata } from '@/lib/metadata'
 
 export const metadata = buildMetadata({
-  title: 'Politique de confidentialité — Yofield',
+  title: 'Politique de confidentialité · Yofield',
   description:
     "Politique de confidentialité de Yofield : traitement des données personnelles, droits RGPD.",
   canonical: '/politique-de-confidentialite',

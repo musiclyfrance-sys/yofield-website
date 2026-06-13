@@ -16,7 +16,7 @@ const SERVICE_IMAGES: Record<string, string> = {
 }
 
 export const metadata = buildMetadata({
-  title: 'Services — Studio Yofield',
+  title: 'Services · Studio Yofield',
   description:
     "Les 5 domaines de Yofield : branding, création de sites, acquisition digitale, production de contenus et intelligence artificielle. Une marque complète, en cycle court.",
   canonical: '/services',
@@ -24,7 +24,7 @@ export const metadata = buildMetadata({
 
 /* ─── Schema.org ─────────────────────────────────────────────── */
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yofield.fr'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yofield.com'
 
 const serviceSchema = {
   '@context': 'https://schema.org',

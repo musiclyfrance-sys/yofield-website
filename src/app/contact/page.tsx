@@ -4,7 +4,7 @@ import { buildMetadata } from '@/lib/metadata'
 import ContactForm from './ContactForm'
 
 export const metadata = buildMetadata({
-  title: 'Contact — Démarrer un projet',
+  title: 'Contact · Démarrer un projet',
   description:
     "Démarrez votre projet avec Yofield. Réponse sous 48 heures. Brief gratuit et sans engagement.",
   canonical: '/contact',

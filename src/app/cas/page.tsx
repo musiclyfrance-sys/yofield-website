@@ -6,7 +6,7 @@ import { ClientLogo } from '@/components/cas/ClientLogos'
 import ArrowCircle from '@/components/ui/ArrowCircle'
 
 export const metadata = buildMetadata({
-  title: 'Cas clients — Studio Yofield',
+  title: 'Cas clients · Studio Yofield',
   description:
     "Les projets réalisés par Yofield : branding, sites web, automatisation IA, production de contenus. Des résultats mesurables sur des cas concrets.",
   canonical: '/cas',

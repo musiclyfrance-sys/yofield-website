@@ -70,7 +70,7 @@ export default function Footer() {
           className="mt-14 flex flex-col items-start gap-4 pt-8 sm:flex-row sm:items-center sm:justify-between"
           style={{ borderTop: '0.5px solid rgba(250,250,247,0.15)' }}
         >
-          <p className="font-body text-xs text-snow/40">© 2025 Yofield. Tous droits réservés.</p>
+          <p className="font-body text-xs text-snow/40">© {new Date().getFullYear()} Yofield. Tous droits réservés.</p>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
             {legalLinks.map((link) => (
               <Link

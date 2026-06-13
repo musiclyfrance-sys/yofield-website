@@ -14,7 +14,7 @@ import { buildMetadata } from '@/lib/metadata'
 import { organizationSchema, websiteSchema } from '@/lib/schema'
 
 export const metadata = buildMetadata({
-  title: 'Yofield — Studio créatif et digital',
+  title: 'Yofield · Studio créatif et digital',
   description:
     "Yofield assemble pour les fondateurs une marque complète : identité, site, communication, contenus et IA. Du brief au lancement public, en cycle court.",
   canonical: '/',

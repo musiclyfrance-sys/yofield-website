@@ -3,7 +3,7 @@ import SiteLayout from '@/components/layout/Navigation'
 import { buildMetadata } from '@/lib/metadata'
 
 export const metadata = buildMetadata({
-  title: 'Mentions légales — Yofield',
+  title: 'Mentions légales · Yofield',
   description:
     "Mentions légales du site Yofield. Éditeur, hébergeur, propriété intellectuelle.",
   canonical: '/mentions-legales',

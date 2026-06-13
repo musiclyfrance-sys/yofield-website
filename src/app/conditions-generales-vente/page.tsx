@@ -3,7 +3,7 @@ import SiteLayout from '@/components/layout/Navigation'
 import { buildMetadata } from '@/lib/metadata'
 
 export const metadata = buildMetadata({
-  title: 'Conditions générales de vente — Yofield',
+  title: 'Conditions générales de vente · Yofield',
   description:
     "Conditions générales de vente de Yofield studio créatif et digital.",
   canonical: '/conditions-generales-vente',

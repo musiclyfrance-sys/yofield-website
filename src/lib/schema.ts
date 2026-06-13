@@ -3,7 +3,7 @@
    Usage: <script type="application/ld+json">{JSON.stringify(schema)}</script>
 ──────────────────────────────────────────────────────────────────── */
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yofield.fr'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yofield.com'
 
 /* ─── Organization ──────────────────────────────────────── */
 
@@ -14,7 +14,7 @@ export function organizationSchema() {
     name: 'Yofield',
     alternateName: 'Studio Yofield',
     url: siteUrl,
-    logo: `${siteUrl}/logos/logo-fond-blanc.svg`,
+    logo: `${siteUrl}/logos/logo-blanc.svg`,
     description:
       "Studio créatif et digital qui assemble pour ses clients une marque complète : identité, site, communication, contenus et IA. Du brief au lancement public, en cycle court.",
     sameAs: [
@@ -164,7 +164,7 @@ export function articleSchema({
       name: 'Yofield',
       logo: {
         '@type': 'ImageObject',
-        url: `${siteUrl}/logos/logo-fond-blanc.svg`,
+        url: `${siteUrl}/logos/logo-blanc.svg`,
       },
     },
     ...(image && {
@@ -191,7 +191,7 @@ export function localBusinessSchema() {
     description:
       "Studio créatif et digital : branding, création de sites web, acquisition digitale, production de contenus et intelligence artificielle.",
     url: siteUrl,
-    logo: `${siteUrl}/logos/logo-fond-blanc.svg`,
+    logo: `${siteUrl}/logos/logo-blanc.svg`,
     priceRange: '€€€',
     address: {
       '@type': 'PostalAddress',

@@ -75,7 +75,7 @@ function AccordionItem({
 
 export default function FAQAccordion({
   faq,
-  title = 'Questions frequentes',
+  title = 'Questions fréquentes',
 }: FAQAccordionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 

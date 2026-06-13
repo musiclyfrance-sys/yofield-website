@@ -3,7 +3,7 @@ import SiteLayout from '@/components/layout/Navigation'
 import { buildMetadata } from '@/lib/metadata'
 
 export const metadata = buildMetadata({
-  title: 'Blog — Yofield',
+  title: 'Blog · Yofield',
   description:
     "Le blog de Yofield : branding, création de sites, SEO, GEO, intelligence artificielle et production de contenus. Des articles concrets pour les fondateurs.",
   canonical: '/blog',

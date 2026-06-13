@@ -4,7 +4,7 @@ import ScrollReveal from '@/components/animations/ScrollReveal'
 import { buildMetadata } from '@/lib/metadata'
 
 export const metadata = buildMetadata({
-  title: 'Le studio — Yofield',
+  title: 'Le studio · Yofield',
   description:
     "Yofield est un studio créatif et digital qui construit des marques complètes. Notre façon de travailler, nos convictions, ce qui nous distingue.",
   canonical: '/le-studio',

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import type { SEOMeta } from '@/types'
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yofield.fr'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yofield.com'
 const siteName = 'Yofield'
 
 /* ─── Core metadata builder ─────────────────────────────
@@ -85,7 +85,7 @@ export function buildCasMeta(
   ogImage?: string
 ): Metadata {
   return buildMetadata({
-    title: `${title} — Cas client Yofield`,
+    title: `${title} · Cas client Yofield`,
     description,
     canonical: `/cas/${slug}`,
     ogImage,
@@ -94,7 +94,7 @@ export function buildCasMeta(
 
 export function buildBlogMeta(title: string, description: string, slug: string): Metadata {
   return buildMetadata({
-    title: `${title} — Yofield`,
+    title: `${title} · Yofield`,
     description,
     canonical: `/blog/${slug}`,
   })

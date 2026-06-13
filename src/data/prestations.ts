@@ -21,7 +21,7 @@ export const prestations: Prestation[] = [
       "On définit la place que votre marque occupe dans l'esprit de vos clients, avant que vos concurrents ne la prennent.",
     longDescription:
       "Le positionnement n'est pas un slogan ni une liste de valeurs. C'est la réponse précise à une question que vos clients posent sans la formuler : pourquoi vous et pas un autre ? Yofield conduit un audit de votre marché, cartographie vos concurrents, écoute vos meilleurs clients actuels et construit un territoire de marque défendable, cohérent et distinctif. Le livrable final est un document stratégique opérationnel, pas un PowerPoint de conseil : vous savez exactement comment parler à qui, sur quoi vous différencier et quel espace vous pouvez occuper durablement.",
-    seoTitle: 'Stratégie de positionnement de marque — Studio Yofield',
+    seoTitle: 'Stratégie de positionnement de marque · Studio Yofield',
     seoDescription:
       "Yofield construit votre stratégie de positionnement : audit concurrentiel, territoire de marque, plateforme de brand. Livrable opérationnel en cycle court.",
     promises: [
@@ -101,7 +101,7 @@ export const prestations: Prestation[] = [
       "On crée votre système visuel complet, du logotype au livret de marque, pour que votre identité soit cohérente partout et pour longtemps.",
     longDescription:
       "Un logo n'est pas une marque. Un logo est la partie visible d'un système : il y a la couleur qui doit fonctionner sur tous les fonds, la typographie qui doit être lisible à tous les formats, les icônes qui doivent parler sans texte, les règles d'usage qui permettent à n'importe qui d'appliquer correctement votre identité sans vous consulter à chaque fois. Yofield conçoit ce système complet, de la recherche créative initiale à la charte graphique finale, en passant par toutes les déclinaisons dont vous avez réellement besoin.",
-    seoTitle: 'Logo et charte graphique — Studio Yofield',
+    seoTitle: 'Logo et charte graphique · Studio Yofield',
     seoDescription:
       "Création de logo et charte graphique complète. Studio Yofield : système d'identité visuelle, palette couleurs, typographies, règles d'usage, livret de marque.",
     promises: [
@@ -186,7 +186,7 @@ export const prestations: Prestation[] = [
       "On définit la voix de votre marque pour que tout ce qu'elle publie sonne juste, qu'importe qui l'écrit.",
     longDescription:
       "Une marque a une voix comme une personne a une voix. Vous reconnaissez quelqu'un au téléphone avant qu'il se présente, parce que son rythme, son vocabulaire et sa façon de formuler sont distinctifs. Votre marque doit produire le même effet. Yofield construit votre brand voice guide : le vocabulaire que vous utilisez, celui que vous évitez, le ton selon le contexte (accueil, réassurance, urgence, réseau social), les tournures de phrase qui vous ressemblent et celles qui sonnent générique. Le résultat est un guide utilisable par votre équipe, vos copywriters et même les outils IA pour produire des contenus cohérents.",
-    seoTitle: 'Brand voice et ton de marque — Studio Yofield',
+    seoTitle: 'Brand voice et ton de marque · Studio Yofield',
     seoDescription:
       "Création de votre brand voice guide : vocabulaire, ton, tournures, do & don't. Yofield définit la voix de marque que votre équipe et vos outils IA peuvent appliquer.",
     promises: [
@@ -266,7 +266,7 @@ export const prestations: Prestation[] = [
       "On crée vos supports print avec la rigueur technique d'un studio qui a déjà géré des sorties presses.",
     longDescription:
       "Un fichier print mal préparé coûte cher : mauvaise résolution, couleurs décalées, polices non vectorisées, fonds perdus manquants. Yofield gère la création graphique et la préparation technique de vos supports imprimés : cartes de visite, plaquettes commerciales, kakémonos, flyers, packaging, signalétique. Chaque fichier est livré prêt pour l'imprimeur, en CMJN, avec fonds perdus et traits de coupe, dans les formats demandés.",
-    seoTitle: 'Création supports print et impression — Studio Yofield',
+    seoTitle: 'Création supports print et impression · Studio Yofield',
     seoDescription:
       "Création graphique et préparation fichiers print. Studio Yofield : cartes de visite, plaquettes, kakémonos, packaging. Fichiers prêts imprimeur, CMJN, fonds perdus.",
     promises: [
@@ -345,7 +345,7 @@ export const prestations: Prestation[] = [
       "On conçoit et code votre site vitrine pour qu'il ranke, convainque et donne envie de vous contacter.",
     longDescription:
       "Un site vitrine n'est pas une brochure mise en ligne. C'est votre premier commercial, disponible vingt-quatre heures sur vingt-quatre. Il explique votre offre au bon niveau de détail, répond aux objections avant que vous ayez à les gérer, montre des preuves concrètes de ce que vous faites et amène le visiteur à prendre contact au moment précis où il est prêt. Yofield conçoit et code des sites vitrine qui remplissent ces quatre fonctions simultanément, avec une performance technique qui ne freine pas votre référencement naturel.",
-    seoTitle: 'Création site vitrine — Studio Yofield',
+    seoTitle: 'Création site vitrine · Studio Yofield',
     seoDescription:
       "Création de site vitrine sur-mesure. Studio Yofield : design premium, code propre Next.js, performances Lighthouse 95+, SEO natif, livraison en cycle court.",
     promises: [
@@ -430,7 +430,7 @@ export const prestations: Prestation[] = [
       "On construit votre boutique en ligne pour qu'elle vende, pas seulement pour qu'elle existe.",
     longDescription:
       "Un site e-commerce sous-performant n'est pas un problème de trafic, c'est un problème de conversion. Yofield conçoit des boutiques en ligne avec une architecture de pages pensée pour réduire la friction à chaque étape du parcours d'achat : page produit qui convainque, tunnel de commande qui ne décourage pas, emails transactionnels qui rassurent. On travaille sur Shopify pour les projets catalogues ou sur Next.js + Stripe pour les projets plus techniques.",
-    seoTitle: 'Création site e-commerce — Studio Yofield',
+    seoTitle: 'Création site e-commerce · Studio Yofield',
     seoDescription:
       "Création de boutique en ligne sur Shopify ou Next.js. Studio Yofield : design conversion, tunnel d'achat optimisé, SEO e-commerce, intégration paiement.",
     promises: [
@@ -510,7 +510,7 @@ export const prestations: Prestation[] = [
       "On conçoit et code vos outils métier en ligne, de la maquette au déploiement en production.",
     longDescription:
       "Une application web est un outil métier, pas un site. Elle a des utilisateurs réguliers, un flux de données, des règles métier complexes et des contraintes de performance différentes d'un site vitrine. Yofield prend en charge la conception UX, le développement frontend et l'intégration API de vos applications : tableau de bord, outil de gestion, plateforme client, configurateur en ligne. On code en Next.js avec une architecture propre qui tient dans le temps.",
-    seoTitle: 'Création application web sur-mesure — Studio Yofield',
+    seoTitle: 'Création application web sur-mesure · Studio Yofield',
     seoDescription:
       "Développement d'applications web sur-mesure en Next.js. Studio Yofield : conception UX, frontend, API, déploiement. Outils métier, dashboards, plateformes client.",
     promises: [
@@ -585,7 +585,7 @@ export const prestations: Prestation[] = [
       "On repart de votre site existant pour construire une version qui performe là où l'ancienne échouait.",
     longDescription:
       "Une refonte n'est pas une mise à jour esthétique. C'est une remise à plat stratégique : on identifie ce qui freine les conversions, ce qui coûte du trafic organique, ce qui crée de la friction. Ensuite on reconstruit, avec les mêmes objectifs qu'un nouveau site mais en tenant compte de ce que l'ancien a déjà construit (autorité SEO, URLs indexées, trafic existant). Yofield gère la refonte sans perdre ce que vous avez mis du temps à construire.",
-    seoTitle: 'Refonte de site web — Studio Yofield',
+    seoTitle: 'Refonte de site web · Studio Yofield',
     seoDescription:
       "Refonte de site web en préservant votre SEO existant. Studio Yofield : audit, nouvelle architecture, redirection 301, design premium, développement Next.js.",
     promises: [
@@ -664,7 +664,7 @@ export const prestations: Prestation[] = [
       "On construit votre visibilité organique sur Google pour que le trafic vienne à vous, pas l'inverse.",
     longDescription:
       "Le référencement naturel n'est pas un hack ni une liste de cases à cocher. C'est un travail de fond qui produit des résultats durables parce qu'il s'aligne avec ce que Google cherche réellement : des pages qui répondent précisément à une intention de recherche, avec une autorité de domaine construite dans le temps. Yofield construit votre stratégie SEO de A à Z : recherche de mots-clés pertinents pour votre activité, audit technique de votre site, stratégie de contenu orientée intention, netlinking ciblé. On distingue ce qui produit des résultats rapides de ce qui construit votre autorité sur le long terme.",
-    seoTitle: 'Stratégie SEO et référencement naturel — Studio Yofield',
+    seoTitle: 'Stratégie SEO et référencement naturel · Studio Yofield',
     seoDescription:
       "Stratégie SEO complète : audit technique, recherche de mots-clés, stratégie de contenu, netlinking. Studio Yofield améliore votre référencement naturel durablement.",
     promises: [
@@ -744,7 +744,7 @@ export const prestations: Prestation[] = [
       "On prépare votre marque à être citée par les moteurs IA avant que vos concurrents ne découvrent que c'est possible.",
     longDescription:
       "Le GEO, Generative Engine Optimization, est la discipline qui optimise votre présence sur les réponses générées par les IA : ChatGPT, Perplexity, Claude, Gemini. Quand quelqu'un demande à une IA quels studios créatifs recommander dans votre secteur, votre marque doit apparaître. Yofield construit cette visibilité : structuration des contenus factuels, FAQ optimisées pour la citation, fichier llms.txt, données structurées Schema.org adaptées aux parsers IA, signaux d'autorité sur les sources que les modèles préfèrent.",
-    seoTitle: 'Stratégie GEO et moteurs IA — Studio Yofield',
+    seoTitle: 'Stratégie GEO et moteurs IA · Studio Yofield',
     seoDescription:
       "Optimisation GEO pour être cité par ChatGPT, Perplexity, Claude et Gemini. Studio Yofield : contenu structuré, llms.txt, données Schema.org, signaux d'autorité IA.",
     promises: [
@@ -819,7 +819,7 @@ export const prestations: Prestation[] = [
       "On pilote vos campagnes Google Ads pour que chaque euro dépensé soit justifié par un retour mesurable.",
     longDescription:
       "Google Ads mal géré, c'est un budget qui part en fumée sur des clics non qualifiés. Google Ads bien géré, c'est un flux prévisible de prospects qualifiés dès le premier mois. La différence tient à la structure des campagnes, au choix des correspondances de mots-clés, à la qualité des annonces et à la cohérence entre l'annonce et la page d'atterrissage. Yofield prend en charge la stratégie, la création et l'optimisation continue de vos campagnes Search, Shopping et Performance Max.",
-    seoTitle: 'Stratégie SEA et Google Ads — Studio Yofield',
+    seoTitle: 'Stratégie SEA et Google Ads · Studio Yofield',
     seoDescription:
       "Gestion de campagnes Google Ads Search, Shopping et Performance Max. Studio Yofield : structure de campagnes, annonces, optimisation CPC, reporting mensuel.",
     promises: [
@@ -894,7 +894,7 @@ export const prestations: Prestation[] = [
       "On pilote vos campagnes publicitaires sur les réseaux sociaux pour atteindre précisément vos cibles.",
     longDescription:
       "La publicité sur les réseaux sociaux a changé. Les audiences larges ne suffisent plus, les coûts ont augmenté, et la créativité est devenue le premier levier d'optimisation. Yofield pilote vos campagnes Meta Ads, LinkedIn Ads et TikTok Ads avec une logique de test créatif systématique : on teste plusieurs angles, on identifie ce qui performe, on scale ce qui fonctionne. La stratégie est alignée avec vos objectifs réels : notoriété, génération de leads ou ventes directes.",
-    seoTitle: 'Stratégie Paid Social — Studio Yofield',
+    seoTitle: 'Stratégie Paid Social · Studio Yofield',
     seoDescription:
       "Gestion de campagnes Paid Social sur Meta, LinkedIn et TikTok. Studio Yofield : ciblage audience, créatifs, tests A/B, optimisation ROAS, reporting mensuel.",
     promises: [
@@ -969,7 +969,7 @@ export const prestations: Prestation[] = [
       "On construit votre présence organique sur les réseaux pour que votre marque existe entre deux campagnes payantes.",
     longDescription:
       "Une présence sur les réseaux sociaux sans stratégie, c'est du temps perdu et une marque qui semble désorganisée. Yofield définit votre stratégie éditoriale : quels réseaux selon votre public, quelle fréquence réaliste, quels formats pour chaque plateforme, quel calendrier. On produit les contenus ou on forme votre équipe à les produire en autonomie, selon votre organisation. L'objectif n'est pas d'être partout, c'est d'être juste là où votre public est vraiment.",
-    seoTitle: 'Stratégie réseaux sociaux — Studio Yofield',
+    seoTitle: 'Stratégie réseaux sociaux · Studio Yofield',
     seoDescription:
       "Stratégie éditoriale réseaux sociaux sur-mesure. Studio Yofield : choix des plateformes, calendrier éditorial, production de contenus, formation équipe.",
     promises: [
@@ -1044,7 +1044,7 @@ export const prestations: Prestation[] = [
       "On identifie les créateurs qui parlent réellement à votre public et on pilote les collaborations de A à Z.",
     longDescription:
       "Le marketing d'influence fonctionne quand le partenariat est authentique et que le créateur est réellement aligné avec votre marque. Il échoue quand on chasse uniquement les abonnés. Yofield prend en charge l'identification des créateurs pertinents (micro, macro, nano selon les objectifs), la négociation et la contractualisation, le briefing créatif et la mesure des résultats. On travaille avec des créateurs qui ont une vraie audience engagée, pas des comptes gonflés.",
-    seoTitle: 'Marketing d\'influence — Studio Yofield',
+    seoTitle: 'Marketing d\'influence · Studio Yofield',
     seoDescription:
       "Stratégie marketing d'influence : sélection de créateurs, négociation, brief créatif, pilotage campagnes. Studio Yofield travaille avec les créateurs alignés avec votre marque.",
     promises: [
@@ -1123,7 +1123,7 @@ export const prestations: Prestation[] = [
       "On écrit vos textes pour qu'ils parlent à une vraie personne et la poussent à agir.",
     longDescription:
       "Écrire pour le web n'est pas écrire pour soi. C'est écrire pour une personne précise, à un moment précis de sa décision, avec un objectif clair : la faire progresser vers l'action. Yofield rédige vos pages web, vos emails, vos propositions commerciales, vos articles de blog et vos supports de vente avec cette logique : chaque mot est là pour une raison, chaque paragraphe fait avancer la lecture. On allie la persuasion du copywriting et la précision du contenu éditorial.",
-    seoTitle: 'Rédaction et copywriting — Studio Yofield',
+    seoTitle: 'Rédaction et copywriting · Studio Yofield',
     seoDescription:
       "Rédaction web, copywriting et contenu éditorial. Studio Yofield écrit vos pages, emails, articles de blog et supports de vente en alignant persuasion et précision.",
     promises: [
@@ -1203,7 +1203,7 @@ export const prestations: Prestation[] = [
       "On produit les visuels et les textes qui font exister votre marque sur les réseaux, semaine après semaine.",
     longDescription:
       "Une stratégie réseaux sociaux sans production de contenus n'existe pas. Yofield produit les assets visuels et les captions de vos publications : carrousels LinkedIn, stories Instagram, posts X, vidéos courtes TikTok ou Reels. Chaque contenu est ancré dans votre identité de marque et votre stratégie éditoriale. On produit en batch mensuel pour que vous ayez toujours six semaines d'avance sur votre calendrier.",
-    seoTitle: 'Création contenus social media — Studio Yofield',
+    seoTitle: 'Création contenus social media · Studio Yofield',
     seoDescription:
       "Production de contenus social media : visuels, captions, carrousels, vidéos courtes. Studio Yofield livre vos assets en batch mensuel pour tous vos réseaux.",
     promises: [
@@ -1278,7 +1278,7 @@ export const prestations: Prestation[] = [
       "On organise et réalise vos shootings pour que vos images montrent vraiment qui vous êtes.",
     longDescription:
       "Les images de stock ne font pas une marque. Vos clients le savent instinctivement, même s'ils ne peuvent pas l'expliquer. Un shooting photo spécifique à votre marque donne une cohérence visuelle immédiate : les images se reconnaissent, elles appartiennent à votre univers et à lui seul. Yofield prend en charge l'ensemble du processus : direction artistique, casting si nécessaire, repérage des lieux, shooting et post-production. Les images livrées sont prêtes à l'emploi sur votre site, vos réseaux et vos supports print.",
-    seoTitle: 'Shooting photo professionnel — Studio Yofield',
+    seoTitle: 'Shooting photo professionnel · Studio Yofield',
     seoDescription:
       "Shooting photo professionnel avec direction artistique. Studio Yofield : packshots, portraits, ambiances, reportage. Images prêtes pour web, réseaux et print.",
     promises: [
@@ -1353,7 +1353,7 @@ export const prestations: Prestation[] = [
       "On produit vos vidéos de marque, de la présentation corporate au contenu court format pensé pour les réseaux.",
     longDescription:
       "La vidéo est le format qui explique en 60 secondes ce qu'une page entière peine à transmettre. Yofield prend en charge la production vidéo de votre marque : film de présentation, témoignage client, vidéo produit, contenu court format pour les réseaux, vidéo de recrutement. Chaque production part d'un brief précis, d'un storyboard validé et d'une logique de diffusion définie. On livre des fichiers prêts à l'emploi dans les formats requis.",
-    seoTitle: 'Production vidéo de marque — Studio Yofield',
+    seoTitle: 'Production vidéo de marque · Studio Yofield',
     seoDescription:
       "Production vidéo de marque : film de présentation, témoignage client, contenu court format. Studio Yofield gère brief, tournage, montage et livraison.",
     promises: [
@@ -1428,7 +1428,7 @@ export const prestations: Prestation[] = [
       "On anime votre identité de marque pour que vos contenus numériques aient une vie que les images statiques n'ont pas.",
     longDescription:
       "Le motion design n'est pas de la vidéo et n'est pas de l'illustration : c'est l'animation de votre identité de marque en mouvement. Un logo animé qui s'ouvre sur votre site, une transition entre deux sections de votre application, une infographie animée pour expliquer votre processus, un bumper pour vos vidéos YouTube. Yofield produit des animations qui respectent l'ADN de votre charte graphique et qui s'intègrent proprement dans vos plateformes digitales.",
-    seoTitle: 'Motion design — Studio Yofield',
+    seoTitle: 'Motion design · Studio Yofield',
     seoDescription:
       "Production motion design : logo animé, animations UI, infographies animées, bumper vidéo. Studio Yofield anime votre identité de marque sur tous vos supports digitaux.",
     promises: [
@@ -1503,7 +1503,7 @@ export const prestations: Prestation[] = [
       "On pilote la cohérence visuelle de tout ce que votre marque produit, pour que chaque contenu renforce l'identité.",
     longDescription:
       "La direction artistique, c'est la fonction qui fait que tout ce que votre marque publie semble venir du même endroit. Pas seulement le même logo, mais la même énergie visuelle, la même façon de cadrer une photo, le même poids des blancs dans un design, la même température de lumière dans une vidéo. Yofield peut assurer cette direction artistique en mission ponctuelle (pour un projet spécifique) ou en mission continue (pour superviser l'ensemble de vos productions visuelles).",
-    seoTitle: 'Direction artistique de marque — Studio Yofield',
+    seoTitle: 'Direction artistique de marque · Studio Yofield',
     seoDescription:
       "Direction artistique de marque : cohérence visuelle sur tous vos contenus. Studio Yofield supervise vos shootings, vidéos, illustrations et productions digitales.",
     promises: [
@@ -1582,7 +1582,7 @@ export const prestations: Prestation[] = [
       "On conçoit et déploie des agents IA qui prennent en charge vos tâches répétitives sans que vous ayez besoin de coder.",
     longDescription:
       "Un agent IA est un programme qui comprend une instruction en langage naturel, l'exécute en utilisant des outils (recherche web, lecture de fichiers, envoi d'emails, appel d'API) et retourne un résultat. Yofield conçoit ces agents pour vos cas d'usage métier réels : qualification de leads entrants, rédaction de propositions commerciales, synthèse de rapports, veille concurrentielle, réponses support niveau 1. On les déploie sur des infrastructures que vous contrôlez, avec des garde-fous précis sur ce qu'ils peuvent et ne peuvent pas faire.",
-    seoTitle: 'Création d\'agents IA pour entreprises — Studio Yofield',
+    seoTitle: 'Création d\'agents IA pour entreprises · Studio Yofield',
     seoDescription:
       "Conception et déploiement d'agents IA sur-mesure. Studio Yofield : qualification leads, automatisation emails, synthèse documents, veille. Agents que vous contrôlez.",
     promises: [
@@ -1657,12 +1657,12 @@ export const prestations: Prestation[] = [
     categorySlug: 'intelligence-artificielle-automatisation',
     num: '05.2',
     name: 'AI Brand Voice',
-    nameFull: 'AI Brand Voice — votre voix de marque dans l\'IA',
+    nameFull: 'AI Brand Voice · votre voix de marque dans l\'IA',
     description:
       "On entraîne les outils IA de votre équipe à écrire avec votre voix, pour que la cohérence tienne même à grande vitesse.",
     longDescription:
       "Votre équipe utilise déjà l'IA pour écrire. Le problème, c'est qu'elle écrit dans la voix de ChatGPT, pas dans la vôtre. Yofield construit votre système AI Brand Voice : un prompt système précis qui encode votre voix de marque, votre vocabulaire interdit, vos tournures préférées, votre façon d'adresser votre public. Ce système s'intègre dans Claude, ChatGPT et les outils que votre équipe utilise déjà. Résultat : n'importe qui dans votre équipe peut générer du contenu cohérent avec votre marque en quelques secondes.",
-    seoTitle: 'AI Brand Voice — Studio Yofield',
+    seoTitle: 'AI Brand Voice · Studio Yofield',
     seoDescription:
       "Création d'un système AI Brand Voice pour votre marque. Studio Yofield encode votre voix dans les outils IA de votre équipe : Claude, ChatGPT, intégrations sur-mesure.",
     promises: [
@@ -1737,7 +1737,7 @@ export const prestations: Prestation[] = [
       "On connecte vos outils entre eux avec l'IA pour que les tâches répétitives se fassent sans que vous y pensiez.",
     longDescription:
       "L'automatisation sans IA connecte des outils. L'automatisation avec IA comprend le contenu, prend des décisions et produit des résultats intelligents. Yofield construit des workflows automatisés qui intègrent la compréhension du langage naturel : qualification automatique des emails entrants, extraction de données de documents, génération de rapports personnalisés, routing intelligent des demandes support. On utilise n8n, Make ou des API directes selon la complexité et vos outils existants.",
-    seoTitle: 'Automatisations IA et workflows intelligents — Studio Yofield',
+    seoTitle: 'Automatisations IA et workflows intelligents · Studio Yofield',
     seoDescription:
       "Construction de workflows d'automatisation avec IA. Studio Yofield : n8n, Make, API LLM. Qualification emails, extraction données, génération rapports, routing support.",
     promises: [
@@ -1812,7 +1812,7 @@ export const prestations: Prestation[] = [
       "On cartographie vos processus internes et on identifie où l'IA peut vous faire gagner des heures par semaine.",
     longDescription:
       "Avant d'automatiser quoi que ce soit, il faut savoir ce qui mérite vraiment d'être automatisé. Yofield conduit un audit de vos processus internes avec une grille d'analyse IA : quelles tâches sont répétitives, prévisibles, basées sur des règles, et donc candidates à l'automatisation ? Quelles tâches nécessitent du jugement humain et doivent être préservées ? Le résultat est une feuille de route priorisée avec un calcul de gain réel pour chaque automatisation proposée.",
-    seoTitle: 'Optimisation des processus internes par l\'IA — Studio Yofield',
+    seoTitle: 'Optimisation des processus internes par l\'IA · Studio Yofield',
     seoDescription:
       "Audit et optimisation de vos processus internes par l'IA. Studio Yofield : cartographie, identification des gains, feuille de route d'automatisation priorisée.",
     promises: [
@@ -1887,7 +1887,7 @@ export const prestations: Prestation[] = [
       "On développe les outils internes que votre équipe utilise au quotidien, conçus pour votre façon de travailler.",
     longDescription:
       "Les outils génériques ne s'adaptent jamais parfaitement à votre façon de travailler. Un outil métier sur-mesure fait exactement ce dont vous avez besoin, sans les fonctionnalités inutiles, sans les limites arbitraires d'un SaaS. Yofield développe ces outils : générateur de propositions commerciales, calculateur de devis, outil de brief client, tableau de bord métier, interface de gestion de production. Chaque outil est construit en Next.js, déployé sur votre infrastructure et transmis avec le code source complet.",
-    seoTitle: 'Création d\'outils métier sur-mesure — Studio Yofield',
+    seoTitle: 'Création d\'outils métier sur-mesure · Studio Yofield',
     seoDescription:
       "Développement d'outils métier sur-mesure en Next.js. Studio Yofield : générateurs, calculateurs, tableaux de bord, interfaces de gestion. Code source livré.",
     promises: [
@@ -1962,7 +1962,7 @@ export const prestations: Prestation[] = [
       "On développe des Skills Claude sur-mesure pour votre marque, directement intégrées dans Claude Code et l'API Anthropic.",
     longDescription:
       "Claude permet de créer des compétences spécialisées (Skills) qui ajoutent des comportements précis à l'assistant dans votre contexte métier. Yofield développe ces Skills sur-mesure : une Skill qui génère des propositions commerciales selon votre template, une Skill qui analyse vos données de performance et rédige un rapport de synthèse, une Skill qui brief automatiquement vos créatifs selon votre brand voice. Ces Skills s'exécutent dans Claude Code, l'API Anthropic ou vos plateformes intégrées via MCP.",
-    seoTitle: 'Création de Skills Claude personnalisées — Studio Yofield',
+    seoTitle: 'Création de Skills Claude personnalisées · Studio Yofield',
     seoDescription:
       "Développement de Skills Claude sur-mesure pour votre marque. Studio Yofield : intégration API Anthropic, Claude Code, MCP. Skills métier, brand voice, automation.",
     promises: [

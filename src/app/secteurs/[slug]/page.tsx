@@ -44,14 +44,8 @@ export default async function SecteurPage({ params }: Props) {
         areaServed: { '@type': 'Country', name: 'France' },
         serviceType: secteur.name,
       },
-      {
-        '@type': 'FAQPage',
-        mainEntity: secteur.faq.map((item) => ({
-          '@type': 'Question',
-          name: item.question,
-          acceptedAnswer: { '@type': 'Answer', text: item.answer },
-        })),
-      },
+      /* FAQPage JSON-LD is emitted once by <FAQAccordion> in the template,
+         so it is intentionally omitted here to avoid a duplicate. */
     ],
   }
 
