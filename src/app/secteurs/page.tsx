@@ -68,7 +68,7 @@ export default function SecteursPage() {
             On n'est pas généralistes par défaut. On choisit les projets où notre méthode fait
             vraiment la différence.
           </p>
-          <Link href="/contact" className="btn btn-outline-soil">
+          <Link href="/contact" className="btn btn-soil">
             Démarrer la conversation
           </Link>
         </div>

@@ -268,7 +268,7 @@ export default async function CasPage({ params }: PageProps) {
           <h2 className="np-800 mx-auto mb-8 max-w-2xl text-3xl leading-[1.1] text-soil md:text-5xl">
             Votre projet sera peut-être le prochain.
           </h2>
-          <Link href="/contact" className="btn btn-outline-soil">
+          <Link href="/contact" className="btn btn-soil">
             Démarrer la conversation
           </Link>
         </div>

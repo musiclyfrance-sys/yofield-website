@@ -93,7 +93,7 @@ export default function CasPage() {
           <h2 className="np-800 text-4xl text-soil mb-8">
             Votre projet sera peut-être le prochain.
           </h2>
-          <Link href="/contact" className="btn btn-outline-soil">
+          <Link href="/contact" className="btn btn-soil">
             Parlons-en
           </Link>
         </div>

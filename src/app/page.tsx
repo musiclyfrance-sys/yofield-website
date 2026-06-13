@@ -143,12 +143,12 @@ export default function HomePage() {
             </p>
             <div className="flex flex-col sm:flex-row items-start gap-4">
               <MagneticButton>
-                <Link href="/contact" className="btn btn-outline-soil">
+                <Link href="/contact" className="btn btn-soil">
                   Démarrer la conversation
                 </Link>
               </MagneticButton>
               <MagneticButton>
-                <Link href="/services" className="btn btn-outline-soil" style={{ opacity: 0.6 }}>
+                <Link href="/services" className="btn btn-outline-soil">
                   Voir les services
                 </Link>
               </MagneticButton>

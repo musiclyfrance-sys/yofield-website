@@ -100,14 +100,27 @@ body {
 }
 .btn:hover { transform: translateY(-2px); }
 
+/* Primary — citron. Hover BRIGHTENS + glows (never goes dark), so it stays
+   attractive on light AND dark sections. */
 .btn-citron  { background: var(--color-citron); color: var(--color-soil); }
-.btn-citron:hover { background: var(--color-soil); color: var(--color-citron); }
+.btn-citron:hover {
+  background: #e2ff6e;
+  box-shadow: 0 10px 30px rgba(212,245,81,0.40);
+}
 
+/* Solid dark — for primary actions sitting ON light/citron sections where a
+   filled dark button reads as "primary" better than an outline. */
+.btn-soil { background: var(--color-soil); color: var(--color-snow); }
+.btn-soil:hover { box-shadow: 0 10px 30px rgba(15,15,14,0.28); }
+
+/* Secondary on LIGHT — outline that fills dark on hover. */
 .btn-outline-soil { background: transparent; color: var(--color-soil); border: 0.5px solid rgba(15,15,14,0.3); }
 .btn-outline-soil:hover { border-color: var(--color-soil); background: var(--color-soil); color: var(--color-snow); }
 
-.btn-outline-snow { background: transparent; color: var(--color-snow); border: 0.5px solid rgba(250,250,247,0.35); }
-.btn-outline-snow:hover { background: var(--color-snow); color: var(--color-soil); border-color: transparent; }
+/* Secondary on DARK — outline that fills citron on hover (bright, on-brand,
+   never the dull near-black it used to invert to). */
+.btn-outline-snow { background: transparent; color: var(--color-snow); border: 0.5px solid rgba(250,250,247,0.4); }
+.btn-outline-snow:hover { background: var(--color-citron); color: var(--color-soil); border-color: var(--color-citron); }
 
 /* ─── SECTION UTILS ──────────────────────────────────── */
 
