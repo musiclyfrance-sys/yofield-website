@@ -1430,7 +1430,7 @@ export const prestations: Prestation[] = [
       "Le motion design n'est pas de la vidéo et n'est pas de l'illustration : c'est l'animation de votre identité de marque en mouvement. Un logo animé qui s'ouvre sur votre site, une transition entre deux sections de votre application, une infographie animée pour expliquer votre processus, un bumper pour vos vidéos YouTube. Yofield produit des animations qui respectent l'ADN de votre charte graphique et qui s'intègrent proprement dans vos plateformes digitales.",
     seoTitle: 'Motion design · Studio Yofield',
     seoDescription:
-      "Production motion design : logo animé, animations UI, infographies animées, bumper vidéo. Studio Yofield anime votre identité de marque sur tous vos supports digitaux.",
+      "Production motion design : logo animé, animations UI, infographies animées, bumper vidéo. Studio Yofield anime votre identité de marque. Cycle court.",
     promises: [
       "Des animations cohérentes avec votre charte graphique et votre identité.",
       "Des fichiers exportés dans les formats requis par vos plateformes.",

@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import LenisProvider from '@/components/providers/LenisProvider'
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yofield.com'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.yofield.com'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

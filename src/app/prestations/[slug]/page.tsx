@@ -19,7 +19,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params
   const prestation = getPrestationBySlug(slug)
   if (!prestation) return {}
-  return buildPrestationMeta(prestation.seoTitle, prestation.seoDescription, prestation.slug)
+  return buildPrestationMeta(
+    prestation.seoTitle,
+    prestation.seoDescription,
+    prestation.slug,
+    prestation.categorySlug
+  )
 }
 
 export default async function PrestationPage({ params }: PageProps) {

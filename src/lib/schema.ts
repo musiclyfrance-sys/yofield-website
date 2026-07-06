@@ -3,7 +3,7 @@
    Usage: <script type="application/ld+json">{JSON.stringify(schema)}</script>
 ──────────────────────────────────────────────────────────────────── */
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yofield.com'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.yofield.com'
 
 /* ─── Organization ──────────────────────────────────────── */
 

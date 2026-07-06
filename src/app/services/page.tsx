@@ -24,7 +24,7 @@ export const metadata = buildMetadata({
 
 /* ─── Schema.org ─────────────────────────────────────────────── */
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yofield.com'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.yofield.com'
 
 const serviceSchema = {
   '@context': 'https://schema.org',
